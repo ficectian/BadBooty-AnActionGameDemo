@@ -21,9 +21,11 @@
 //=========================================
 //		構造体定義
 //=========================================
-typedef struct {
+class EnemyClass {
+	
 	LPDIRECT3DTEXTURE9 Tex;
 	LPDIRECT3DTEXTURE9	DeadTex;
+public: 
 	float X;	//年齢
 	float Y;	//攻撃力
 	float Width;
@@ -39,14 +41,51 @@ typedef struct {
 	void Update(int);
 	void Draw();
 	int cnt;
-}ENEMY;
+};
 
-typedef struct {
+//typedef struct {
+//	LPDIRECT3DTEXTURE9 Tex;
+//	LPDIRECT3DTEXTURE9	DeadTex;
+//	LPDIRECT3DTEXTURE9	InvincibleTex;
+//	float X;	
+//	float Y;	
+//	float JumpStartY;
+//	float Width;
+//	float Height;
+//	float Ustart;
+//	float Vstart;
+//	float Uwidth;
+//	float Vheight;
+//	int	Hp;	//体力
+//	//int InvincibleState;
+//	void Init();
+//	void Update();
+//	void Draw();
+//	bool InDoubleJumpStatus;
+//	const byte AnimeStation[64] = { 0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,0xff };//0xff：終了コード
+//	const byte AnimeRun[64] = { 8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,10,10,10,10,10,10,10,9,9,9,9,9,9,9,9,9,0xff };
+//	const byte AnimeJump[64] = { 16,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,0xff };
+//	const byte AnimeDefense[64] = { 24,24,24,24,24,24,24,25,25,25,25,25,25,25,25,25,25,26,26,26,26,26,26,26,25,25,25,25,25,25,25,25,25,0xff };//0xff：終了コード
+//	const byte *Anime_data[4] = { AnimeStation,AnimeRun,AnimeJump,AnimeDefense };
+//	char cnt;
+//	bool FacedRight;
+//	char JumpCnt;
+//	char StatusStyle;
+//}PLAYER;
+class PlayerClass {
+	
+public:
+	float X;
+	float Y;
+	int	Hp;	//体力
+	void Init();
+	void Update();
+	void Draw();
+
+private:
 	LPDIRECT3DTEXTURE9 Tex;
 	LPDIRECT3DTEXTURE9	DeadTex;
 	LPDIRECT3DTEXTURE9	InvincibleTex;
-	float X;	
-	float Y;	
 	float JumpStartY;
 	float Width;
 	float Height;
@@ -54,54 +93,55 @@ typedef struct {
 	float Vstart;
 	float Uwidth;
 	float Vheight;
-	int	nHp;	//体力
-	//int InvincibleState;
-	void Init();
-	void Update();
-	void Draw();
 	bool InDoubleJumpStatus;
 	const byte AnimeStation[64] = { 0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,0xff };//0xff：終了コード
-	const byte AnimeRun[64] = { 8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,10,10,10,10,10,10,10,9,9,9,9,9,9,9,9,9,0xff };
+	const byte AnimeRun[64] = { 8,8,8,8,8,9,9,9,9,9,9,9,10,10,10,10,10,9,9,9,9,9,9,9,0xff };
 	const byte AnimeJump[64] = { 16,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,0xff };
-	const byte *Anime_data[4] = { AnimeStation,AnimeRun,AnimeJump,AnimeStation };
+	const byte AnimeDefense[64] = { 24,24,24,24,24,24,24,25,25,25,25,25,25,25,25,25,25,26,26,26,26,26,26,26,25,25,25,25,25,25,25,25,25,0xff };//0xff：終了コード
+	const byte AnimeAttack[64] = { 32,32,32,32,32,32,33,33,33,33,33,33,33,33,34,34,34,34,34,34,33,33,33,33,33,33,33,32,32,32,32,32,32,0xff };//0xff：終了コード
+	const byte *Anime_data[5] = { AnimeStation,AnimeRun,AnimeJump,AnimeDefense,AnimeAttack };
 	char cnt;
 	bool FacedRight;
 	char JumpCnt;
 	char StatusStyle;
-}PLAYER;
+};
 
-typedef struct{
-	LPDIRECT3DTEXTURE9 Tex;
-	int		Flag;
-	float	X;	
-	float	DefX;
-	float	Y;
-	bool	Disp;
-	bool notshooting = true;
-	void Init(int);
-	void Update(int);
-	void Hit(int);
-	void Draw();
-}SHOOT;
+//typedef struct{
+//	LPDIRECT3DTEXTURE9 Tex;
+//	int		Flag;
+//	float	X;	
+//	float	DefX;
+//	float	Y;
+//	bool	Disp;
+//	bool notshooting = true;
+//	void Init(int);
+//	void Update(int);
+//	void Hit(int);
+//	void Draw();
+//}SHOOT;
 
 
 
-typedef struct  {
-	LPDIRECT3DTEXTURE9 Tex;
+class ImageClass {
+public:
+	
 	float	X; 
 	float	Y;
+
+	void Init();
+	void Update();
+	void TitleDraw(int);
+	void BackDraw();
+	void UpDraw(int);
+private:
+	LPDIRECT3DTEXTURE9 Tex;
 	float Width;
 	float Height;
 	float Ustart;
 	float Vstart;
 	float Uwidth;
 	float Vheight;
-	void Init();
-	void Update();
-	void TitleDraw(int);
-	void BackDraw();
-	void UpDraw(int);
-}IMAGE;
+};
 
 enum {
 	TITLE,
@@ -112,24 +152,20 @@ enum {
 };
 
 enum {
-	StationAnime,
-	RunAnime,
-	JumpAnime
-};
-enum {
 	StationStatus,
 	RunStatus,
 	JumpStatus,
-	DefenseStatus
+	DefenseStatus,
+	AttackStatus
 	//DoubleJumpStatus
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //		関数宣言
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-float		UpMove(float, float, float, float);				//上移動関数
-float		RightMove(float, float, float, float);			//左移動関数
-float		LeftMove(float, float, float, float);				//左移動関数
-float		DownMove(float, float, float, float);				//下移動関数
+//float		UpMove(float, float, float, float);				//上移動関数
+//float		RightMove(float, float, float, float);			//左移動関数
+//float		LeftMove(float, float, float, float);				//左移動関数
+//float		DownMove(float, float, float, float);				//下移動関数
 bool		HitTest(float, float, float, float, float, float, float, float);
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

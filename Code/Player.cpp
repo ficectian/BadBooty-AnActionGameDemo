@@ -85,9 +85,9 @@ bool			HitTest(float X1, float Y1, float W1, float H1, float X2, float Y2, float
 //==========================================================================================================
 
 
-PLAYER Player;
+PlayerClass Player;
 
-void PLAYER::Init() {
+void PlayerClass::Init() {
 	bool bret = DXLoadTexture(PLAYERTEX, &Tex);
 	//bret = DXLoadTexture(BOOWTEX, &DeadTex);
 	//bret = DXLoadTexture(INVINCIBLETEX, &InvincibleTex);
@@ -95,7 +95,7 @@ void PLAYER::Init() {
 	Y = SCREEN_HEIGHT -120;
 	Width = 128;
 	Height =128;
-	nHp = 6;
+	Hp = 6;
 	Ustart = 0.0f;
 	Uwidth = (float)1 / 8;
 	Vstart = 0.0f;
@@ -108,9 +108,9 @@ void PLAYER::Init() {
 	InDoubleJumpStatus = false;
 }
 
-void PLAYER::Update() {
+void PlayerClass::Update() {
 
-	if (nHp > 0) {
+	if (Hp > 0) {
 		//if (GetKeyboardPress(DIK_W) | GetKeyboardPress(DIK_UP)) {
 		//	Y = UpMove(X, Y, Width, Height);					//ãˆÚ“®
 		//	if (Anime_style != 1) { Anime_style = 1;  }
@@ -120,79 +120,118 @@ void PLAYER::Update() {
 		//	Y = DownMove(X, Y, Width, Height);					//ˆÚ“®
 		//	if (Anime_style != 1) {Anime_style = 1; }
 		//}
-		if (GetKeyboardPress(DIK_A) | GetKeyboardPress(DIK_LEFT)) {
-			if (FacedRight) {
-				if (X - Width / 2 > 0) { X -= PLAYERSPEED / 2; }
-				if(StatusStyle != JumpStatus ){ StatusStyle = DefenseStatus; }
-			}else{
-				if (X - Width / 2 > 0) { X -= PLAYERSPEED; }
-				if (StatusStyle != JumpStatus ) {
-					if (StatusStyle != RunStatus) {
-						cnt = 0;
-						StatusStyle = RunStatus;}
+		if (StatusStyle != AttackStatus) {
+			if (GetKeyboardTrigger(DIK_H)) {
+				if (StatusStyle != JumpStatus) {
+					cnt = 0;
+					StatusStyle = AttackStatus;
+				}
+			}
+			if (GetKeyboardPress(DIK_A) | GetKeyboardPress(DIK_LEFT)) {
+				if (FacedRight) {
+					if (X - Width / 2 > 0) { X -= PLAYERSPEED / 2; }
+					if (StatusStyle != JumpStatus) { StatusStyle = DefenseStatus; }
+				}
+				else {
+					if (X - Width / 2 > 0) { X -= PLAYERSPEED; }
+					if (StatusStyle != JumpStatus) {
+						if (StatusStyle != RunStatus) {
+							cnt = 0;
+							StatusStyle = RunStatus;
+						}
+					}
+				}
+			}
+
+			if (GetKeyboardPress(DIK_D) | GetKeyboardPress(DIK_RIGHT)){
+				if (FacedRight) {
+					if (X + Width / 2 < SCREEN_WIDTH) { X += PLAYERSPEED; }
+					if (StatusStyle != JumpStatus) {
+						if (StatusStyle != RunStatus) {
+							cnt = 0;
+							StatusStyle = RunStatus;
+						}
+					}
+				}
+				else {
+					if (X + Width / 2 < SCREEN_WIDTH) { X += PLAYERSPEED / 2; }
+					if (StatusStyle != JumpStatus) { StatusStyle = DefenseStatus; }
+				}
+			}
+			if (GetKeyboardTrigger(DIK_LSHIFT)) {
+				FacedRight = !FacedRight;
+				if (StatusStyle == RunStatus) { StatusStyle = DefenseStatus; }
+
+			}
+
+
+			if (GetKeyboardTrigger(DIK_SPACE)) {
+				if (StatusStyle != JumpStatus && !InDoubleJumpStatus) {
+					JumpStartY = Y;
+
+					cnt = 0;
+					StatusStyle = JumpStatus;
+				}
+				else if (!InDoubleJumpStatus) {
+					JumpCnt = 0;
+					cnt = 0;
+					InDoubleJumpStatus = true;
+				}
+			}
+			if (GetKeyboardRelease(DIK_A) || GetKeyboardRelease(DIK_LEFT) || GetKeyboardRelease(DIK_D) || GetKeyboardRelease(DIK_RIGHT))
+			{
+				if (StatusStyle != JumpStatus) {
+					if (StatusStyle != StationStatus) { cnt = 0; StatusStyle = StationStatus; }
+				}
+
+
+			}
+			if (StatusStyle == JumpStatus) {
+				JumpCnt += 1;
+				//float vg = 10 - 0.98f*fcnt;
+				Y -= 14 - 0.98f*JumpCnt;;
+				if (Y > JumpStartY) {
+					Y = JumpStartY;
+					JumpCnt = 0;
+
+					JumpStartY = 10000.0f;
+					InDoubleJumpStatus = false;
+					/*if (GetKeyboardPress(DIK_A) | GetKeyboardPress(DIK_LEFT)) {
+					if (FacedRight) {
+					StatusStyle = DefenseStatus;
+					}else {
+					StatusStyle = RunStatus;
+					}
+					}else if (GetKeyboardPress(DIK_D) | GetKeyboardPress(DIK_RIGHT))
+					{
+					if (FacedRight) {
+					StatusStyle = RunStatus;
+					}else {
+					StatusStyle = DefenseStatus;
+					}
+					}else {
+					StatusStyle = StationStatus;
+					}*/
+					StatusStyle = StationStatus;
 				}
 			}
 		}
-
-		if (GetKeyboardPress(DIK_D)| GetKeyboardPress(DIK_RIGHT))
-		{
-			if (FacedRight) {
-				if (X + Width / 2 < SCREEN_WIDTH){X += PLAYERSPEED;}
-				if (StatusStyle != JumpStatus ) {
-					if (StatusStyle != RunStatus) {
-						cnt = 0; 
-						StatusStyle = RunStatus;}
-				}
-			}else {
-				if (X + Width / 2 < SCREEN_WIDTH) { X += PLAYERSPEED/2; }
-				if (StatusStyle != JumpStatus ) { StatusStyle = DefenseStatus; }
-			}	
-		}
-		if (GetKeyboardTrigger(DIK_LSHIFT)) {
-			FacedRight = !FacedRight;
-			if (StatusStyle == RunStatus) { StatusStyle = DefenseStatus;}
-			
+		else {
+			const byte *ptAnime = Anime_data[StatusStyle];
+			cnt += 1;
+			if (*(ptAnime + cnt) == 0xff) { 
+				cnt = 0; 
+				StatusStyle = StationStatus;
+			}else{cnt -= 1;}
 		}
 		
-
-		if (GetKeyboardTrigger(DIK_SPACE)) {
-			if (StatusStyle != JumpStatus && !InDoubleJumpStatus) {
-				JumpStartY = Y; 
-				
-				cnt = 0; 
-				StatusStyle = JumpStatus;
-			}else if (!InDoubleJumpStatus) {
-				JumpCnt = 0;
-				cnt = 0;
-				InDoubleJumpStatus = true;
-			}
-		}
-		 if(GetKeyboardRelease(DIK_A) || GetKeyboardRelease(DIK_LEFT)||GetKeyboardRelease(DIK_D) || GetKeyboardRelease(DIK_RIGHT))
-		{
-			 if (StatusStyle != JumpStatus) {
-				 if (StatusStyle != StationStatus) {  cnt = 0; StatusStyle = StationStatus; }
-			 }
-			
-			 
-		 }
-
 	}
-	if (StatusStyle == JumpStatus) {
-		JumpCnt += 1;
-		//float vg = 10 - 0.98f*fcnt;
-		Y -= 14 - 0.98f*JumpCnt;;
-		if (Y > JumpStartY) {
-			Y = JumpStartY;
-			JumpCnt = 0;
-			StatusStyle = StationStatus;
-			JumpStartY = 0.0f;
-			InDoubleJumpStatus = false;
-		}
-	}
+
+
 	
 }
 
-void PLAYER::Draw() {
+void PlayerClass::Draw() {
 	const byte *ptAnime = Anime_data[StatusStyle];
 	if (*(ptAnime + cnt) == 0xff) { cnt = 0; }
 	Ustart = ((*(ptAnime + cnt)) % (int)(1 / Uwidth))*Uwidth;

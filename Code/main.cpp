@@ -25,8 +25,8 @@ void	Draw(int);
 
 
 
-extern PLAYER Player;
-extern IMAGE *Image;
+extern PlayerClass Player;
+extern ImageClass *Image;
 
 int Status;
 //=========================================
@@ -230,7 +230,7 @@ void Update(int fcnt)
 		//	Move& Shoot
 		//==================================================
 		Player.Update(); //Player Move
-		if (Player.nHp <= -10) { Status = GAME_OVER; }
+		if (Player.Hp <= -10) { Status = GAME_OVER; }
 		break;
 	case GAME_OVER:
 		if (GetKeyboardPress(DIK_RETURN)) { Status = TITLE; }
@@ -278,7 +278,7 @@ void	Draw(int fcnt)
 		case GAME_PLAY:
 			Image->BackDraw();
 			Player.Draw();
-			Image->UpDraw(Player.nHp);
+			Image->UpDraw(Player.Hp);
 			break;
 		case GAME_OVER:
 			break;

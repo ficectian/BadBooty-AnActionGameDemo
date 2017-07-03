@@ -3,11 +3,11 @@
 #include "Player.h"
 #include "input.h"
 
-IMAGE *Image;
-IMAGE Scren;
-IMAGE Land;
+ImageClass *Image;
+ImageClass Scren;
+ImageClass Land;
 
-void IMAGE::Init() {
+void ImageClass::Init() {
 	bool 
 	bret = DXLoadTexture(SCRENTEX, &Scren.Tex);
 	bret = DXLoadTexture(LANDTEX, &Land.Tex);
@@ -29,19 +29,19 @@ void IMAGE::Init() {
 
 }
 
-void IMAGE::Update(){
+void ImageClass::Update(){
 	Land.Ustart += 0.0003f;
 }
-void IMAGE::TitleDraw(int fcnt) {
+void ImageClass::TitleDraw(int fcnt) {
 	
 }
-void IMAGE::BackDraw() {
+void ImageClass::BackDraw() {
 	DXDrawPolygon(Scren.X, Scren.Y, 0, Scren.Width, Scren.Height, D3DCOLOR_RGBA(255, 255, 255, 255), Scren.Tex);
 	DXDrawAnimePolygon(Land.X, Land.Y, 0, Land.Width, Land.Height, Land.Ustart, Land.Uwidth, Land.Vstart, Land.Vheight,D3DCOLOR_RGBA(255, 255, 255, 255), Land.Tex);
 	
 }
 
-void IMAGE::UpDraw(int HP) {
+void ImageClass::UpDraw(int HP) {
 
 }
 
