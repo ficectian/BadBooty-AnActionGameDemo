@@ -18,7 +18,7 @@ public:
 	void Init(ImaginaryBackground Background) {
 		height = SCREEN_HEIGHT;
 		width = SCREEN_WIDTH;
-		Fix.x = 0;
+		Fix.x = 50;
 		Fix.y = Background.height - height;
 		MoveDistance.x = 0;
 		MoveDistance.y = 0;
@@ -86,10 +86,11 @@ public:
 	void Sync(DisplayClass Display) {
 		DisplayX = X - Display.MoveDistance.x;
 	}
-private:
-	LPDIRECT3DTEXTURE9 Tex;
 	float Width;
 	float Height;
+private:
+	LPDIRECT3DTEXTURE9 Tex;
+	
 	float Ustart;
 	float Vstart;
 	float Uwidth;
