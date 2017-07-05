@@ -2,6 +2,8 @@
 #include "DXpolygon.h"
 #include "Player.h"
 #include "input.h"
+#include "Background.h"
+
 //==========================================================================================================
 //		ŠÖ”’è‹`
 //==========================================================================================================
@@ -83,16 +85,16 @@ bool			HitTest(float X1, float Y1, float W1, float H1, float X2, float Y2, float
 //==========================================================================================================
 //		’è‹`
 //==========================================================================================================
-
-
+extern DisplayClass Display;
+extern ImaginaryBackground Background;
 PlayerClass Player;
 
 void PlayerClass::Init() {
 	bool bret = DXLoadTexture(PLAYERTEX, &Tex);
 	//bret = DXLoadTexture(BOOWTEX, &DeadTex);
 	//bret = DXLoadTexture(INVINCIBLETEX, &InvincibleTex);
-	X = 100;
-	Y = SCREEN_HEIGHT -120;
+	X = Display.width / 2;;
+	Y = SCREEN_HEIGHT -30 -64;
 	Width = 128;
 	Height =128;
 	Hp = 6;
@@ -110,30 +112,33 @@ void PlayerClass::Init() {
 
 void PlayerClass::Update() {
 
+
 	if (Hp > 0) {
-		//if (GetKeyboardPress(DIK_W) | GetKeyboardPress(DIK_UP)) {
-		//	Y = UpMove(X, Y, Width, Height);					//ãˆÚ“®
-		//	if (Anime_style != 1) { Anime_style = 1;  }
-		//}
-		//
-		//if (GetKeyboardPress(DIK_S) | GetKeyboardPress(DIK_DOWN)) {
-		//	Y = DownMove(X, Y, Width, Height);					//ˆÚ“®
-		//	if (Anime_style != 1) {Anime_style = 1; }
-		//}
+
 		if (StatusStyle != AttackStatus) {
 			if (GetKeyboardTrigger(DIK_H)) {
 				if (StatusStyle != JumpStatus) {
 					cnt = 0;
 					StatusStyle = AttackStatus;
+					Display.ShockOn = true;
 				}
 			}
 			if (GetKeyboardPress(DIK_A) | GetKeyboardPress(DIK_LEFT)) {
 				if (FacedRight) {
-					if (X - Width / 2 > 0) { X -= PLAYERSPEED / 2; }
+					if (X - Width / 2 < Display.width / 4 && Display.MoveDistance.x > 0) {
+						Display.MoveDistance.x -= PLAYERSPEED / 2;
+					}else if (X - Width / 2 > 0) { X -= PLAYERSPEED / 2; }
+
+
 					if (StatusStyle != JumpStatus) { StatusStyle = DefenseStatus; }
 				}
 				else {
-					if (X - Width / 2 > 0) { X -= PLAYERSPEED; }
+					if (X - Width / 2 < Display.width / 4 && Display.MoveDistance.x > 0) {
+						Display.MoveDistance.x -= PLAYERSPEED;
+					}
+					else if (X - Width / 2 > 0) { X -= PLAYERSPEED; }
+
+
 					if (StatusStyle != JumpStatus) {
 						if (StatusStyle != RunStatus) {
 							cnt = 0;
@@ -145,7 +150,10 @@ void PlayerClass::Update() {
 
 			if (GetKeyboardPress(DIK_D) | GetKeyboardPress(DIK_RIGHT)){
 				if (FacedRight) {
-					if (X + Width / 2 < SCREEN_WIDTH) { X += PLAYERSPEED; }
+					if (X + Width / 2 > Display.width * 3 / 4 && Display.MoveDistance.x + Display.width <= Background.width) {
+						Display.MoveDistance.x += PLAYERSPEED;
+					}else if (X + Width / 2 < Display.width) {X += PLAYERSPEED;}
+
 					if (StatusStyle != JumpStatus) {
 						if (StatusStyle != RunStatus) {
 							cnt = 0;
@@ -154,7 +162,10 @@ void PlayerClass::Update() {
 					}
 				}
 				else {
-					if (X + Width / 2 < SCREEN_WIDTH) { X += PLAYERSPEED / 2; }
+					if (X + Width / 2 > Display.width * 3 / 4 && (Display.MoveDistance.x + Display.width) <= Background.width) {
+						Display.MoveDistance.x += PLAYERSPEED/2;
+					}
+					else if (X + Width / 2 < Display.width) { X += PLAYERSPEED/2; }
 					if (StatusStyle != JumpStatus) { StatusStyle = DefenseStatus; }
 				}
 			}
@@ -193,26 +204,11 @@ void PlayerClass::Update() {
 				if (Y > JumpStartY) {
 					Y = JumpStartY;
 					JumpCnt = 0;
-
-					JumpStartY = 10000.0f;
+					cnt = 0;
+					JumpStartY = 0.0f;
 					InDoubleJumpStatus = false;
-					/*if (GetKeyboardPress(DIK_A) | GetKeyboardPress(DIK_LEFT)) {
-					if (FacedRight) {
-					StatusStyle = DefenseStatus;
-					}else {
-					StatusStyle = RunStatus;
-					}
-					}else if (GetKeyboardPress(DIK_D) | GetKeyboardPress(DIK_RIGHT))
-					{
-					if (FacedRight) {
-					StatusStyle = RunStatus;
-					}else {
-					StatusStyle = DefenseStatus;
-					}
-					}else {
 					StatusStyle = StationStatus;
-					}*/
-					StatusStyle = StationStatus;
+					Display.ShockOn = true;
 				}
 			}
 		}

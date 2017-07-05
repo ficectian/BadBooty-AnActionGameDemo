@@ -2,6 +2,7 @@
 #include "DXpolygon.h"
 #include "Player.h"
 #include "input.h"
+#include "Background.h"
 
 #include <mmsystem.h>
 
@@ -27,6 +28,8 @@ void	Draw(int);
 
 extern PlayerClass Player;
 extern ImageClass *Image;
+extern DisplayClass Display;
+extern ImaginaryBackground Background;
 
 int Status;
 //=========================================
@@ -86,6 +89,9 @@ int	APIENTRY		WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 
 	//InitInput(hInstance, hWnd);
 	Status = GAME_PLAY;
+	Background.height = 1024;
+	Background.width = 2048;
+	Display.Init(Background);
 	Image->Init();
 	Player.Init(); //player初期化
 	//		Window表示（初期化处理の後に行う）

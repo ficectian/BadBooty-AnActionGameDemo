@@ -1,8 +1,5 @@
 ﻿  Player.cpp
   c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-  コードを生成中...
-  スキップ中... (関連する変更は検出されませんでした)
-  main.cpp
-  image.cpp
+c:\users\fice\iclouddrive\documents\hal\dx21\badbooty\code\player.cpp(96): warning C4244: '=': 'int' から 'float' への変換です。データが失われる可能性があります。
   DirectX.vcxproj -> C:\Users\fice\iCloudDrive\Documents\HAL\DX21\BadBooty\Code\Debug\ActionDEMO.exe
   DirectX.vcxproj -> C:\Users\fice\iCloudDrive\Documents\HAL\DX21\BadBooty\Code\Debug\ActionDEMO.pdb (Partial PDB)

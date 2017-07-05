@@ -86,6 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Background.h" />
     <ClInclude Include="DXpolygon.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="main.h" />

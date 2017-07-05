@@ -3,12 +3,13 @@
 #define PLAYERTEX TEXT("image/player.png")
 #define	LANDTEX TEXT("image/land.png")
 #define SCRENTEX	TEXT("image/scren.png")
+#define LANDPIXELTEX	TEXT("image/LandPixel.png")
 
 
 #define	TITLETEX	 TEXT("image/title.png")
 #define	TITLEINTTEX	TEXT("image/titleint.png")
 
-
+#define LANDPIXELMAX (256)
 #define PLAYER_HEIGHT	(64)
 #define	PLAYER_WIDTH	(80)
 
@@ -43,35 +44,7 @@ public:
 	int cnt;
 };
 
-//typedef struct {
-//	LPDIRECT3DTEXTURE9 Tex;
-//	LPDIRECT3DTEXTURE9	DeadTex;
-//	LPDIRECT3DTEXTURE9	InvincibleTex;
-//	float X;	
-//	float Y;	
-//	float JumpStartY;
-//	float Width;
-//	float Height;
-//	float Ustart;
-//	float Vstart;
-//	float Uwidth;
-//	float Vheight;
-//	int	Hp;	//体力
-//	//int InvincibleState;
-//	void Init();
-//	void Update();
-//	void Draw();
-//	bool InDoubleJumpStatus;
-//	const byte AnimeStation[64] = { 0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,0xff };//0xff：終了コード
-//	const byte AnimeRun[64] = { 8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,10,10,10,10,10,10,10,9,9,9,9,9,9,9,9,9,0xff };
-//	const byte AnimeJump[64] = { 16,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,0xff };
-//	const byte AnimeDefense[64] = { 24,24,24,24,24,24,24,25,25,25,25,25,25,25,25,25,25,26,26,26,26,26,26,26,25,25,25,25,25,25,25,25,25,0xff };//0xff：終了コード
-//	const byte *Anime_data[4] = { AnimeStation,AnimeRun,AnimeJump,AnimeDefense };
-//	char cnt;
-//	bool FacedRight;
-//	char JumpCnt;
-//	char StatusStyle;
-//}PLAYER;
+
 class PlayerClass {
 	
 public:
@@ -119,29 +92,6 @@ private:
 //	void Hit(int);
 //	void Draw();
 //}SHOOT;
-
-
-
-class ImageClass {
-public:
-	
-	float	X; 
-	float	Y;
-
-	void Init();
-	void Update();
-	void TitleDraw(int);
-	void BackDraw();
-	void UpDraw(int);
-private:
-	LPDIRECT3DTEXTURE9 Tex;
-	float Width;
-	float Height;
-	float Ustart;
-	float Vstart;
-	float Uwidth;
-	float Vheight;
-};
 
 enum {
 	TITLE,
