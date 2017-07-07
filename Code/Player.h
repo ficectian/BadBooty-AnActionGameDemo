@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <d3dx9.h>			//	ï`âÊèàóùÇ…ïKóv
 #define PLAYERTEX TEXT("image/player.png")
-#define	LANDTEX TEXT("image/land.png")
+#define	GRASSTEX TEXT("image/Grass.png")
 #define SCRENTEX	TEXT("image/scren.png")
 #define LANDPIXELTEX	TEXT("image/LandPixel.png")
 
@@ -55,10 +55,15 @@ public:
 	void Update();
 	void Draw();
 	bool FallHitTest(  float, float, float, float);
+	void Operation();
+	void Jump();
+	void Attack();
+	void Animetion();
 private:
 	LPDIRECT3DTEXTURE9 Tex;
-	LPDIRECT3DTEXTURE9	DeadTex;
-	LPDIRECT3DTEXTURE9	InvincibleTex;
+	//LPDIRECT3DTEXTURE9	DeadTex;
+	//LPDIRECT3DTEXTURE9	InvincibleTex;
+	POINT Initial;
 	float JumpStartY;
 	float Width;
 	float Height;

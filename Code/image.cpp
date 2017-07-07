@@ -7,11 +7,12 @@
 ImageClass *Image;
 ImageClass Scren;
 //ImageClass Land;
-ImageClass Pt1;
+ImageClass Grass[128];
 ImageClass LandPixel[LANDPIXELMAX];
 ImageClass Footing[256];
 byte LandNum;
 byte FootingNum;
+byte GrassNum;
 ImaginaryBackground Background;
 DisplayClass Display;
 
@@ -20,10 +21,14 @@ void ImageClass::Init() {
 	bret = DXLoadTexture(SCRENTEX, &Scren.Tex);
 	//bret = DXLoadTexture(LANDTEX, &Land.Tex);
 	bret = DXLoadTexture(LANDPIXELTEX, &LandPixel[0].Tex);
+	bret = DXLoadTexture(GRASSTEX, &Grass[0].Tex);
 	bret = DXLoadTexture(LANDPIXELTEX, &Footing[0].Tex);
+
+
 	LandPixel[0].Width = 50;
+	
 	LandNum = Background.width / LandPixel[0].Width + 1;
-	LandNum = 41;
+
 	for (int i = 0; i < LandNum; i++) {
 		LandPixel[i].Height = 50;
 		LandPixel[i].Width = 50;
@@ -36,15 +41,20 @@ void ImageClass::Init() {
 		LandPixel[i].X = LandPixel[i].Width / 2 + i*LandPixel[i].Width;
 		LandPixel[i].DisplayX = LandPixel[i].X;
 	}
-
-	//Land.Width = 1024;
-	//Land.Height = 512;
-	//Land.X = Land.Width / 2;
-	//Land.Y = SCREEN_HEIGHT - Land.Height / 2;
-	//Land.Ustart = 0.0f;
-	//Land.Uwidth = 1.0f;
-	//Land.Vstart = 0.0f;
-	//Land.Vheight = 1.0f;
+	Grass[0].Width = 40;
+	GrassNum = Background.width / (Grass[0].Width+20) + 1;
+	for (int i = 0; i < GrassNum; i++) {
+		Grass[i].Height = 30;
+		Grass[i].Width = 40;
+		Grass[i].Ustart = 0.0f;
+		Grass[i].Uwidth = 1.0f;
+		Grass[i].Vstart = 0.0f;
+		Grass[i].Vheight = 1.0f;
+		Grass[i].Y = SCREEN_HEIGHT - 50 - 10;
+		Grass[i].DisplayY = Grass[i].Y;
+		Grass[i].X = Grass[i].Width / 2 + i*(Grass[i].Width+20);
+		Grass[i].DisplayX = Grass[i].X;
+	}
 	Scren.Width = SCREEN_WIDTH;
 	Scren.Height = SCREEN_HEIGHT;
 	Scren.X = Scren.Width / 2;
@@ -77,6 +87,9 @@ void ImageClass::Update(){
 	for (int i = 0; i < FootingNum; i++) {
 		Footing[i].Sync(Display);
 	}
+	for (int i = 0; i < GrassNum; i++) {
+		Grass[i].Sync(Display);
+	}
 }
 void ImageClass::TitleDraw(int fcnt) {
 	
@@ -96,7 +109,10 @@ void ImageClass::BackDraw() {
 }
 
 void ImageClass::UpDraw(int HP) {
+	for (int i = 0; i < GrassNum; i++) {
+		DXDrawAnimePolygon(Grass[i].DisplayX, Grass[i].DisplayY, 0, Grass[i].Width, Grass[i].Height, Grass[i].Ustart, Grass[i].Uwidth, Grass[i].Vstart, Grass[i].Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), Grass[0].Tex);
 
+	}
 }
 
 

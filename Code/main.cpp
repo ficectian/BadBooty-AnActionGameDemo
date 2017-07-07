@@ -10,8 +10,8 @@
 //=========================================
 //		
 //=========================================
-#define	CLASS_NAME		TEXT("DogShootQuin")				//		WindowのClass名
-#define	WINDOW_NAME	TEXT("逆襲の犬頭人")	//		WindowのCaption名
+#define	CLASS_NAME		TEXT("BadBooty")				//		WindowのClass名
+#define	WINDOW_NAME	TEXT("BadBooty")	//		WindowのCaption名
 
 
 
