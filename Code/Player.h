@@ -4,7 +4,13 @@
 #define	GRASSTEX TEXT("image/Grass.png")
 #define SCRENTEX	TEXT("image/scren.png")
 #define LANDPIXELTEX	TEXT("image/LandPixel.png")
+#define LANDTEX	TEXT("image/Land.png")
 
+
+#define HeadBackgroundTex	TEXT("image/HeadBackground.png")
+#define HeadTex	TEXT("image/Head.png")
+#define PlayerHPTEX	TEXT("image/PlayerHP.png")
+#define HP2TEX	TEXT("image/HP1.png")
 
 #define	TITLETEX	 TEXT("image/title.png")
 #define	TITLEINTTEX	TEXT("image/titleint.png")
@@ -64,6 +70,7 @@ private:
 	//LPDIRECT3DTEXTURE9	DeadTex;
 	//LPDIRECT3DTEXTURE9	InvincibleTex;
 	POINT Initial;
+	int MaxHp;
 	float JumpStartY;
 	float Width;
 	float Height;

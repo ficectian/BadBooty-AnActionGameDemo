@@ -2,5 +2,20 @@
   c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 c:\users\fice\iclouddrive\documents\hal\dx21\badbooty\code\image.cpp(30): warning C4244: '=': 'float' から 'byte' への変換です。データが失われる可能性があります。
 c:\users\fice\iclouddrive\documents\hal\dx21\badbooty\code\image.cpp(45): warning C4244: '=': 'float' から 'byte' への変換です。データが失われる可能性があります。
+  コードを生成中...
+  コンパイル中...
+  main.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  UI.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+  Player.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+c:\users\fice\iclouddrive\documents\hal\dx21\badbooty\code\player.cpp(51): warning C4244: '=': 'float' から 'LONG' への変換です。データが失われる可能性があります。
+c:\users\fice\iclouddrive\documents\hal\dx21\badbooty\code\player.cpp(52): warning C4244: '=': 'float' から 'LONG' への変換です。データが失われる可能性があります。
+c:\users\fice\iclouddrive\documents\hal\dx21\badbooty\code\player.cpp(53): warning C4244: '=': 'LONG' から 'float' への変換です。データが失われる可能性があります。
+c:\users\fice\iclouddrive\documents\hal\dx21\badbooty\code\player.cpp(54): warning C4244: '=': 'LONG' から 'float' への変換です。データが失われる可能性があります。
+c:\users\fice\iclouddrive\documents\hal\dx21\badbooty\code\player.cpp(213): warning C4244: '=': 'LONG' から 'float' への変換です。データが失われる可能性があります。
+c:\users\fice\iclouddrive\documents\hal\dx21\badbooty\code\player.cpp(281): warning C4244: '=': 'LONG' から 'float' への変換です。データが失われる可能性があります。
+  コードを生成中...
   DirectX.vcxproj -> C:\Users\fice\iCloudDrive\Documents\HAL\DX21\BadBooty\Code\Debug\ActionDEMO.exe
   DirectX.vcxproj -> C:\Users\fice\iCloudDrive\Documents\HAL\DX21\BadBooty\Code\Debug\ActionDEMO.pdb (Partial PDB)

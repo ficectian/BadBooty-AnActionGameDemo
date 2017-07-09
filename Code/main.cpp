@@ -23,11 +23,12 @@ HRESULT	Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow);
 void	Uninit(void);
 void	Update(int);
 void	Draw(int);
-
+void	GameInit();
 
 
 extern PlayerClass Player;
 extern ImageClass *Image;
+extern UIClass *GameUI;
 extern DisplayClass Display;
 extern ImaginaryBackground Background;
 
@@ -86,21 +87,13 @@ int	APIENTRY		WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 		return -1;
 	}
 	//DirectX9初期化
+	GameInit(); //Game初期化
 
-	//InitInput(hInstance, hWnd);
-	Status = GAME_PLAY;
-	Background.height = 1024;
-	Background.width = 2048;
-	Display.Init(Background);
-	Image->Init();
-	Player.Init(); //player初期化
 	//		Window表示（初期化处理の後に行う）
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
-	
-	InitKeyboard(hInstance, hWnd);
 
-	
+	InitKeyboard(hInstance, hWnd);
 	DWORD StartTime = timeGetTime();
 	DWORD NowTime;
 	int fcnt = 0;
@@ -217,6 +210,21 @@ LRESULT	CALLBACK	WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
+//=========================================
+//		初期化処理
+//=========================================
+void	GameInit() {
+	//InitInput(hInstance, hWnd);
+	Status = GAME_PLAY;
+	Background.height = 1024;
+	Background.width = 2048;
+	Display.Init(Background);
+	Image->Init();
+	Player.Init(); //player初期化
+	GameUI->Init();
+				 
+
+}
 
 //=========================================
 //		更新処理
@@ -285,6 +293,7 @@ void	Draw(int fcnt)
 			Image->BackDraw();
 			Player.Draw();
 			Image->UpDraw(Player.Hp);
+			GameUI->Draw(Player.Hp);
 			break;
 		case GAME_OVER:
 			break;

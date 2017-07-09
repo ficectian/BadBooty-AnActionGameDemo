@@ -22,37 +22,37 @@ void ImageClass::Init() {
 	//bret = DXLoadTexture(LANDTEX, &Land.Tex);
 	bret = DXLoadTexture(LANDPIXELTEX, &LandPixel[0].Tex);
 	bret = DXLoadTexture(GRASSTEX, &Grass[0].Tex);
-	bret = DXLoadTexture(LANDPIXELTEX, &Footing[0].Tex);
+	bret = DXLoadTexture(LANDTEX, &Footing[0].Tex);
 
 
-	LandPixel[0].Width = 50;
+	LandPixel[0].Width = 60;
 	
 	LandNum = Background.width / LandPixel[0].Width + 1;
 
 	for (int i = 0; i < LandNum; i++) {
-		LandPixel[i].Height = 50;
-		LandPixel[i].Width = 50;
+		LandPixel[i].Height = 100;
+		LandPixel[i].Width = 60;
 		LandPixel[i].Ustart = 0.0f;
 		LandPixel[i].Uwidth = 1.0f;
 		LandPixel[i].Vstart = 0.0f;
 		LandPixel[i].Vheight = 1.0f;
-		LandPixel[i].Y = SCREEN_HEIGHT - 25;
+		LandPixel[i].Y = SCREEN_HEIGHT - LandPixel[i].Height/2;
 		LandPixel[i].DisplayY = LandPixel[i].Y;
 		LandPixel[i].X = LandPixel[i].Width / 2 + i*LandPixel[i].Width;
 		LandPixel[i].DisplayX = LandPixel[i].X;
 	}
-	Grass[0].Width = 40;
-	GrassNum = Background.width / (Grass[0].Width+20) + 1;
+	Grass[0].Width = 60;
+	GrassNum = Background.width / Grass[0].Width + 1;
 	for (int i = 0; i < GrassNum; i++) {
-		Grass[i].Height = 30;
-		Grass[i].Width = 40;
+		Grass[i].Height = 60;
+		Grass[i].Width = 60;
 		Grass[i].Ustart = 0.0f;
 		Grass[i].Uwidth = 1.0f;
 		Grass[i].Vstart = 0.0f;
 		Grass[i].Vheight = 1.0f;
-		Grass[i].Y = SCREEN_HEIGHT - 50 - 10;
+		Grass[i].Y = SCREEN_HEIGHT - Grass[i].Height / 2;
 		Grass[i].DisplayY = Grass[i].Y;
-		Grass[i].X = Grass[i].Width / 2 + i*(Grass[i].Width+20);
+		Grass[i].X = Grass[i].Width / 2 + i*Grass[i].Width;
 		Grass[i].DisplayX = Grass[i].X;
 	}
 	Scren.Width = SCREEN_WIDTH;

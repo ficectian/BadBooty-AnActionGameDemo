@@ -96,3 +96,24 @@ private:
 	float Uwidth;
 	float Vheight;
 };
+
+class UIClass {
+public:
+
+
+	void Init();
+	/*void Update();
+	void BackDraw();*/
+	void Draw(int);
+	
+private:
+	LPDIRECT3DTEXTURE9 Tex;
+	float	X;
+	float	Y;
+	float Width;
+	float Height;
+	float Ustart = 0.0f;
+	float Vstart = 0.0f;
+	float Uwidth = 1.0f;
+	float Vheight = 1.0f;
+};

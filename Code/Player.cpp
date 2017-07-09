@@ -49,12 +49,13 @@ void PlayerClass::Init() {
 	//bret = DXLoadTexture(BOOWTEX, &DeadTex);
 	//bret = DXLoadTexture(INVINCIBLETEX, &InvincibleTex);
 	Initial.x = (float)Display.width / 2;
-	Initial.y = (float)(Display.height - 40 - 64);
+	Initial.y = (float)(Display.height - 50 - 64);
 	X = Initial.x;
 	Y = Initial.y;
 	Width = 128;
 	Height =128;
-	Hp = 6;
+	MaxHp = 28;
+	Hp = MaxHp;
 	Ustart = 0.0f;
 	Uwidth = (float)1 / 8;
 	Vstart = 0.0f;
