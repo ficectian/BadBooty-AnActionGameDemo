@@ -105,15 +105,20 @@ public:
 	/*void Update();
 	void BackDraw();*/
 	void Draw(int);
-	
+	UIClass() {
+		Ustart = 0.0f;
+		Vstart = 0.0f;
+		Uwidth = 1.0f;
+		Vheight = 1.0f;
+	}
 private:
 	LPDIRECT3DTEXTURE9 Tex;
 	float	X;
 	float	Y;
 	float Width;
 	float Height;
-	float Ustart = 0.0f;
-	float Vstart = 0.0f;
-	float Uwidth = 1.0f;
-	float Vheight = 1.0f;
+	float Ustart;
+	float Vstart;
+	float Uwidth;
+	float Vheight;
 };

@@ -19,10 +19,10 @@
 //=========================================
 //		Macro‚Ì’è‹`
 //=========================================
-#define	SCREEN_WIDTH		(1280)		//		Window‚Ì•
-#define	SCREEN_HEIGHT	(720)		//		Window‚Ì‚‚³
-//#define	SCREEN_WIDTH		(960)		//		Window‚Ì•
-//#define	SCREEN_HEIGHT	(544)		//		Window‚Ì‚‚³
+//#define	SCREEN_WIDTH		(1280)		//		Window‚Ì•
+//#define	SCREEN_HEIGHT	(720)		//		Window‚Ì‚‚³
+#define	SCREEN_WIDTH		(960)		//		Window‚Ì•
+#define	SCREEN_HEIGHT	(544)		//		Window‚Ì‚‚³
 //#define	SCREEN_WIDTH		(640)		//		Window‚Ì•
 //#define	SCREEN_HEIGHT	(480)		//		Window‚Ì‚‚³
 #endif

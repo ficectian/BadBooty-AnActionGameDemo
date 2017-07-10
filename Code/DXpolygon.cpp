@@ -101,3 +101,43 @@ void DXDrawAnimePolygon(float x, float y, float z, float width, float height, fl
 	g_pD3DDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, vPt, sizeof(VERTEX2DTEX));	//三角形描画
 
 }
+
+
+void DXDrawPlayerRevPolygon(float x, float y, float z, float width, float height, float u, float uw, float v, float vh, DWORD color, LPDIRECT3DTEXTURE9 tex) {
+	VERTEX2DTEX vPt[4];
+	vPt[0].x = x - width / 2;
+	vPt[0].y = y - height / 2;
+	vPt[0].z = z;
+	vPt[0].u = u + uw;
+	vPt[0].v = v;
+	vPt[0].color = color;
+	vPt[0].rhw = 1.0f;  //同次座標
+
+	vPt[1].x = x + width / 2;
+	vPt[1].y = y - height / 2;
+	vPt[1].z = z;
+	vPt[1].u = u;
+	vPt[1].v = v;
+	vPt[1].color = color;
+	vPt[1].rhw = 1.0f;  //同次座標
+
+	vPt[2].x = x - width / 2;
+	vPt[2].y = y + height / 2;
+	vPt[2].z = z;
+	vPt[2].u = u + uw;
+	vPt[2].v = v + vh;
+	vPt[2].color = color;
+	vPt[2].rhw = 1.0f;  //同次座標
+
+	vPt[3].x = x + width / 2;
+	vPt[3].y = y + height / 2;
+	vPt[3].z = z;
+	vPt[3].u = u;
+	vPt[3].v = v + vh;
+	vPt[3].color = color;
+	vPt[3].rhw = 1.0f;  //同次座標
+
+	g_pD3DDevice->SetFVF(D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1);	//頂点format
+	g_pD3DDevice->SetTexture(0, tex);	//textureを貼る
+	g_pD3DDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, vPt, sizeof(VERTEX2DTEX));	//三角形描画
+}

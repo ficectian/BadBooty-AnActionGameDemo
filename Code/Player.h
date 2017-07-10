@@ -1,6 +1,6 @@
 #include <windows.h>
 #include <d3dx9.h>			//	描画処理に必要
-#define PLAYERTEX TEXT("image/player.png")
+#define PLAYERTEX TEXT("image/player.tga")
 #define	GRASSTEX TEXT("image/Grass.png")
 #define SCRENTEX	TEXT("image/scren.png")
 #define LANDPIXELTEX	TEXT("image/LandPixel.png")
@@ -83,7 +83,8 @@ private:
 	const byte AnimeRun[64] = { 8,8,8,8,8,9,9,9,9,9,9,9,10,10,10,10,10,9,9,9,9,9,9,9,0xff };
 	const byte AnimeJump[64] = { 16,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,0xff };
 	const byte AnimeDefense[64] = { 24,24,24,24,24,24,24,25,25,25,25,25,25,25,25,25,25,26,26,26,26,26,26,26,25,25,25,25,25,25,25,25,25,0xff };//0xff：終了コード
-	const byte AnimeAttack[64] = { 32,32,32,32,32,32,33,33,33,33,33,33,33,33,34,34,34,34,34,34,33,33,33,33,33,33,33,32,32,32,32,32,32,0xff };//0xff：終了コード
+	const byte AnimeAttack[64] = {32,32,32,32,32,32,32,32,32,32,32,32,33,33,33,33,33,33,33,33,33,33,33,33, 34,34,34,34,34,34,34,34,34,34,34,34,35,35,35,35,35,35,35,35,35,35,35,35,0xff };//0xff：終了コード
+	//const byte AnimeAttack[64] = { 32,32,32,32,32,32,33,33,33,33,33,33,33,33,34,34,34,34,34,34,33,33,33,33,33,33,33,32,32,32,32,32,32,0xff };//0xff：終了コード
 	const byte *Anime_data[5] = { AnimeStation,AnimeRun,AnimeJump,AnimeDefense,AnimeAttack };
 	char cnt;
 	bool FacedRight;
