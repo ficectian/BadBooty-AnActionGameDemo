@@ -88,6 +88,7 @@
   <ItemGroup>
     <ClInclude Include="Background.h" />
     <ClInclude Include="DXpolygon.h" />
+    <ClInclude Include="Hit.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Player.h" />
@@ -96,10 +97,13 @@
   <ItemGroup>
     <ClCompile Include="DX.cpp" />
     <ClCompile Include="DXpolygon.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Hit.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Stair.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -31,7 +31,8 @@ extern ImageClass *Image;
 extern UIClass *GameUI;
 extern DisplayClass Display;
 extern ImaginaryBackground Background;
-
+extern StairClass *Stair;
+extern EnemyClass *Enemy;
 int Status;
 //=========================================
 //		Global変数
@@ -221,7 +222,9 @@ void	GameInit() {
 	Display.Init(Background);
 	Image->Init();
 	Player.Init(); //player初期化
+	Enemy->AllInit();
 	GameUI->Init();
+//	Stair->Init();
 				 
 
 }
@@ -239,11 +242,14 @@ void Update(int fcnt)
 		if (GetKeyboardPress(DIK_TAB)) { Status = GAME_PLAY; }
 		break;
 	case GAME_PLAY:
-		Image->Update();
-		//==================================================
-		//	Move& Shoot
-		//==================================================
-		Player.Update(); //Player Move
+		if (Player.StopTime == 0) {
+			Image->Update();
+			Player.Update(); //Player Move
+			Enemy->AllUpdate();
+		}else{
+			Player.StopTime -= 1;
+		}
+		
 		if (Player.Hp <= -10) { Status = GAME_OVER; }
 		break;
 	case GAME_OVER:
@@ -291,6 +297,8 @@ void	Draw(int fcnt)
 			break;
 		case GAME_PLAY:
 			Image->BackDraw();
+			//Stair->Draw();
+			Enemy->AllDraw();
 			Player.Draw();
 			Image->UpDraw(Player.Hp);
 			GameUI->Draw(Player.Hp);

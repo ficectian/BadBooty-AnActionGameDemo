@@ -52,20 +52,11 @@ void PlayerClass::Init() {
 	Initial.y = (float)(Display.height - 50 - 64);
 	X = Initial.x;
 	Y = Initial.y;
-	Width = 128;
-	Height =128;
+	DisplayX = X;
+	DisplayY = Y;
 	MaxHp = 28;
 	Hp = MaxHp;
-	Ustart = 0.0f;
-	Uwidth = (float)1 / 8;
-	Vstart = 0.0f;
-	Vheight = (float)1 / 8;
-	FacedRight = true;
-	StatusStyle = StationStatus;
-	cnt = 0;
-	JumpCnt = 0;
-	InDoubleJumpStatus = false;
-	InFall = false;
+	
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -94,11 +85,34 @@ bool			PlayerClass::FallHitTest(float X1, float Y1, float W, float H)
 
 }
 
+bool PlayerClass::HitStair() {
+	extern StairClass StairL[128];
+	extern byte StairNum;
+	float X1;
+	float	X2;
+	float Y1;
+	float Y2;
+	for (int i = 0; i < StairNum; i++) {
+		X1 = X - Width / 2;
+		X2 = StairL[i].DisplayX - StairL[i].Width / 2;
+		Y1 = Y - Height / 2;
+		Y2 = StairL[i].DisplayY - StairL[i].Height / 2;
+		if (((Y1 + Height >= Y2) && (Y - StairL[i].Height <= Y2)) && ((X1 + Width >= X2) && (X1 - StairL[i].Width <= StairL[i].DisplayX)))
+		{
+			OnStairNum = i;
+			return true;
+			break;
+		}
+	}
+	return false;
+}
+
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //	Game LoopにPlayer更新関数定義
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void PlayerClass::Update() {
-
+	/*DisplayX = X - Display.MoveDistance.x;
+	DisplayY = Y;*/
 	if (Hp > 0) {
 		if (StatusStyle != AttackStatus) {
 			Operation();
@@ -106,6 +120,7 @@ void PlayerClass::Update() {
 		}else {
 			Attack();
 		}	
+		AllHitTest();
 	}
 
 
@@ -130,6 +145,8 @@ void PlayerClass::Draw() {
 //	Player操作関数定義
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void	PlayerClass::Operation() {
+	extern StairClass StairL[128];
+
 	//**********************************************************************
 	//	Player 移動
 	//**********************************************************************
@@ -139,7 +156,10 @@ void	PlayerClass::Operation() {
 				Display.MoveDistance.x -= PLAYERSPEED / 2;
 			}
 			else if (X - Width / 2 > 0) { X -= PLAYERSPEED / 2; }
-
+			/*if (X - Width / 2 > 10) {
+				X -= PLAYERSPEED / 2;
+			}*/
+			
 
 			if (StatusStyle != JumpStatus) {
 				if (StatusStyle != DefenseStatus) { cnt = 0;  StatusStyle = DefenseStatus; }
@@ -152,6 +172,11 @@ void	PlayerClass::Operation() {
 			else if (X - Width / 2 > 0) {
 				X -= PLAYERSPEED;
 			}
+
+		/*	if (X - Width / 2 < Background.width - 10) {
+				X -= PLAYERSPEED;
+			}
+			*/
 			if (StatusStyle != JumpStatus) {
 				if (StatusStyle != RunStatus) {
 					cnt = 0;
@@ -168,8 +193,11 @@ void	PlayerClass::Operation() {
 			if (X + Width / 2 > Display.width * 3 / 4 && Display.MoveDistance.x + Display.width <= Background.width - 10) {
 				Display.MoveDistance.x += PLAYERSPEED;
 			}
-			else if (X + Width / 2 < Display.width) { X += PLAYERSPEED; }
-
+			else if (X + Width / 2 < Display.width) { 
+				X += PLAYERSPEED;  
+				//if (HitStair()) { Y -= PLAYERSPEED*StairL[OnStairNum].Height / StairL[OnStairNum].Width; }
+			}
+			/*X += PLAYERSPEED;*/
 			if (StatusStyle != JumpStatus) {
 				if (StatusStyle != RunStatus) {
 					cnt = 0;
@@ -182,6 +210,7 @@ void	PlayerClass::Operation() {
 				Display.MoveDistance.x += PLAYERSPEED / 2;
 			}
 			else if (X + Width / 2 < Display.width) { X += PLAYERSPEED / 2; }
+			/*X += PLAYERSPEED / 2;*/
 			if (StatusStyle != JumpStatus) { if (StatusStyle != DefenseStatus) { cnt = 0;  StatusStyle = DefenseStatus; } }
 		}
 	}
@@ -269,7 +298,7 @@ void PlayerClass::Jump() {
 	}
 	else {
 		//落下
-		if (Y != Initial.y) {
+		if (Y != Initial.y /*&& !HitStair()*/) {
 			InFall = true;
 			for (int i = 0; i < FootingNum; i++) {
 				if (Player.FallHitTest(Footing[i].DisplayX, Footing[i].DisplayY, Footing[i].Width, Footing[i].Height)) {

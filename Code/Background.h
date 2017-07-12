@@ -61,9 +61,17 @@ public:
 		cnt += 1;
 	}
 	void Update(ImaginaryBackground Background) {
+		//extern PlayerClass Player;
 		if (ShockOn){
 			Shock();
 		}
+	/*	if (Player.DisplayX - Player.Width / 2 < width / 4 && Fix.x + MoveDistance.x > 10) {
+			Fix.x = Player.X + Player.Width / 2 - width / 4;
+		}
+		if (Player.DisplayX + Player.Width / 2 > width * 3 / 4 && MoveDistance.x + width <= Background.width - 10) {
+			Fix.x = Player.X - Player.Width / 2 - width * 3 / 4;
+		}
+		MoveDistance.x= Fix.x ;*/
 		Fix.x = MoveDistance.x;
 		Fix.y = Background.height - height + MoveDistance.y;
 	}
@@ -117,6 +125,36 @@ private:
 	float	Y;
 	float Width;
 	float Height;
+	float Ustart;
+	float Vstart;
+	float Uwidth;
+	float Vheight;
+};
+
+class StairClass {
+public:
+
+	float	X;
+	float	Y;
+	float DisplayX;
+	float DisplayY;
+	void Init();
+	void Update();
+	void Draw();
+	StairClass() {
+		Ustart = 0.0f;
+		Vstart = 0.0f;
+		Uwidth = 1.0f;
+		Vheight = 1.0f;
+	}
+	void Sync(DisplayClass Display) {
+		DisplayX = X - Display.MoveDistance.x;
+	}
+	float Width;
+	float Height;
+private:
+	LPDIRECT3DTEXTURE9 Tex;
+
 	float Ustart;
 	float Vstart;
 	float Uwidth;
