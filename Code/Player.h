@@ -24,7 +24,7 @@
 
 
 
-#define PLAYERSPEED (5)
+#define PLAYERSPEED (7)
 #define SWORDENEMYSPEED (3)
 
 #define WINDOWICO TEXT("image/ico.ico")
@@ -42,7 +42,8 @@ enum {
 	RunStatus,
 	JumpStatus,
 	DefenseStatus,
-	AttackStatus
+	AttackStatus,
+	HitStatus
 	//DoubleJumpStatus
 };
 
@@ -54,73 +55,13 @@ enum {
 
 enum {
 	PatrolMod,
-	HitMod
+	HitMod,
+	TrackMod,
+	ReturnMod
 };
 //=========================================
 //		構造体定義
 //=========================================
-class EnemyClass {
-	
-
-public: 
-	float DisplayX;
-	float DisplayY;
-	float X;	//年齢
-	float Y;	//攻撃力
-	int HitBox_X() {
-		if (FacedLeft) {
-			return (int)X - 3;
-		}
-		else {
-			return (int)X - 35;
-		}
-	}
-	int HitBox_Y() {
-		return (int)Y - 39;
-	}
-	int HitBox_Wdith = 38;
-	int HitBox_Height = 103;
-	int Hp;	//体力
-	void AllInit();
-	void AllUpdate();
-	void AllDraw();
-	//void Sync(DisplayClass Display) {
-	//	DisplayX = X - Display.MoveDistance.x;
-	//}
-	char ActionMod;
-	void HitOn();
-	bool FacedLeft;
-	char InvincibleTime;
-	EnemyClass() {
-		InvincibleTime = 0;
-	}
-
-private:
-	LPDIRECT3DTEXTURE9 Tex;
-	LPDIRECT3DTEXTURE9	DeadTex;
-	float InitialX;
-	float InitialY;
-	char cnt;
-	float Width;
-	float Height;
-	float Ustart;
-	float Vstart;
-	float Uwidth;
-	float Vheight;
-
-	const byte AnimeRun[64] = { 0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,0xff };//0xff：終了コード
-	const byte AnimeAttack[64] = { 4,4,4,4,4,4,5,5,5,5,5,5,6,6,6,6,6,6,4,4,4,4,4,4,0xff };
-	const byte AnimeHit[64] = { 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,0xff };
-	const byte *Anime_data[3] = { AnimeRun,AnimeAttack,AnimeHit };
-	char StatusStyle;
-	void Animetion();
-	void	Patrol();
-	void Update();
-	void Draw();
-	void Hit();
-	char HitCnt;
-	
-};
 
 
 class PlayerClass {
@@ -132,19 +73,32 @@ public:
 	float DisplayY;
 	float Width;
 	float Height;
-	int	Hp;	//体力
-	int AttBox_X() {
+	float	Hp;	//体力
+	float AttBox_X() {
 		if (FacedRight) {
-			return (int)X + 1;
+			return (float)X + 1;
 		}else{
-			return (int)X - 45;
+			return (float)X - 45;
 		}
 	}
-	int AttBox_Y() {
-		return (int)Y - 61;
+	float AttBox_Y() {
+		return (float)Y - 61;
 	}
-	int AttBox_Wdith;
-	int AttBox_Height;
+	float AttBox_Wdith;
+	float AttBox_Height;
+	float HitBox_X() {
+		if (FacedRight) {
+			return (float)X - 43;
+		}
+		else {
+			return (float)X;
+		}
+	}
+	float HitBox_Y() {
+		return (float)Y - 47;
+	}
+	float HitBox_Wdith;
+	float HitBox_Height;
 	void Init();
 	void Update();
 	void Draw();
@@ -157,7 +111,7 @@ public:
 	void AllHitTest();
 	byte StopTime;
 PlayerClass() {
-
+		InvincibleTime = 0;
 		Width = 128;
 		Height = 128;
 		Ustart = 0.0f;
@@ -170,8 +124,10 @@ PlayerClass() {
 		JumpCnt = 0;
 		InDoubleJumpStatus = false;
 		InFall = false;
-		AttBox_Wdith = 46;
-		AttBox_Height = 69;
+		AttBox_Wdith = 46.0f;
+		AttBox_Height = 69.0f;
+		HitBox_Wdith = 43.0f;
+		HitBox_Height = 111.0f;
 		StopTime = 0;
 	}
 private:
@@ -191,14 +147,16 @@ private:
 	const byte AnimeRun[64] = { 8,8,8,8,8,9,9,9,9,9,9,9,10,10,10,10,10,9,9,9,9,9,9,9,0xff };
 	const byte AnimeJump[64] = { 16,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,0xff };
 	const byte AnimeDefense[64] = { 24,24,24,24,24,24,24,25,25,25,25,25,25,25,25,25,25,26,26,26,26,26,26,26,25,25,25,25,25,25,25,25,25,0xff };//0xff：終了コード
-	const byte AnimeAttack[64] = {32,32,32,32,32,32,32,32,32,32,32,32,33,33,33,33,33,33,33,33,33,33,33,33, 34,34,34,34,34,34,34,34,34,34,34,34,35,35,35,35,35,35,35,35,35,35,35,35,0xff };//0xff：終了コード
-	const byte *Anime_data[5] = { AnimeStation,AnimeRun,AnimeJump,AnimeDefense,AnimeAttack };
+	const byte AnimeAttack[64] = {32,32,32,32,32,32,33,33,33,33,33,33,33,33,33,33,33,33, 34,34,34,34,34,34,34,34,34,35,35,35,35,35,35,35,35,35,35,35,35,0xff };//0xff：終了コード
+	const byte AnimeHit[64] = { 18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,0xff };//0xff：終了コード
+	const byte *Anime_data[6] = { AnimeStation,AnimeRun,AnimeJump,AnimeDefense,AnimeAttack,AnimeHit };
 	char cnt;
 	bool FacedRight;
 	char JumpCnt;
 	char StatusStyle;
 	bool InFall;
 	int OnStairNum;
+	bool MoveHit();
 	bool AttHit(float x, float y, float w, float h) {
 		if (((AttBox_Y() + AttBox_Height >= y) && (AttBox_Y() - h <= y)) && ((AttBox_X() + AttBox_Wdith >= x) && (AttBox_X() - w <= x)))
 		{
@@ -209,6 +167,133 @@ private:
 			return 	false;
 		}
 	}
+	bool HitHit(float x, float y, float w, float h) {
+		if (((HitBox_Y() + HitBox_Height >= y) && (HitBox_Y() - h <= y)) && ((HitBox_X() + HitBox_Wdith >= x) && (HitBox_X() - w <= x)))
+		{
+			return true;
+		}
+		else
+		{
+			return 	false;
+		}
+	}
+	void HitOn();
+	void Hit();
+	char HitCnt;
+	char InvincibleTime;
+};
+
+
+
+
+class EnemyClass {
+
+
+public:
+	float DisplayX;
+	float DisplayY;
+	float X;	//年齢
+	float Y;	//攻撃力
+	float HitBox_X() {
+		if (FacedLeft) {
+			return (float)DisplayX - 3;
+		}
+		else {
+			return (float)DisplayX - 35;
+		}
+	}
+	float HitBox_Y() {
+		return (float)DisplayY - 39;
+	}
+	float HitBox_Wdith;
+	float HitBox_Height;
+
+	float AttBox_X() {
+		if (FacedLeft) {
+			return (float)DisplayX - 61;
+		}
+		else {
+			return (float)DisplayX + 4;
+		}
+	}
+	float AttBox_Y() {
+		return (float)Y - 39;
+	}
+	float AttBox_Wdith;
+	float AttBox_Height;
+	int Hp;	//体力
+	void AllInit();
+	void AllUpdate();
+	void AllDraw();
+	//void Sync(DisplayClass Display) {
+	//	DisplayX = X - Display.MoveDistance.x;
+	//}
+	char ActionMod;
+	void HitOn();
+	bool FacedLeft;
+	char InvincibleTime;
+	void Track();
+	void Return();
+	bool PlayerHit() {
+		extern PlayerClass Player;
+		if (((HitBox_Y() + HitBox_Height >= Player.HitBox_Y()) && (HitBox_Y() - Player.HitBox_Height <= Player.HitBox_Y())) && ((HitBox_X() + HitBox_Wdith >= Player.HitBox_X()) && (HitBox_X() - Player.HitBox_Wdith <= Player.HitBox_X())))
+		{
+			return true;
+		}
+		else
+		{
+			return 	false;
+		}
+	}
+	EnemyClass() {
+		//bool bret = DXLoadTexture(ENEMYTEX, &Tex);
+		Width = 128;
+		Height = 128;
+		InvincibleTime = 0;
+		Hp = 5;
+		Ustart = 0.0f;
+		Uwidth = (float)1 / 4;
+		Vstart = 0.0f;
+		Vheight = (float)1 / 4;
+		FacedLeft = true;
+		StatusStyle = EnemyRunAnime;
+		cnt = 0;
+		ActionMod = PatrolMod;
+		HitBox_Wdith = 38.0f;
+		HitBox_Height = 103.0f;
+		AttBox_Wdith = 57.0f;
+		AttBox_Height = 60.0f;
+	}
+	byte AnimeCnt() {
+		const byte *ptEnemyAnime = Anime_data[StatusStyle];
+		return *(ptEnemyAnime + cnt);
+	}
+private:
+	LPDIRECT3DTEXTURE9 Tex;
+	LPDIRECT3DTEXTURE9	DeadTex;
+	float InitialX;
+	float InitialY;
+	
+	float Width;
+	float Height;
+	float Ustart;
+	float Vstart;
+	float Uwidth;
+	float Vheight;
+
+	
+	void Animetion();
+	void	Patrol();
+	void Update();
+	void Draw();
+	void Hit();
+	char HitCnt;
+	const byte AnimeRun[64] = { 0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,0xff };//0xff：終了コード
+	const byte AnimeAttack[64] = { 4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,6,6,6,6,6,6,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0xfe };
+	const byte AnimeHit[64] = { 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,0xff };
+	const byte *Anime_data[3] = { AnimeRun,AnimeAttack,AnimeHit };
+	char StatusStyle;
+	char cnt;
 };
 
 //typedef struct{

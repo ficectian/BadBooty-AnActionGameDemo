@@ -114,11 +114,14 @@ void PlayerClass::Update() {
 	/*DisplayX = X - Display.MoveDistance.x;
 	DisplayY = Y;*/
 	if (Hp > 0) {
-		if (StatusStyle != AttackStatus) {
+		if (StatusStyle == AttackStatus) {
+			Attack();
+			
+		}else if (StatusStyle == HitStatus) {
+			Hit();
+		}else {
 			Operation();
 			Jump();
-		}else {
-			Attack();
 		}	
 		AllHitTest();
 	}
@@ -153,9 +156,11 @@ void	PlayerClass::Operation() {
 	if (GetKeyboardPress(DIK_A) | GetKeyboardPress(DIK_LEFT)) {
 		if (FacedRight) {
 			if (X - Width / 2 < Display.width / 4 && Display.Fix.x + Display.MoveDistance.x > 10) {
-				Display.MoveDistance.x -= PLAYERSPEED / 2;
+				 Display.MoveDistance.x -= PLAYERSPEED / 2; 
+				 MoveHit();
 			}
-			else if (X - Width / 2 > 0) { X -= PLAYERSPEED / 2; }
+			else if (X - Width / 2 > 0) {X -= PLAYERSPEED / 2;  MoveHit();
+			}
 			/*if (X - Width / 2 > 10) {
 				X -= PLAYERSPEED / 2;
 			}*/
@@ -167,10 +172,12 @@ void	PlayerClass::Operation() {
 		}
 		else {
 			if (X - Width / 2 < Display.width / 4 && Display.Fix.x + Display.MoveDistance.x > 10) {
-				Display.MoveDistance.x -= PLAYERSPEED;
+				 Display.MoveDistance.x -= PLAYERSPEED; 
+				 MoveHit();
 			}
 			else if (X - Width / 2 > 0) {
-				X -= PLAYERSPEED;
+				X -= PLAYERSPEED; 
+				MoveHit();
 			}
 
 		/*	if (X - Width / 2 < Background.width - 10) {
@@ -191,10 +198,12 @@ void	PlayerClass::Operation() {
 	if (GetKeyboardPress(DIK_D) | GetKeyboardPress(DIK_RIGHT)) {
 		if (FacedRight) {
 			if (X + Width / 2 > Display.width * 3 / 4 && Display.MoveDistance.x + Display.width <= Background.width - 10) {
-				Display.MoveDistance.x += PLAYERSPEED;
+				Display.MoveDistance.x += PLAYERSPEED; 
+				MoveHit();
 			}
 			else if (X + Width / 2 < Display.width) { 
-				X += PLAYERSPEED;  
+				X += PLAYERSPEED; 
+				MoveHit();
 				//if (HitStair()) { Y -= PLAYERSPEED*StairL[OnStairNum].Height / StairL[OnStairNum].Width; }
 			}
 			/*X += PLAYERSPEED;*/
@@ -207,9 +216,11 @@ void	PlayerClass::Operation() {
 		}
 		else {
 			if (X + Width / 2 > Display.width * 3 / 4 && (Display.MoveDistance.x + Display.width) <= Background.width - 10) {
-				Display.MoveDistance.x += PLAYERSPEED / 2;
+				 Display.MoveDistance.x += PLAYERSPEED / 2; 
+				 MoveHit();
 			}
-			else if (X + Width / 2 < Display.width) { X += PLAYERSPEED / 2; }
+			else if (X + Width / 2 < Display.width) {X += PLAYERSPEED / 2; MoveHit();
+			}
 			/*X += PLAYERSPEED / 2;*/
 			if (StatusStyle != JumpStatus) { if (StatusStyle != DefenseStatus) { cnt = 0;  StatusStyle = DefenseStatus; } }
 		}
@@ -222,7 +233,6 @@ void	PlayerClass::Operation() {
 		if (StatusStyle != JumpStatus) {
 			cnt = 0;
 			StatusStyle = AttackStatus;
-			Display.ShockOn = true;
 		}
 	}
 
@@ -347,4 +357,34 @@ void PlayerClass::Animetion() {
 	Ustart = ((*(ptAnime + cnt)) % (int)(1 / Uwidth))*Uwidth;
 	Vstart = ((*(ptAnime + cnt)) / (int)(1 / Vheight))*Vheight;
 	cnt += 1;
+}
+
+void	PlayerClass::HitOn() {
+		Display.ShockOn = true;
+		HitCnt = 0;
+		cnt = 0;
+		StatusStyle = HitStatus;
+		InvincibleTime = 30;
+		JumpStartY = Initial.y;
+}
+
+void PlayerClass::Hit() {
+	HitCnt += 1;
+
+	if (FacedRight) {
+		X -= 4;
+	}
+	else
+	{
+		X += 4;
+	}
+	Y -= 10 - 0.98f*HitCnt;
+	if (Y > JumpStartY) {
+		Y = JumpStartY;
+		HitCnt = 0;
+		cnt = 0;
+		Hp -= 1;
+		StatusStyle = StationStatus;
+	}
+
 }

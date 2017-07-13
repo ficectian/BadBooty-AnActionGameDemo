@@ -5,36 +5,55 @@
 //#include "Hit.h"
 
 void PlayerClass::AllHitTest() {
+	extern DisplayClass Display;
+
 	extern EnemyClass SwordEnemy[64];
 	extern byte SwordEnemyNum;
-	extern PlayerClass Player;
 	const byte *ptAnime = Anime_data[StatusStyle];
-	float x2;
-	float y2;
-	
+
+	//att
 	if (*(ptAnime + cnt) == 33 || *(ptAnime + cnt) == 34) {
 		for (int i = 0; i < SwordEnemyNum; i++)
 		{
-			
-				if (SwordEnemy[i].FacedLeft) {
-					x2 = SwordEnemy[i].DisplayX - 3;
-				}
-				else {
-					x2 = SwordEnemy[i].DisplayX - 35;
-				}
-				y2 = SwordEnemy[i].DisplayY - 39;
 
-				if (AttHit(x2, y2, SwordEnemy[i].HitBox_Wdith, SwordEnemy[i].HitBox_Height)) {
-					if (SwordEnemy[i].InvincibleTime == 0) {
-						StopTime = 5;
-						SwordEnemy[i].HitOn();
-					}
+			if (AttHit(SwordEnemy[i].HitBox_X(), SwordEnemy[i].HitBox_Y(), SwordEnemy[i].HitBox_Wdith, SwordEnemy[i].HitBox_Height)) {
+				if (SwordEnemy[i].InvincibleTime == 0) {
+					StopTime = 5;
+					SwordEnemy[i].HitOn();
 				}
-			/*if (AttHit(SwordEnemy[i].HitBox_X(), SwordEnemy[i].HitBox_Y(), SwordEnemy[i].HitBox_Wdith, SwordEnemy[i].HitBox_Height)) {
-				SwordEnemy[i].Hp -= 1;
-				SwordEnemy[i].HitOn();
-			}*/
+			}
 		}
 	}
 
+
+	//hit
+	for (int i = 0; i < SwordEnemyNum; i++)
+	{
+		if (SwordEnemy[i].AnimeCnt() == 5 || SwordEnemy[i].AnimeCnt() == 6) {
+			if (HitHit(SwordEnemy[i].AttBox_X(), SwordEnemy[i].AttBox_Y(), SwordEnemy[i].AttBox_Wdith, SwordEnemy[i].AttBox_Height)) {
+				if (SwordEnemy[i].InvincibleTime == 0) {
+					if (StatusStyle != HitStatus && StatusStyle != DefenseStatus) {
+						
+						HitOn();
+					}
+					
+				}
+			}
+		}
+		
+	}
+}
+
+bool PlayerClass::MoveHit() {
+	extern EnemyClass SwordEnemy[64];
+	extern byte SwordEnemyNum;
+	for (int i = 0; i < SwordEnemyNum; i++){
+		if (SwordEnemy[i].PlayerHit()) { 
+			if (HitBox_X() < SwordEnemy[i].HitBox_X()) { X -= PLAYERSPEED; }else {
+					X += PLAYERSPEED;
+			}
+			return true; }
+	}
+
+	return false;
 }
