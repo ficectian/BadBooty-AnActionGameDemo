@@ -1,9 +1,13 @@
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		ŠK’iˆ—ŠÖ”
+//		—j•X
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #include	"main.h"
 #include "DXpolygon.h"
 #include "Player.h"
 #include "input.h"
 #include "Background.h"
-
+#include "Quantitative.h"
 StairClass *Stair;
 StairClass StairL[128];
 byte StairNum;

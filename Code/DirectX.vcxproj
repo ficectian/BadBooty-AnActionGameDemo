@@ -92,9 +92,11 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Quantitative.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Display.cpp" />
     <ClCompile Include="DX.cpp" />
     <ClCompile Include="DXpolygon.cpp" />
     <ClCompile Include="Enemy.cpp" />

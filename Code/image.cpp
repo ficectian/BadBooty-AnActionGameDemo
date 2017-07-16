@@ -1,8 +1,13 @@
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		îwåièàóùä÷êî
+//		ójïX
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #include	"main.h"
 #include "DXpolygon.h"
 #include "Player.h"
 #include "input.h"
 #include "Background.h"
+#include "Quantitative.h"
 
 ImageClass *Image;
 ImageClass Scren;
@@ -30,7 +35,7 @@ void ImageClass::Init() {
 	LandNum = Background.width / LandPixel[0].Width + 1;
 
 	for (int i = 0; i < LandNum; i++) {
-		LandPixel[i].Height = 100;
+		LandPixel[i].Height = 160;
 		LandPixel[i].Width = 60;
 		LandPixel[i].Ustart = 0.0f;
 		LandPixel[i].Uwidth = 1.0f;
@@ -44,7 +49,7 @@ void ImageClass::Init() {
 	Grass[0].Width = 60;
 	GrassNum = Background.width / Grass[0].Width + 1;
 	for (int i = 0; i < GrassNum; i++) {
-		Grass[i].Height = 60;
+		Grass[i].Height = 120;
 		Grass[i].Width = 60;
 		Grass[i].Ustart = 0.0f;
 		Grass[i].Uwidth = 1.0f;
@@ -61,9 +66,9 @@ void ImageClass::Init() {
 	Scren.Y = Scren.Height / 2;
 	FootingNum = 2;
 	Footing[0].X = 1024;
-	Footing[0].Y = SCREEN_HEIGHT - 120;
+	Footing[0].Y = SCREEN_HEIGHT - 220;
 	Footing[1].X = 1224;
-	Footing[1].Y = SCREEN_HEIGHT - 170;
+	Footing[1].Y = SCREEN_HEIGHT - 270;
 	for (int i = 0; i < FootingNum; i++) {
 		Footing[i].Height = 20;
 		Footing[i].Width = 100;

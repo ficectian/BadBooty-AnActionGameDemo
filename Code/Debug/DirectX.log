@@ -1,7 +1,20 @@
 ﻿  Enemy.cpp
+c:\users\fice\dropbox\badbooty\code\background.h(44): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\background.h(45): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\background.h(140): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\background.h(141): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
+  正在生成代码...
+  正在编译...
+  main.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+c:\users\fice\dropbox\badbooty\code\background.h(44): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\background.h(45): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\background.h(140): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\background.h(141): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\main.cpp(308): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\main.cpp(309): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
   正在生成代码...
   正在跳过...(未检测到相关更改)
-  main.cpp
   image.cpp
   UI.cpp
   Stair.cpp

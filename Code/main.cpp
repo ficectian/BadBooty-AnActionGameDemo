@@ -1,9 +1,13 @@
-﻿#include	"main.h"
+﻿//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		主program
+//		曜氷
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#include	"main.h"
 #include "DXpolygon.h"
 #include "Player.h"
 #include "input.h"
 #include "Background.h"
-
+#include "Quantitative.h"
 #include <mmsystem.h>
 
 #pragma comment(lib,"winmm.lib")//multimedia library
@@ -243,6 +247,7 @@ void Update(int fcnt)
 		break;
 	case GAME_PLAY:
 		if (Player.StopTime == 0) {
+			Display.Update(Background);
 			Image->Update();
 			Player.Update(); //Player Move
 			Enemy->AllUpdate();

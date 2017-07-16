@@ -1,55 +1,116 @@
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		ìGAIä÷êî
+//		ójïX
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #include	"main.h"
 #include "DXpolygon.h"
 #include "Player.h"
-//#include "input.h"
 #include "Background.h"
+#include "Quantitative.h"
 
-
+//==========================================================================================================
+//		íËã`
+//==========================================================================================================
+extern DisplayClass Display;
+extern ImaginaryBackground Background;
 EnemyClass *Enemy;
 EnemyClass SwordEnemy[10];
 byte SwordEnemyNum;
-extern DisplayClass Display;
-extern ImaginaryBackground Background;
 
+//==========================================================================================================
+//		ëSëÃìGçsà◊èàóùíËã`
+//==========================================================================================================
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//	ëSëÃìGèâä˙âªä÷êîíËã`
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void	EnemyClass::AllInit() {
+	//	åïìGÇÃèâä˙âª
 	bool bret = DXLoadTexture(ENEMYTEX, &SwordEnemy[0].Tex);
 	SwordEnemyNum = 1;
-	/*SwordEnemy[0].Width = 128;
-	SwordEnemy[0].Height = 128;*/
 	SwordEnemy[0].InitialX = 1200;
-	SwordEnemy[0].InitialY=(float)(Display.height - 50 - SwordEnemy[0].Height/2);
+	SwordEnemy[0].InitialY=(float)(Display.height - InitialPlayerHeight - SwordEnemy[0].Height/2);
 	SwordEnemy[0].X = SwordEnemy[0].InitialX;
 	SwordEnemy[0].Y = SwordEnemy[0].InitialY;
 	SwordEnemy[0].DisplayX = SwordEnemy[0].X;
 	SwordEnemy[0].DisplayY = SwordEnemy[0].Y;
 	
-	/*SwordEnemy[0].Hp = 5;
-	SwordEnemy[0].Ustart = 0.0f;
-	SwordEnemy[0].Uwidth = (float)1 / 4;
-	SwordEnemy[0].Vstart = 0.0f;
-	SwordEnemy[0].Vheight = (float)1 / 4;
-	SwordEnemy[0].FacedLeft = true;
-	SwordEnemy[0].StatusStyle = EnemyRunAnime;
-	SwordEnemy[0].cnt = 0;
-	SwordEnemy[0].ActionMod = PatrolMod;*/
 }
-void EnemyClass::AllUpdate() {
-	Display.Update(Background);
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//	ëSëÃìGçXêVä÷êîíËã`
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+void EnemyClass::AllUpdate() {
+	//	åïìGÇÃçXêV
 	for (int i = 0; i < SwordEnemyNum; i++) {
-		//SwordEnemy[i].Sync(Display);
-		SwordEnemy[i].DisplayX = SwordEnemy[i].X - Display.MoveDistance.x;
-		SwordEnemy[i].DisplayY = SwordEnemy[i].Y;
 		SwordEnemy[i].Update();
 	}
 }
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//	ëSëÃìGï`âÊä÷êîíËã`
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void	EnemyClass::AllDraw() {
+	//	åïìGÇÃï`âÊ
 	for (int i = 0; i < SwordEnemyNum; i++) {
-		if (SwordEnemy[i].Hp > 0) {
-			SwordEnemy[i].Draw();
+		SwordEnemy[i].Draw();
+	}
+}
+
+
+//==========================================================================================================
+//		å¬ëÃìGçsà◊èàóùíËã`ÅiåïìGÅj
+//==========================================================================================================
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//	åïìGçXêVä÷êîíËã`
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+void	EnemyClass::Update() {
+	if (Hp > 0) {
+		//**********************************************************************
+		//	ï`âÊç¿ïWÇÃçXêV
+		//**********************************************************************
+		DisplayX = X - Display.MoveDistance.x;
+		DisplayY = Y - Display.MoveDistance.y;
+
+		if (InvincibleTime != 0) { InvincibleTime -= 1; }  //	ñ≥ìGéûä‘ÇÃèàóù
+		switch (ActionMod)
+		{
+		case PatrolMod:
+			Patrol();
+			break;  //	èÑâÒ
+		case HitMod:
+			Hit();
+			break;  //	damageéÛÇØÇÈ
+		case TrackMod:
+			Track();
+			break;  //	ìGíTÇ∑
+		case ReturnMod:
+			Return();
+			break;  //ñﬂÇÈ
+		default:
+			break;
 		}
 	}
 }
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//	åïìGçXêVä÷êîíËã`
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+void EnemyClass::Draw() {
+	if (Hp > 0) {
+		Animetion();
+		if (FacedLeft) {
+			DXDrawAnimePolygon(DisplayX, DisplayY, 0, Width, Height, Ustart, Uwidth, Vstart, Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), Tex);
+		}
+		else {
+			DXDrawPlayerRevPolygon(DisplayX, DisplayY, 0, Width, Height, Ustart, Uwidth, Vstart, Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), Tex);
+		}
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//	åïìGAnimetionä÷êîíËã`
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EnemyClass::Animetion() {
 	const byte *ptAnime = Anime_data[StatusStyle];
 	if (*(ptAnime + cnt) == 0xff) {
@@ -64,57 +125,26 @@ void EnemyClass::Animetion() {
 	cnt += 1;
 }
 
-void EnemyClass::Draw() {
-	Animetion();
-
-	if (FacedLeft) {
-		DXDrawAnimePolygon(DisplayX,DisplayY, 0, Width, Height,Ustart, Uwidth, Vstart, Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), Tex);
-	}
-	else {
-		DXDrawPlayerRevPolygon(DisplayX, DisplayY, 0, Width, Height, Ustart, Uwidth, Vstart, Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), Tex); 
-	}
-}
-
-
-
-void	EnemyClass::Update() {
-	if (InvincibleTime != 0) { InvincibleTime -= 1; }
-	switch (ActionMod)
-	{
-	case PatrolMod:
-		Patrol();
-		break;
-	case HitMod:
-		Hit();
-		break;
-	case TrackMod:
-		Track();
-		break;
-	case ReturnMod:
-		Return();
-		break;
-	default:
-		break;
-	}
-}
-
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//	åïìGdamageéÛÇØÇÈäJénä÷êîíËã`
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void	EnemyClass::HitOn() {
 		HitCnt = 0;
 		cnt = 0;
 		StatusStyle = EnemyHitAnime;
 		ActionMod = HitMod;
 		InvincibleTime = 30;
-
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//	åïìGdamageéÛÇØÇÈèàóùä÷êîíËã`
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EnemyClass::Hit() {
 	extern PlayerClass Player;
 	HitCnt += 1;
-	if (Player.X <= DisplayX) {
+	if (Player.X <= X) {
 		X += 4;
-	}
-	else
-	{
+	}else{
 		X -= 4;
 	}
 	Y -= 10 -0.98f*HitCnt;
@@ -126,30 +156,41 @@ void EnemyClass::Hit() {
 		StatusStyle = EnemyRunAnime;
 		ActionMod = PatrolMod;
 	}
-	
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//	åïìGìGíTÇ∑ä÷êîíËã`
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EnemyClass::Track() {
 	extern PlayerClass Player;
 	if (StatusStyle != EnemyAttAnime) {
-		if (Player.X >= DisplayX) {
-			if (FacedLeft) { FacedLeft = false; }
+		if (Player.X >= X) {
+			if (FacedLeft) { 
+				FacedLeft = false; 
+				X += 32;
+			}
 			if (!PlayerHit()) { X += SWORDENEMYSPEED; }
 		}
 		else {
-			if (!FacedLeft) { FacedLeft = true; }
+			if (!FacedLeft) { 
+				FacedLeft = true; 
+				X -= 32;
+			}
 			if (!PlayerHit()) { X -= SWORDENEMYSPEED; }
 		}
-		if (DisplayX - Player.X > 600 || DisplayX - Player.X < -600) {
+		if (X - Player.X > 600 || X - Player.X < -600) {
 			ActionMod = ReturnMod;
-		}
-		if ((DisplayX - Player.X > 0 && DisplayX - Player.X < 64) || (DisplayX - Player.X<0 && DisplayX - Player.X >-64)) {
+		}  //	Player Ç™ó£ÇπÇŒñﬂÇÈ
+		if ((X - Player.X > 0 && X - Player.X < 64) || (X - Player.X<0 && X - Player.X >-64)) {
 			StatusStyle = EnemyAttAnime;
 			cnt = 0;
-		}
+		}  
 	}
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//	åïìGèÑâÒä÷êîíËã`
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EnemyClass::Patrol() {
 	extern PlayerClass Player;
 
@@ -158,6 +199,7 @@ void EnemyClass::Patrol() {
 		if (X < InitialX - 150 || X <= 0) {
 			if (!PlayerHit()) { X += SWORDENEMYSPEED * 2; }
 			FacedLeft = !FacedLeft;
+			X += 32;
 		}
 	}
 	else {
@@ -165,16 +207,20 @@ void EnemyClass::Patrol() {
 		if (X > InitialX + 150 || X >= Background.width) {
 			if (!PlayerHit()) { X -= SWORDENEMYSPEED * 2; }
 			FacedLeft = !FacedLeft;
+			X -= 32;
 		}
 	}
 
-	if ((DisplayX - Player.X>0 &&DisplayX - Player.X < 300) || (DisplayX - Player.X<0 &&DisplayX - Player.X >-300)) {
+	if ((X - Player.X>0 &&X - Player.X < 300) || (X - Player.X<0 &&X - Player.X >-300)) {
 		ActionMod = TrackMod;
-	}
+	}//	Player Ç™ê⁄ãﬂÇ∑ÇÈÇ∆ÅuìGíTÇ∑ÅvÇèàóù
 
 
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//	åïìGñﬂÇÈä÷êîíËã`
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EnemyClass::Return() {
 	extern PlayerClass Player;
 	if (InitialX >= X) {
@@ -186,10 +232,10 @@ void EnemyClass::Return() {
 		if (!PlayerHit()) { X -= SWORDENEMYSPEED; }
 	}
 
-	if ((X - InitialX>0 && DisplayX - X < 30) || (X - InitialX<0 && X - InitialX >-30)) {
+	if ((X - InitialX>0 && X - X < 30) || (X - InitialX<0 && X - InitialX >-30)) {
 		ActionMod = PatrolMod;
 	}
-	if ((DisplayX - Player.X>0 && DisplayX - Player.X < 300) || (DisplayX - Player.X<0 && DisplayX - Player.X >-300)) {
+	if ((X - Player.X>0 && X - Player.X < 300) || (X - Player.X<0 && X - Player.X >-300)) {
 		ActionMod = TrackMod;
 	}
 }

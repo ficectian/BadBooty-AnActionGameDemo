@@ -1,33 +1,10 @@
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		character Hear File
+//		曜氷
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #include <windows.h>
 #include <d3dx9.h>			//	描画処理に必要
-#define PLAYERTEX TEXT("image/player.tga")
-#define ENEMYTEX TEXT("image/Enemy.tga")
 
-#define	GRASSTEX TEXT("image/Grass.png")
-#define SCRENTEX	TEXT("image/scren.png")
-#define LANDPIXELTEX	TEXT("image/LandPixel.png")
-#define LANDTEX	TEXT("image/Land.png")
-
-
-#define HeadBackgroundTex	TEXT("image/HeadBackground.png")
-#define HeadTex	TEXT("image/Head.png")
-#define PlayerHPTEX	TEXT("image/PlayerHP.png")
-#define HP2TEX	TEXT("image/HP1.png")
-#define STAIRTEX	TEXT("image/Stair.png")
-
-#define	TITLETEX	 TEXT("image/title.png")
-#define	TITLEINTTEX	TEXT("image/titleint.png")
-
-#define LANDPIXELMAX (256)
-#define PLAYER_HEIGHT	(64)
-#define	PLAYER_WIDTH	(80)
-
-
-
-#define PLAYERSPEED (7)
-#define SWORDENEMYSPEED (3)
-
-#define WINDOWICO TEXT("image/ico.ico")
 
 enum {
 	TITLE,
@@ -109,7 +86,10 @@ public:
 	void Attack();
 	void Animetion();
 	void AllHitTest();
+	bool BoundaryHitTest();
 	byte StopTime;
+	char StatusStyle;
+
 PlayerClass() {
 		InvincibleTime = 0;
 		Width = 128;
@@ -129,6 +109,7 @@ PlayerClass() {
 		HitBox_Wdith = 43.0f;
 		HitBox_Height = 111.0f;
 		StopTime = 0;
+		EnemyInPlayerRight = false;
 	}
 private:
 	LPDIRECT3DTEXTURE9 Tex;
@@ -143,17 +124,16 @@ private:
 	float Uwidth;
 	float Vheight;
 	bool InDoubleJumpStatus;
-	const byte AnimeStation[64] = { 0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,0xff };//0xff：終了コード
-	const byte AnimeRun[64] = { 8,8,8,8,8,9,9,9,9,9,9,9,10,10,10,10,10,9,9,9,9,9,9,9,0xff };
+	const byte AnimeStation[64] = { 0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0xff };//0xff：終了コード
+	const byte AnimeRun[64] = {8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,10,10,10,10,10,10,10,10,10,11,11,11,11,11,11,11,11,11,0xff };
 	const byte AnimeJump[64] = { 16,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,0xff };
-	const byte AnimeDefense[64] = { 24,24,24,24,24,24,24,25,25,25,25,25,25,25,25,25,25,26,26,26,26,26,26,26,25,25,25,25,25,25,25,25,25,0xff };//0xff：終了コード
+	const byte AnimeDefense[64] = { 24,24,24,24,24,24,24,24,24,24,24,24,25,25,25,25,25,25,25,25,25,25,25,25,0xff };//0xff：終了コード
 	const byte AnimeAttack[64] = {32,32,32,32,32,32,33,33,33,33,33,33,33,33,33,33,33,33, 34,34,34,34,34,34,34,34,34,35,35,35,35,35,35,35,35,35,35,35,35,0xff };//0xff：終了コード
 	const byte AnimeHit[64] = { 18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,0xff };//0xff：終了コード
 	const byte *Anime_data[6] = { AnimeStation,AnimeRun,AnimeJump,AnimeDefense,AnimeAttack,AnimeHit };
 	char cnt;
 	bool FacedRight;
 	char JumpCnt;
-	char StatusStyle;
 	bool InFall;
 	int OnStairNum;
 	bool MoveHit();
@@ -181,6 +161,7 @@ private:
 	void Hit();
 	char HitCnt;
 	char InvincibleTime;
+	bool EnemyInPlayerRight;
 };
 
 
@@ -196,24 +177,24 @@ public:
 	float Y;	//攻撃力
 	float HitBox_X() {
 		if (FacedLeft) {
-			return (float)DisplayX - 3;
+			return (float)X - 3;
 		}
 		else {
-			return (float)DisplayX - 35;
+			return (float)X - 35;
 		}
 	}
 	float HitBox_Y() {
-		return (float)DisplayY - 39;
+		return (float)Y - 39;
 	}
 	float HitBox_Wdith;
 	float HitBox_Height;
 
 	float AttBox_X() {
 		if (FacedLeft) {
-			return (float)DisplayX - 61;
+			return (float)X - 61;
 		}
 		else {
-			return (float)DisplayX + 4;
+			return (float)X + 4;
 		}
 	}
 	float AttBox_Y() {
@@ -318,7 +299,7 @@ private:
 //float		RightMove(float, float, float, float);			//左移動関数
 //float		LeftMove(float, float, float, float);				//左移動関数
 //float		DownMove(float, float, float, float);				//下移動関数
-bool		HitTest(float, float, float, float, float, float, float, float);
+//bool		HitTest(float, float, float, float, float, float, float, float);
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //		
