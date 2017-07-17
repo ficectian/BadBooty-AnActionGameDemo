@@ -37,7 +37,7 @@ extern DisplayClass Display;
 extern ImaginaryBackground Background;
 extern StairClass *Stair;
 extern EnemyClass *Enemy;
-int Status;
+byte Status;
 //=========================================
 //		Global変数
 //=========================================
@@ -219,15 +219,27 @@ LRESULT	CALLBACK	WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 //		初期化処理
 //=========================================
 void	GameInit() {
-	//InitInput(hInstance, hWnd);
-	Status = GAME_PLAY;
-	Background.height = 1024;
-	Background.width = 2048;
-	Display.Init(Background);
-	Image->Init();
-	Player.Init(); //player初期化
-	Enemy->AllInit();
-	GameUI->Init();
+	switch (Status)
+	{
+	default:
+		Status = TITLE;
+		Background.height = 1024;
+		Background.width = 2048;
+		Display.Init(Background);
+		Image->Init();
+		break;
+	case GAME_START:
+		Image->Init();
+		Player.Init(); //player初期化
+		Enemy->AllInit();
+		GameUI->Init();
+		Status = GAME_PLAY;
+
+		
+		break;
+	}
+	
+	
 //	Stair->Init();
 				 
 
@@ -243,7 +255,11 @@ void Update(int fcnt)
 	switch (Status)
 	{
 	case TITLE:
-		if (GetKeyboardPress(DIK_TAB)) { Status = GAME_PLAY; }
+		Image->Update();
+		if (GetKeyboardTrigger(DIK_RETURN)) {
+			Status = GAME_START;
+			GameInit();
+		}
 		break;
 	case GAME_PLAY:
 		if (Player.StopTime == 0) {
@@ -255,7 +271,8 @@ void Update(int fcnt)
 			Player.StopTime -= 1;
 		}
 		
-		if (Player.Hp <= -10) { Status = GAME_OVER; }
+		if (Player.Hp <= 0) { Status = TITLE; }
+		if(!Enemy->AllHaveHp()) { Status = TITLE; }
 		break;
 	case GAME_OVER:
 		if (GetKeyboardPress(DIK_RETURN)) { Status = TITLE; }
@@ -297,15 +314,15 @@ void	Draw(int fcnt)
 		switch (Status)
 		{
 		case TITLE:
-			Image->TitleDraw(fcnt);
-			Player.Init(); //player初期化
+			Image->TitleDraw();
+			//Player.Init(); //player初期化
 			break;
 		case GAME_PLAY:
 			Image->BackDraw();
 			//Stair->Draw();
 			Enemy->AllDraw();
 			Player.Draw();
-			Image->UpDraw(Player.Hp);
+			Image->UpDraw();
 			GameUI->Draw(Player.Hp);
 			break;
 		case GAME_OVER:

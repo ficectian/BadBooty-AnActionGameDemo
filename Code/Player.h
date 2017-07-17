@@ -8,6 +8,7 @@
 
 enum {
 	TITLE,
+	GAME_START,
 	GAME_PLAY,
 	RESULT,
 	GAME_OVER,
@@ -226,6 +227,7 @@ public:
 			return 	false;
 		}
 	}
+	bool AllHaveHp();
 	EnemyClass() {
 		//bool bret = DXLoadTexture(ENEMYTEX, &Tex);
 		Width = 128;

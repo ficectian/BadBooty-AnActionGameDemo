@@ -333,7 +333,7 @@ void PlayerClass::Hit() {
 		Y = JumpStartY;
 		HitCnt = 0;
 		cnt = 0;
-		Hp -= 1;
+		Hp -= 3;
 		StatusStyle = StationStatus;
 		InDoubleJumpStatus = false;
 	}

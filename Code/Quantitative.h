@@ -17,8 +17,10 @@
 #define HP2TEX	TEXT("image/HP1.png")
 #define STAIRTEX	TEXT("image/Stair.png")
 
-#define	TITLETEX	 TEXT("image/title.png")
-#define	TITLEINTTEX	TEXT("image/titleint.png")
+#define	TITLELOGOTEX	 TEXT("image/TitleLogo.png")
+#define	TITLEINITTEX	TEXT("image/TitleInit.png")
+#define	TITLEBGTEX	TEXT("image/TitleBackgroung.png")
+#define	XYZTEX	TEXT("image/xyz.png")
 
 #define LANDPIXELMAX (256)
 #define PLAYER_HEIGHT	(64)

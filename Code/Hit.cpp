@@ -51,6 +51,8 @@ void PlayerClass::AllHitTest() {
 							if ((StatusStyle == DefenseStatus) &&( (X < SwordEnemy[i].X && FacedRight) || (X > SwordEnemy[i].X && !FacedRight))) {
 								// –hŒä‚·‚ê‚Î
 								if (Display.ShockOn == 0) {Display.ShockOn = 1;}
+								InvincibleTime = 30;
+								Hp -= 1;
 							}else {
 								// –hŒä‚µ‚Ä‚¢‚È‚¢
 								if (X < SwordEnemy[i].X) {EnemyInPlayerRight = true;}else {

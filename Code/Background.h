@@ -154,15 +154,22 @@ public:
 	float DisplayY;
 	void Init();
 	void Update();
-	void TitleDraw(int);
+	void TitleDraw();
 	void BackDraw();
-	void UpDraw(int);
+	void UpDraw();
 	void Sync(DisplayClass Display) {
 		DisplayX = X - Display.MoveDistance.x;
 		DisplayY = Y - Display.MoveDistance.y;
 	}
 	float Width;
 	float Height;
+	ImageClass() {
+		Ustart = 0.0f;
+		Uwidth = 1.0f;
+		Vstart = 0.0f;
+		Vheight = 1.0f;
+		cnt = 0;
+	}
 private:
 	LPDIRECT3DTEXTURE9 Tex;
 	
@@ -170,6 +177,7 @@ private:
 	float Vstart;
 	float Uwidth;
 	float Vheight;
+	byte cnt;
 };
 
 class UIClass {
