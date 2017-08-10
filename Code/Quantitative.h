@@ -22,11 +22,11 @@
 #define	TITLEBGTEX	TEXT("image/TitleBackgroung.png")
 #define	XYZTEX	TEXT("image/xyz.png")
 
-#define LANDPIXELMAX (256)
+#define LANDPIXELMAX (64)
 #define PLAYER_HEIGHT	(64)
 #define	PLAYER_WIDTH	(80)
 #define BleedSize (15.0f)
-#define InitialPlayerHeight (100.0f)
+#define InitialPlayerHeight (150.0f)
 
 #define PLAYERSPEED (5)
 #define SWORDENEMYSPEED (3)

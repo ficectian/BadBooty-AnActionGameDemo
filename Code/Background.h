@@ -31,18 +31,14 @@ public:
 	}
 
 	POINT MoveDistance;
-	int height = SCREEN_HEIGHT;
-	int width = SCREEN_WIDTH;
+	int height;
+	int width;
 	byte ShockOn;
 	void Init(ImaginaryBackground Background) {
-		extern PlayerClass Player;
-		height = SCREEN_HEIGHT;
-		width = SCREEN_WIDTH;
-		MoveDistance.x = 0;
-		MoveDistance.y = 0;
-		ShockOn = 0;
 		X = Background.width/2;
-		Y = Background.height / 2;;
+		Y =  Background.height / 2;
+		MoveDistance.x = Left_X();
+		MoveDistance.y = Up_Y();
 	}
 	void Shock(byte ShockLv){
 		if (cnt >= 40) {
@@ -98,9 +94,9 @@ public:
 					if (Player.StatusStyle == DefenseStatus) {
 						X -= PLAYERSPEED/2;
 					}
-					else if (Player.StatusStyle == JumpStatus) {
+					/*else if (Player.StatusStyle == JumpStatus) {
 						X = Player.X;
-					}
+					}*/
 					else{
 						X -= PLAYERSPEED;
 					}
@@ -109,15 +105,15 @@ public:
 					if (Player.StatusStyle == DefenseStatus) {
 						X += PLAYERSPEED / 2;
 					}
-					else if (Player.StatusStyle == JumpStatus) {
+					/*else if (Player.StatusStyle == JumpStatus) {
 						X = Player.X;
-					}
+					}*/
 					else {
 						X += PLAYERSPEED;
 					}
 				}
 			}
-			if (Player.Y - height / 2 > BleedSize && Player.Y + height / 2 < Background.height - BleedSize) {
+			if (Player.Y+ InitialPlayerHeight - height > BleedSize && Player.Y + InitialPlayerHeight < Background.height - BleedSize) {
 				if (Y > Player.Y - height / 2 + InitialPlayerHeight + Player.Height / 2) {
 					if (Player.StatusStyle == JumpStatus) {
 						Y = Player.Y - height / 2 + InitialPlayerHeight + Player.Height / 2;
@@ -141,8 +137,16 @@ public:
 		MoveDistance.y = Up_Y();
 		
 	}
+	DisplayClass() {
+		height = SCREEN_HEIGHT;
+		width = SCREEN_WIDTH;
+		MoveDistance.x = 0;
+		MoveDistance.y = 0;
+		ShockOn = 0;
+		cnt = 0;
+	}
 private:
-	byte cnt = 0;
+	byte cnt;
 	
 };
 class ImageClass{
@@ -164,6 +168,7 @@ public:
 	float Width;
 	float Height;
 	ImageClass() {
+		Tex = NULL;
 		Ustart = 0.0f;
 		Uwidth = 1.0f;
 		Vstart = 0.0f;
@@ -217,6 +222,7 @@ public:
 	void Update();
 	void Draw();
 	StairClass() {
+		Tex = NULL;
 		Ustart = 0.0f;
 		Vstart = 0.0f;
 		Uwidth = 1.0f;

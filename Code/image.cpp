@@ -5,32 +5,46 @@
 #include	"main.h"
 #include "DXpolygon.h"
 #include "Player.h"
-#include "input.h"
+//#include "input.h"
 #include "Background.h"
 #include "Quantitative.h"
 
-ImageClass *Image;
-ImageClass TitleBackground;
-ImageClass TitleLogo;
-ImageClass TitleInit;
-ImageClass Scren;
-ImageClass Grass[128];
-ImageClass LandPixel[LANDPIXELMAX];
-ImageClass Footing[256];
+//==========================================================================================================
+//		’è‹`
+//==========================================================================================================
+extern ImaginaryBackground Background;	// ‰¼‘z”wŒi–ÊÏ‘ã“ü
+extern DisplayClass Display;	// ‰¼‘zcamera‘ã“ü
+extern byte Status;	// game Mode‘ã“ü
+
+ImageClass *Image;	//	‘S‚Ä‚Ì‰æ–Êˆ—printer
+
+ImageClass TitleBackground; //	Title‚Ì”wŒi
+ImageClass TitleLogo; //	Title‚ÌLOGO
+ImageClass TitleInit; //	Title‚Ì’ñ¦
+
+ImageClass Scren; //	”wŒii”wŒiFj
+ImageClass Grass[64]; //	’n–Ê”wŒi
+ImageClass LandPixel[LANDPIXELMAX]; //	’n–Êi–{•¨j
+ImageClass Footing[64];	//—‰º“_
 ImageClass XYZ;
-byte LandNum;
-byte FootingNum;
-byte GrassNum;
+byte LandNum; 	// ’n–Ê‚Ì”
+byte FootingNum; 	// —‰º“_‚Ì”
+byte GrassNum; 	// ’n–Ê”wŒi‚Ì”
 float xyz;
 bool Bingging;
 float LOGOBigging;
-ImaginaryBackground Background;
-DisplayClass Display;
-extern byte Status;
+
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//	‰æ–Ê‰Šú‰»ŠÖ”’è‹`
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ImageClass::Init() {
-	bool bret;
+	bool bret;	// Texture‘ã“ü”»’f•Ï”
 	switch (Status)
 	{
+		//**********************************************************************
+		//	Title‰æ–Ê‰Šú‰»
+		//**********************************************************************
 	case TITLE:
 		bret = DXLoadTexture(TITLEBGTEX, &TitleBackground.Tex);
 		bret = DXLoadTexture(TITLELOGOTEX, &TitleLogo.Tex);
@@ -61,20 +75,20 @@ void ImageClass::Init() {
 		bret = DXLoadTexture(GRASSTEX, &Grass[0].Tex);
 		bret = DXLoadTexture(LANDTEX, &Footing[0].Tex);
 		bret = DXLoadTexture(XYZTEX, &XYZ.Tex);
-
+		
 		xyz = 0.0f;
 		XYZ.Height = XYZ.Width = 128;
 		XYZ.X = 512;
-		XYZ.Y = SCREEN_HEIGHT - 512;
+		XYZ.Y = Background.height - 512 - BleedSize;
 		XYZ.DisplayX = XYZ.X;
 		XYZ.DisplayY = XYZ.Y;
 
 		LandNum = Background.width / LandPixel[0].Width + 1;
 
 		for (int i = 0; i < LandNum; i++) {
-			LandPixel[i].Height = 160;
+			LandPixel[i].Height = 210;
 			LandPixel[i].Width = 60;
-			LandPixel[i].Y = SCREEN_HEIGHT - LandPixel[i].Height / 2;
+			LandPixel[i].Y = Background.height - LandPixel[i].Height / 2 - BleedSize;
 			LandPixel[i].DisplayY = LandPixel[i].Y;
 			LandPixel[i].X = LandPixel[i].Width / 2 + i*LandPixel[i].Width;
 			LandPixel[i].DisplayX = LandPixel[i].X;
@@ -82,9 +96,9 @@ void ImageClass::Init() {
 		Grass[0].Width = 60;
 		GrassNum = Background.width / Grass[0].Width + 1;
 		for (int i = 0; i < GrassNum; i++) {
-			Grass[i].Height = 120;
+			Grass[i].Height = 170;
 			Grass[i].Width = 60;
-			Grass[i].Y = SCREEN_HEIGHT - Grass[i].Height / 2;
+			Grass[i].Y = Background.height - Grass[i].Height / 2 - BleedSize;
 			Grass[i].DisplayY = Grass[i].Y;
 			Grass[i].X = Grass[i].Width / 2 + i*Grass[i].Width;
 			Grass[i].DisplayX = Grass[i].X;
@@ -95,9 +109,9 @@ void ImageClass::Init() {
 		Scren.Y = Scren.Height / 2;
 		FootingNum = 2;
 		Footing[0].X = 1024;
-		Footing[0].Y = SCREEN_HEIGHT - 220;
+		Footing[0].Y = Background.height - 270 - BleedSize;
 		Footing[1].X = 1224;
-		Footing[1].Y = SCREEN_HEIGHT - 270;
+		Footing[1].Y = Background.height - 320 - BleedSize;
 		for (int i = 0; i < FootingNum; i++) {
 			Footing[i].Height = 20;
 			Footing[i].Width = 100;
@@ -112,6 +126,9 @@ void ImageClass::Init() {
 
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//	‰æ–ÊXVˆ—ŠÖ”’è‹`
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ImageClass::Update(){
 	switch (Status)
 	{
@@ -131,7 +148,7 @@ void ImageClass::Update(){
 	case GAME_PLAY:
 		xyz += 0.1f;
 		if (xyz >= 360.0f) { xyz = 0.0f; }
-		Display.Update(Background);
+		//Display.Update(Background);
 		//Land.Ustart += 0.0003f;
 		for (int i = 0; i < LandNum; i++) {
 			LandPixel[i].Sync(Display);
@@ -149,6 +166,10 @@ void ImageClass::Update(){
 	}
 	
 }
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//	Title‰æ–Ê•`‰æŠÖ”’è‹`
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ImageClass::TitleDraw() {
 	DXDrawPolygon(TitleBackground.X, TitleBackground.Y, 0, TitleBackground.Width, TitleBackground.Height, D3DCOLOR_RGBA(255, 255, 255, 255), TitleBackground.Tex);
 	DXDrawPolygon(TitleLogo.X, TitleLogo.Y, 0, TitleLogo.Width, TitleLogo.Height, D3DCOLOR_RGBA(255, 255, 255, 255), TitleLogo.Tex);
@@ -158,6 +179,10 @@ void ImageClass::TitleDraw() {
 	DXDrawPolygon(TitleInit.X, TitleInit.Y, 0, TitleInit.Width*LOGOBigging, TitleInit.Height*LOGOBigging, D3DCOLOR_RGBA(255, 255, 255, 255), TitleInit.Tex);
 
 }
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//	”wŒi‰æ–Ê•`‰æŠÖ”’è‹`
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ImageClass::BackDraw() {
 	switch (Status)
 	{
@@ -180,6 +205,9 @@ void ImageClass::BackDraw() {
 
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//	‘OŒi‰æ–Ê•`‰æŠÖ”’è‹`
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ImageClass::UpDraw() {
 	switch (Status)
 	{

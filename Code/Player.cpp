@@ -35,11 +35,12 @@
 //==========================================================================================================
 //		íËã`
 //==========================================================================================================
+PlayerClass Player;
 extern DisplayClass Display;
 extern ImaginaryBackground Background;
 extern ImageClass Footing[256];
 extern byte FootingNum;
-PlayerClass Player;
+
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //	Playerèâä˙âªä÷êîíËã`
@@ -49,7 +50,7 @@ void PlayerClass::Init() {
 	//bret = DXLoadTexture(BOOWTEX, &DeadTex);
 	//bret = DXLoadTexture(INVINCIBLETEX, &InvincibleTex);
 	Initial.x = 100+(float)Display.width / 2;
-	Initial.y = (float)(Display.height - InitialPlayerHeight - 64);
+	Initial.y = (float)(Background.height - InitialPlayerHeight - 64- BleedSize);
 	X = Initial.x;
 	Y = Initial.y;
 	DisplayX = X;

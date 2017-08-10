@@ -138,7 +138,7 @@ bool			PlayerClass::FallHitTest(float X1, float Y1, float W, float H)
 //	PlayerŠK’i”»’èŠÖ”’è‹`
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool PlayerClass::HitStair() {
-	extern StairClass StairL[128];
+	extern StairClass StairL[64];
 	extern byte StairNum;
 	float X1;
 	float	X2;

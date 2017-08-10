@@ -28,7 +28,7 @@ void	EnemyClass::AllInit() {
 	bool bret = DXLoadTexture(ENEMYTEX, &SwordEnemy[0].Tex);
 	SwordEnemyNum = 1;
 	SwordEnemy[0].InitialX = 1200;
-	SwordEnemy[0].InitialY=(float)(Display.height - InitialPlayerHeight - SwordEnemy[0].Height/2);
+	SwordEnemy[0].InitialY=(float)(Background.height - InitialPlayerHeight - SwordEnemy[0].Height/2 - BleedSize);
 	SwordEnemy[0].X = SwordEnemy[0].InitialX;
 	SwordEnemy[0].Y = SwordEnemy[0].InitialY;
 	SwordEnemy[0].DisplayX = SwordEnemy[0].X;

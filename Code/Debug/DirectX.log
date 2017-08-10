@@ -1,7 +1,0 @@
-﻿  Hit.cpp
-c:\users\fice\dropbox\badbooty\code\background.h(44): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
-c:\users\fice\dropbox\badbooty\code\background.h(45): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
-c:\users\fice\dropbox\badbooty\code\background.h(140): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
-c:\users\fice\dropbox\badbooty\code\background.h(141): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
-  DirectX.vcxproj -> C:\Users\fice\Dropbox\BadBooty\Code\Debug\ActionDEMO.exe
-  DirectX.vcxproj -> C:\Users\fice\Dropbox\BadBooty\Code\Debug\ActionDEMO.pdb (Partial PDB)

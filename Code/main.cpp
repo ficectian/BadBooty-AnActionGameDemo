@@ -158,30 +158,12 @@ int	APIENTRY		WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 LRESULT	CALLBACK	WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	int nID;
-	//unsigned char KeyState[256];
 	switch (uMsg)
 	{
-	//case	WM_CREATE:
-	//	SetTimer(hWnd, NULL, 50, FALSE);
-	//	break;
+
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
-	//case WM_TIMER:
-	//	InvalidateRect(hWnd, NULL, FALSE);
-	//	break;
-
-	//case WM_LBUTTONDOWN:
-	//	for (int i = 0; i < SHOOTNUM; i++) {
-	//		if (Shoot[i].Flag == HITOFF) {
-	//			Shoot[i].X = Player.X + Player.Width / 2;
-	//			Shoot[i].Y = Player.Y + 15;
-	//			Shoot[i].Flag = HITON;
-	//			Shoot[i].Disp = true;
-	//			break;
-	//		}
-	//	}
-	//	break;
 	case WM_KEYDOWN:
 		switch (wParam)
 		{
@@ -223,12 +205,12 @@ void	GameInit() {
 	{
 	default:
 		Status = TITLE;
-		Background.height = 1024;
-		Background.width = 2048;
-		Display.Init(Background);
 		Image->Init();
 		break;
 	case GAME_START:
+		Background.height = 1024;
+		Background.width = 2048;
+		Display.Init(Background);
 		Image->Init();
 		Player.Init(); //player初期化
 		Enemy->AllInit();

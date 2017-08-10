@@ -92,6 +92,7 @@ public:
 	char StatusStyle;
 
 PlayerClass() {
+		Tex = NULL;
 		InvincibleTime = 0;
 		Width = 128;
 		Height = 128;
@@ -230,6 +231,7 @@ public:
 	bool AllHaveHp();
 	EnemyClass() {
 		//bool bret = DXLoadTexture(ENEMYTEX, &Tex);
+		Tex = NULL;
 		Width = 128;
 		Height = 128;
 		InvincibleTime = 0;

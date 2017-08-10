@@ -17,6 +17,9 @@ bool DXLoadTexture( 	//p78
 	LPCWSTR filename,
 	LPDIRECT3DTEXTURE9 * tex){
 	HRESULT hr;
+	if (*tex != NULL) {
+		return true;
+	}
 	hr = D3DXCreateTextureFromFile(g_pD3DDevice, filename, tex);
 	if (FAILED(hr)){
 		MessageBox(NULL, TEXT("texture error"), TEXT("Tex"), MB_OK);
