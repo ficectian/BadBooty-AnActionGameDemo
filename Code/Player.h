@@ -21,7 +21,8 @@ enum {
 	JumpStatus,
 	DefenseStatus,
 	AttackStatus,
-	HitStatus
+	HitStatus,
+	ClimbStatus
 	//DoubleJumpStatus
 };
 
@@ -85,6 +86,7 @@ public:
 	void Operation();
 	void Jump();
 	void Attack();
+	void Climb();
 	void Animetion();
 	void AllHitTest();
 	bool BoundaryHitTest();
@@ -132,7 +134,8 @@ private:
 	const byte AnimeDefense[64] = { 24,24,24,24,24,24,24,24,24,24,24,24,25,25,25,25,25,25,25,25,25,25,25,25,0xff };//0xff：終了コード
 	const byte AnimeAttack[64] = {32,32,32,32,32,32,33,33,33,33,33,33,33,33,33,33,33,33, 34,34,34,34,34,34,34,34,34,35,35,35,35,35,35,35,35,35,35,35,35,0xff };//0xff：終了コード
 	const byte AnimeHit[64] = { 18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,0xff };//0xff：終了コード
-	const byte *Anime_data[6] = { AnimeStation,AnimeRun,AnimeJump,AnimeDefense,AnimeAttack,AnimeHit };
+	const byte AnimeClimb[64] = { 40,40,40,40,40,40,41,41,41,41,42,42,42,42,42,42,43,43,43,43,0xff };
+	const byte *Anime_data[7] = { AnimeStation,AnimeRun,AnimeJump,AnimeDefense,AnimeAttack,AnimeHit,AnimeClimb };
 	char cnt;
 	bool FacedRight;
 	char JumpCnt;

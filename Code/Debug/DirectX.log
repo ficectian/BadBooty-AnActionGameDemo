@@ -1,0 +1,19 @@
+﻿  Player.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+c:\users\fice\dropbox\badbooty\code\background.h(38): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\background.h(39): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\background.h(40): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\background.h(41): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\background.h(136): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\background.h(137): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\player.cpp(52): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\player.cpp(53): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\player.cpp(54): warning C4244: “=”: 从“LONG”转换到“float”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\player.cpp(55): warning C4244: “=”: 从“LONG”转换到“float”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\player.cpp(59): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\player.cpp(204): warning C4244: “=”: 从“LONG”转换到“float”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\player.cpp(273): warning C4244: “=”: 从“LONG”转换到“float”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\player.cpp(327): warning C4244: “=”: 从“LONG”转换到“float”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\player.cpp(401): warning C4244: “=”: 从“LONG”转换到“float”，可能丢失数据
+  DirectX.vcxproj -> C:\Users\fice\Dropbox\BadBooty\Code\Debug\ActionDEMO.exe
+  DirectX.vcxproj -> C:\Users\fice\Dropbox\BadBooty\Code\Debug\ActionDEMO.pdb (Partial PDB)

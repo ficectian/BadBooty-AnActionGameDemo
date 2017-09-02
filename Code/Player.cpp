@@ -72,15 +72,21 @@ void PlayerClass::Update() {
 
 	if (InvincibleTime != 0) { InvincibleTime -= 1; }  //	ñ≥ìGéûä‘ÇÃèàóù
 	if (Hp > 0) {
-		if (StatusStyle == AttackStatus) {
-			Attack();
-			
-		}else if (StatusStyle == HitStatus) {
-			Hit();
-		}else {
-			Operation();
-			Jump();
-		}	
+		Climb();
+		if (StatusStyle != ClimbStatus) {
+			if (StatusStyle == AttackStatus) {
+				Attack();
+
+			}
+			else if (StatusStyle == HitStatus) {
+				Hit();
+			}
+			else {
+				Operation();
+				Jump();
+			}
+		}
+		
 		AllHitTest();
 	}
 }
@@ -105,112 +111,119 @@ void PlayerClass::Draw() {
 void	PlayerClass::Operation() {
 	extern StairClass StairL[128];
 
-	//**********************************************************************
-	//	Player ñhå‰
-	//**********************************************************************
-	if (GetKeyboardPress(DIK_LSHIFT)) {
-		if (StatusStyle != JumpStatus) {
-			if (StatusStyle != DefenseStatus) {
-				cnt = 0; 
-				StatusStyle = DefenseStatus;
+
+
+	
+		//**********************************************************************
+		//	Player ñhå‰
+		//**********************************************************************
+		if (GetKeyboardPress(DIK_LSHIFT)) {
+			if (StatusStyle != JumpStatus) {
+				if (StatusStyle != DefenseStatus) {
+					cnt = 0;
+					StatusStyle = DefenseStatus;
+				}
 			}
-		}
-		//**********************************************************************
-		//	Player ñhå‰à⁄ìÆ
-		//**********************************************************************
-		if (GetKeyboardPress(DIK_A) | GetKeyboardPress(DIK_LEFT)) {
-			/*if (!FacedRight) {
+			//**********************************************************************
+			//	Player ñhå‰à⁄ìÆ
+			//**********************************************************************
+			if (GetKeyboardPress(DIK_A) | GetKeyboardPress(DIK_LEFT)) {
+				/*if (!FacedRight) {
 				FacedRight = !FacedRight;
 				X += 64;
-			}*/
-			X -= PLAYERSPEED/2;
-			MoveHit();
-		}else if (GetKeyboardPress(DIK_D) | GetKeyboardPress(DIK_RIGHT)) {
-			/*if (FacedRight) {
+				}*/
+				X -= PLAYERSPEED / 2;
+				MoveHit();
+			}
+			else if (GetKeyboardPress(DIK_D) | GetKeyboardPress(DIK_RIGHT)) {
+				/*if (FacedRight) {
 				FacedRight = !FacedRight;
 				X -= 64;
-			}*/
-			X += PLAYERSPEED/2;
-			MoveHit();
-		}else{
-			cnt = 0;
-		}
-	}
-	else
-	{
-		//**********************************************************************
-		//	Player à⁄ìÆ
-		//**********************************************************************
-		if (GetKeyboardPress(DIK_A) | GetKeyboardPress(DIK_LEFT)) {
-			if (FacedRight) {
-				FacedRight = !FacedRight;
-				X -= 28;
+				}*/
+				X += PLAYERSPEED / 2;
+				MoveHit();
 			}
-			X -= PLAYERSPEED;
-			MoveHit();
-			if (StatusStyle != JumpStatus) {
-				if (StatusStyle != RunStatus) {
-					cnt = 0;
-					StatusStyle = RunStatus;
+			else {
+				cnt = 0;
+			}
+		}
+		else
+		{
+			//**********************************************************************
+			//	Player à⁄ìÆ
+			//**********************************************************************
+			if (GetKeyboardPress(DIK_A) | GetKeyboardPress(DIK_LEFT)) {
+				if (FacedRight) {
+					FacedRight = !FacedRight;
+					X -= 28;
+				}
+				X -= PLAYERSPEED;
+				MoveHit();
+				if (StatusStyle != JumpStatus) {
+					if (StatusStyle != RunStatus) {
+						cnt = 0;
+						StatusStyle = RunStatus;
+					}
+				}
+
+			}
+
+			if (GetKeyboardPress(DIK_D) | GetKeyboardPress(DIK_RIGHT)) {
+				if (!FacedRight) {
+					FacedRight = !FacedRight;
+					X += 28;
+				}
+				X += PLAYERSPEED;
+				MoveHit();
+				if (StatusStyle != JumpStatus) {
+					if (StatusStyle != RunStatus) {
+						cnt = 0;
+						StatusStyle = RunStatus;
+					}
 				}
 			}
-
 		}
 
-		if (GetKeyboardPress(DIK_D) | GetKeyboardPress(DIK_RIGHT)) {
-			if (!FacedRight) { 
-				FacedRight = !FacedRight;
-				X += 28;
-			}
-			X += PLAYERSPEED;
-			MoveHit();
+
+
+		//**********************************************************************
+		//	Player çUåÇ
+		//**********************************************************************
+		if (GetKeyboardTrigger(DIK_H)) {
 			if (StatusStyle != JumpStatus) {
-				if (StatusStyle != RunStatus) {
-					cnt = 0;
-					StatusStyle = RunStatus;
-				}
+				cnt = 0;
+				StatusStyle = AttackStatus;
 			}
 		}
-	}
+
+		//**********************************************************************
+		//	Player Å@jump
+		//**********************************************************************
+		if (GetKeyboardTrigger(DIK_SPACE)) {
+			if (StatusStyle != JumpStatus && !InDoubleJumpStatus) {
+				JumpStartY = Initial.y;
+				JumpCnt = 0;
+				cnt = 0;
+				StatusStyle = JumpStatus;
+			}
+			else if (!InDoubleJumpStatus) {
+				JumpCnt = 0;
+				cnt = 0;
+				InDoubleJumpStatus = true;
+			}
+		}
+
+		//**********************************************************************
+		//	í‚é~
+		//**********************************************************************
+		if (GetKeyboardRelease(DIK_LSHIFT) || GetKeyboardRelease(DIK_A) || GetKeyboardRelease(DIK_LEFT) || GetKeyboardRelease(DIK_D) || GetKeyboardRelease(DIK_RIGHT))
+		{
+			if (StatusStyle != JumpStatus) {
+				if (StatusStyle != StationStatus) { cnt = 0; StatusStyle = StationStatus; }
+			}
+		}
 	
-
 	
-	//**********************************************************************
-	//	Player çUåÇ
-	//**********************************************************************
-	if (GetKeyboardTrigger(DIK_H)) {
-		if (StatusStyle != JumpStatus) {
-			cnt = 0;
-			StatusStyle = AttackStatus;
-		}
-	}
-
-	//**********************************************************************
-	//	Player Å@jump
-	//**********************************************************************
-	if (GetKeyboardTrigger(DIK_SPACE)) {
-		if (StatusStyle != JumpStatus && !InDoubleJumpStatus) {
-			JumpStartY = Initial.y;
-			JumpCnt = 0;
-			cnt = 0;
-			StatusStyle = JumpStatus;
-		}
-		else if (!InDoubleJumpStatus) {
-			JumpCnt = 0;
-			cnt = 0;
-			InDoubleJumpStatus = true;
-		}
-	}
-
-	//**********************************************************************
-	//	í‚é~
-	//**********************************************************************
-	if (GetKeyboardRelease(DIK_LSHIFT) || GetKeyboardRelease(DIK_A) || GetKeyboardRelease(DIK_LEFT) || GetKeyboardRelease(DIK_D) || GetKeyboardRelease(DIK_RIGHT))
-	{
-		if (StatusStyle != JumpStatus) {
-			if (StatusStyle != StationStatus) { cnt = 0; StatusStyle = StationStatus; }
-		}
-	}
 
 }
 
@@ -296,7 +309,7 @@ void PlayerClass::Animetion() {
 	}
 	Ustart = ((*(ptAnime + cnt)) % (int)(1 / Uwidth))*Uwidth;
 	Vstart = ((*(ptAnime + cnt)) / (int)(1 / Vheight))*Vheight;
-	cnt += 1;
+	if (StatusStyle != ClimbStatus) { cnt += 1; }
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -339,4 +352,59 @@ void PlayerClass::Hit() {
 		InDoubleJumpStatus = false;
 	}
 
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//	Player èàóùä÷êîíËã`
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+void PlayerClass::Climb() {
+	const byte *ptAnime = Anime_data[StatusStyle];
+	//**********************************************************************
+	//	Player ìoÇÈ
+	//**********************************************************************
+	if (StatusStyle != ClimbStatus) {
+		if (GetKeyboardPress(DIK_W) | GetKeyboardPress(DIK_UP)) {
+			cnt = 0; 
+			StatusStyle = ClimbStatus; 
+			Y -= 20;
+		}
+		if (GetKeyboardPress(DIK_S) | GetKeyboardPress(DIK_DOWN)) {
+			cnt = 0; 
+			StatusStyle = ClimbStatus; 
+			Y += 20;
+		}
+	}else{
+		if (GetKeyboardPress(DIK_W) | GetKeyboardPress(DIK_UP)) {
+			cnt += 1;
+			if ((*(ptAnime + cnt) != *(ptAnime + cnt - 1)) && ((*(ptAnime + cnt) == 40) || (*(ptAnime + cnt) == 42) || (*(ptAnime + cnt) == 0xff))) {
+				Y -= 20;
+			}
+		}
+		if (GetKeyboardPress(DIK_S) | GetKeyboardPress(DIK_DOWN)) {
+			cnt += 1;
+			if ((*(ptAnime + cnt) != *(ptAnime + cnt - 1)) && ((*(ptAnime + cnt) == 40) || (*(ptAnime + cnt) == 42) || (*(ptAnime + cnt) == 0xff))) {
+				Y += 20;
+			}
+		}
+
+		//óéâ∫
+		if (GetKeyboardPress(DIK_A) | GetKeyboardPress(DIK_LEFT) | GetKeyboardPress(DIK_S) | GetKeyboardPress(DIK_RIGHT) | GetKeyboardPress(DIK_SPACE)) {
+			if (Y != Initial.y /*&& !HitStair()*/) {
+				InFall = true;
+				for (int i = 0; i < FootingNum; i++) {
+					if (Player.FallHitTest(Footing[i].X, Footing[i].Y, Footing[i].Width, Footing[i].Height)) {
+						InFall = false;
+						break;
+					}
+				}
+				if (InFall) {
+					JumpStartY = Initial.y;
+					JumpCnt = 16;
+					cnt = 16;
+					StatusStyle = JumpStatus;
+				}
+			}
+		}
+	}
+	
 }
