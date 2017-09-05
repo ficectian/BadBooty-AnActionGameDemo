@@ -227,6 +227,8 @@ public:
 		Vstart = 0.0f;
 		Uwidth = 1.0f;
 		Vheight = 1.0f;
+		Height = 40;
+		Width = 50;
 	}
 	void Sync(DisplayClass Display) {
 		DisplayX = X - Display.MoveDistance.x;

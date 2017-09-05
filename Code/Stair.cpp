@@ -17,22 +17,28 @@ extern ImaginaryBackground Background;
 void StairClass::Init() {
 	bool
 		bret = DXLoadTexture(STAIRTEX, &StairL[0].Tex);
-	StairNum = 1;
-	StairL[0].Height = 50*4;
-	StairL[0].Width = 100*4;
-	StairL[0].X = Background.width - StairL[0].Width / 2;
-	StairL[0].Y = (float)(Display.height - 50  -StairL[0].Height/2);
+	
+	
+	StairNum = (int)((Background.height - 760 - StairL[0].Height/2) - InitialPlayerHeight)/ StairL[0].Height;
+	for (int i = 0; i < StairNum; i++) {
+		StairL[i].X = 1400;
+		StairL[i].Y = (float)((Background.height - 760 - StairL[0].Height / 2) + i*StairL[i].Height);
+		StairL[i].DisplayX = StairL[i].X;
+		StairL[i].DisplayY = StairL[i].Y;
+	}
 
-	StairL[0].DisplayX = StairL[0].X;
-	StairL[0].DisplayY = StairL[0].Y;
 }
 
 void StairClass::Update() {
-	Display.Update(Background);
-	StairL[0].Sync(Display);
+	for (int i = 0; i < StairNum; i++) {
+		StairL[i].Sync(Display);
+	}
 }
 
 void StairClass::Draw() {
-	DXDrawPolygon(StairL[0].DisplayX, StairL[0].DisplayY, 0, StairL[0].Width, StairL[0].Height, D3DCOLOR_RGBA(255, 255, 255, 255), StairL[0].Tex);
+	for (int i = 0; i < StairNum; i++) {
+		DXDrawPolygon(StairL[i].DisplayX, StairL[i].DisplayY, 0, StairL[i].Width, StairL[i].Height, D3DCOLOR_RGBA(255, 255, 255, 255), StairL[0].Tex);
+
+	}
 
 }

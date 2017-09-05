@@ -15,7 +15,7 @@
 #define HeadTex	TEXT("image/Head.png")
 #define PlayerHPTEX	TEXT("image/PlayerHP.png")
 #define HP2TEX	TEXT("image/HP1.png")
-#define STAIRTEX	TEXT("image/Stair.png")
+#define STAIRTEX	TEXT("image/Ladder.tga")
 
 #define	TITLELOGOTEX	 TEXT("image/TitleLogo.png")
 #define	TITLEINITTEX	TEXT("image/TitleInit.png")

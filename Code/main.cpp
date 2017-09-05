@@ -208,8 +208,8 @@ void	GameInit() {
 		Image->Init();
 		break;
 	case GAME_START:
-		Background.height = 1024;
-		Background.width = 2048;
+		Background.height = 1500;
+		Background.width = 3000;
 		Display.Init(Background);
 		Image->Init();
 		Player.Init(); //player初期化

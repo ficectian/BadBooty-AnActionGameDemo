@@ -15,11 +15,10 @@
 extern ImaginaryBackground Background;	// ‰¼‘z”wŒi–ÊÏ‘ã“ü
 extern DisplayClass Display;	// ‰¼‘zcamera‘ã“ü
 extern byte Status;	// game Mode‘ã“ü
-
+extern StairClass *Stair;
 ImageClass *Image;	//	‘S‚Ä‚Ì‰æ–Êˆ—printer
 
 ImageClass TitleBackground; //	Title‚Ì”wŒi
-ImageClass TitleLogo; //	Title‚ÌLOGO
 ImageClass TitleInit; //	Title‚Ì’ñŽ¦
 
 ImageClass Scren; //	”wŒii”wŒiFj
@@ -47,7 +46,6 @@ void ImageClass::Init() {
 		//**********************************************************************
 	case TITLE:
 		bret = DXLoadTexture(TITLEBGTEX, &TitleBackground.Tex);
-		bret = DXLoadTexture(TITLELOGOTEX, &TitleLogo.Tex);
 		bret = DXLoadTexture(TITLEINITTEX, &TitleInit.Tex);
 		TitleBackground.Height = Display.height;
 		TitleBackground.Width = Display.width;
@@ -55,15 +53,9 @@ void ImageClass::Init() {
 		TitleBackground.DisplayY = TitleBackground.Y;
 		TitleBackground.X = Display.width/2;
 		TitleBackground.DisplayX = TitleBackground.X;
-		TitleLogo.Width = 671;
-		TitleLogo.Height = 160;
-		TitleLogo.X = 59 + TitleLogo.Width / 2;
-		TitleLogo.DisplayX = TitleLogo.X;
-		TitleLogo.Y = 77 + TitleLogo.Height / 2;
-		TitleLogo.DisplayY = TitleLogo.Y;
-		TitleInit.Width = 402;
-		TitleInit.Height = 59;
-		TitleInit.X = Display.width - 126 - TitleInit.Width / 2;
+		TitleInit.Width = 201;
+		TitleInit.Height = 30;
+		TitleInit.X = Display.width - 100 - TitleInit.Width / 2;
 		TitleInit.Y = Display.height - 143 - TitleInit.Height / 2;
 		LOGOBigging = 1.0f;
 		Bingging = true;
@@ -75,7 +67,7 @@ void ImageClass::Init() {
 		bret = DXLoadTexture(GRASSTEX, &Grass[0].Tex);
 		bret = DXLoadTexture(LANDTEX, &Footing[0].Tex);
 		bret = DXLoadTexture(XYZTEX, &XYZ.Tex);
-		
+		Stair->Init();
 		xyz = 0.0f;
 		XYZ.Height = XYZ.Width = 128;
 		XYZ.X = 512;
@@ -107,17 +99,21 @@ void ImageClass::Init() {
 		Scren.Height = SCREEN_HEIGHT;
 		Scren.X = Scren.Width / 2;
 		Scren.Y = Scren.Height / 2;
-		FootingNum = 2;
+		FootingNum = 3;
 		Footing[0].X = 1024;
 		Footing[0].Y = Background.height - 270 - BleedSize;
 		Footing[1].X = 1224;
 		Footing[1].Y = Background.height - 320 - BleedSize;
+		Footing[2].X = 1200;
+		Footing[2].Y = Background.height - 760 - BleedSize;
+
 		for (int i = 0; i < FootingNum; i++) {
 			Footing[i].Height = 20;
 			Footing[i].Width = 100;
 			Footing[i].DisplayY = Footing[i].Y;
 			Footing[i].DisplayX = Footing[i].X;
 		}
+		Footing[2].Width = 400;
 		break;
 	default:
 		break;
@@ -147,6 +143,7 @@ void ImageClass::Update(){
 		break;
 	case GAME_PLAY:
 		xyz += 0.1f;
+		Stair->Update();
 		if (xyz >= 360.0f) { xyz = 0.0f; }
 		//Display.Update(Background);
 		//Land.Ustart += 0.0003f;
@@ -172,10 +169,6 @@ void ImageClass::Update(){
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ImageClass::TitleDraw() {
 	DXDrawPolygon(TitleBackground.X, TitleBackground.Y, 0, TitleBackground.Width, TitleBackground.Height, D3DCOLOR_RGBA(255, 255, 255, 255), TitleBackground.Tex);
-	DXDrawPolygon(TitleLogo.X, TitleLogo.Y, 0, TitleLogo.Width, TitleLogo.Height, D3DCOLOR_RGBA(255, 255, 255, 255), TitleLogo.Tex);
-	/*if (TitleInit.cnt <= 30) {
-		DXDrawPolygon(TitleInit.X, TitleInit.Y, 0, TitleInit.Width, TitleInit.Height, D3DCOLOR_RGBA(255, 255, 255, 255), TitleInit.Tex);
-	}*/
 	DXDrawPolygon(TitleInit.X, TitleInit.Y, 0, TitleInit.Width*LOGOBigging, TitleInit.Height*LOGOBigging, D3DCOLOR_RGBA(255, 255, 255, 255), TitleInit.Tex);
 
 }
@@ -189,7 +182,7 @@ void ImageClass::BackDraw() {
 	case GAME_PLAY:
 		DXDrawPolygon(Scren.X, Scren.Y, 0, Scren.Width, Scren.Height, D3DCOLOR_RGBA(255, 255, 255, 255), Scren.Tex);
 		DXDrawAnglePolygon(XYZ.DisplayX, XYZ.DisplayY, 0, XYZ.Width, XYZ.Height, XYZ.Ustart, XYZ.Uwidth, XYZ.Vstart, XYZ.Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), XYZ.Tex, xyz);
-
+		Stair->Draw();
 		for (int i = 0; i < LandNum; i++) {
 			DXDrawAnimePolygon(LandPixel[i].DisplayX, LandPixel[i].DisplayY, 0, LandPixel[i].Width, LandPixel[i].Height, LandPixel[i].Ustart, LandPixel[i].Uwidth, LandPixel[i].Vstart, LandPixel[i].Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), LandPixel[0].Tex);
 
