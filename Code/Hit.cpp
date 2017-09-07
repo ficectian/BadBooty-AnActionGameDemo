@@ -43,12 +43,12 @@ void PlayerClass::AllHitTest() {
 		// 	Œ•“G‚ÉUŒ‚‚Ì“–‚½‚è”»’è
 		for (int i = 0; i < SwordEnemyNum; i++)
 		{
-			if (SwordEnemy[i].Hp > 0 && SwordEnemy[i].Hp <= 2) {
+			if (SwordEnemy[i].Hp > 0 && SwordEnemy[i].Hp <= SwordEnemy[i].MaxHp*2/5) {
 				if (EvilHit(SwordEnemy[i].HitBox_X(), SwordEnemy[i].HitBox_Y(), SwordEnemy[i].HitBox_Wdith, SwordEnemy[i].HitBox_Height)) {
 					if (SwordEnemy[i].InvincibleTime == 0) {
 						StopTime = 10;
 						SwordEnemy[i].EvilOn();
-						Hp += 5;
+						Hp += SwordEnemy[i].Hp * 4;
 						if (Hp > MaxHp) { Hp = MaxHp; }
 					}  // –³“GŠÔ“à‚Å‚Í‚È‚¢
 				}  // “G‚É“–‚½‚é

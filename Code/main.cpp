@@ -257,16 +257,17 @@ void Update(int fcnt)
 			Player.StopTime -= 1;
 		}
 		
-		if (Player.Hp <= 0) { Status = TITLE; }
+		if (Player.Hp <= 0) { GameLoop = 0; Status = TITLE; }
 		if (!Enemy->AllHaveHp()) { LoopWaiting = true; }
-		if(LoopFPS >=100){
+		if(LoopFPS >=180){
+			GameLoop += 1;
 			Enemy->AllInit();
 			LoopWaiting = false;
-			GameLoop += 1;
 			LoopFPS = 0;
 		}
-		if (LoopWaiting) { LoopFPS += 0; }
+		if (LoopWaiting) { LoopFPS += 1; }
 		if (GameLoop > 3) {
+			GameLoop = 0;
 			Status = TITLE;
 		}
 		break;

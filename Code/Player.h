@@ -55,6 +55,7 @@ public:
 	float Width;
 	float Height;
 	float	Hp;	//体力
+	bool FacedRight;
 	float AttBox_X() {
 		if (FacedRight) {
 			return (float)X + 1;
@@ -74,7 +75,7 @@ public:
 			return (float)X - 5;
 		}
 		else {
-			return (float)X + 5;
+			return (float)X -64;
 		}
 	}
 	float EvilBox_Y() {
@@ -156,7 +157,7 @@ private:
 	const byte AnimeEvilHit[64] = { 48,48,48,48,48,48,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,50,50,50,50,50,50,50,50,50,51,51,51,51,51,51,51,51,51,51,51,51,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,48,48,48,48,48,48,0xff };
 	const byte *Anime_data[8] = { AnimeStation,AnimeRun,AnimeJump,AnimeDefense,AnimeAttack,AnimeHit,AnimeClimb ,AnimeEvilHit };
 	char cnt;
-	bool FacedRight;
+	
 	char JumpCnt;
 	bool InFall;
 	int OnStairNum;
@@ -270,7 +271,7 @@ public:
 		Height = 128;
 		InvincibleTime = 0;
 		MaxHp = 5;
-		Hp = MaxHp;
+		Hp = 0;
 		Ustart = 0.0f;
 		Uwidth = (float)1 / 4;
 		Vstart = 0.0f;
@@ -310,7 +311,7 @@ private:
 	void Evil();
 	char HitCnt;
 	const byte AnimeRun[64] = { 0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,0xff };//0xff：終了コード
-	const byte AnimeAttack[64] = { 4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,6,6,6,6,6,6,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0xfe };
+	const byte AnimeAttack[64] = { 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,6,6,6,6,6,6,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0xfe };
 	const byte AnimeHit[64] = { 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,0xff };
 	const byte *Anime_data[3] = { AnimeRun,AnimeAttack,AnimeHit };
 	char StatusStyle;

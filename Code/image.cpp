@@ -74,23 +74,23 @@ void ImageClass::Init() {
 		XYZ.Y = Background.height - 512 - BleedSize;
 		XYZ.DisplayX = XYZ.X;
 		XYZ.DisplayY = XYZ.Y;
-
+		LandPixel[0].Width = 120;
 		LandNum = Background.width / LandPixel[0].Width + 1;
 
 		for (int i = 0; i < LandNum; i++) {
-			LandPixel[i].Height = 210;
-			LandPixel[i].Width = 60;
+			LandPixel[i].Height = 200;
+			LandPixel[i].Width = 120;
 			LandPixel[i].Y = Background.height - LandPixel[i].Height / 2 - BleedSize;
 			LandPixel[i].DisplayY = LandPixel[i].Y;
 			LandPixel[i].X = LandPixel[i].Width / 2 + i*LandPixel[i].Width;
 			LandPixel[i].DisplayX = LandPixel[i].X;
 		}
-		Grass[0].Width = 60;
+		Grass[0].Width = 120;
 		GrassNum = Background.width / Grass[0].Width + 1;
 		for (int i = 0; i < GrassNum; i++) {
-			Grass[i].Height = 170;
-			Grass[i].Width = 60;
-			Grass[i].Y = Background.height - Grass[i].Height / 2 - BleedSize;
+			Grass[i].Height = 148;
+			Grass[i].Width = 120;
+			Grass[i].Y = Background.height - Grass[i].Height / 2 - BleedSize + 9;
 			Grass[i].DisplayY = Grass[i].Y;
 			Grass[i].X = Grass[i].Width / 2 + i*Grass[i].Width;
 			Grass[i].DisplayX = Grass[i].X;

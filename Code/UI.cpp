@@ -48,7 +48,7 @@ void UIClass::Draw(int HP) {
 	byte EnemyHPUI;
 	for (int i = 0; i < SwordEnemyNum; i++) {
 		if (SwordEnemy[i].Hp > 0) {
-			EnemyHPUI = SwordEnemy[i].Hp * 10 / 5;
+			EnemyHPUI = SwordEnemy[i].Hp * 10 / SwordEnemy[i].MaxHp;
 			DXDrawAnimePolygon(SwordEnemy[i].DisplayX, SwordEnemy[i].DisplayY - 70, 0, EnemyHPBackground.Width, EnemyHPBackground.Height, EnemyHPBackground.Ustart, EnemyHPBackground.Uwidth, EnemyHPBackground.Vstart, EnemyHPBackground.Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), EnemyHPBackground.Tex);
 			for (int n = 0; n < EnemyHPUI; n++) {
 				DXDrawAnimePolygon((SwordEnemy[i].DisplayX - 40 + EnemyHP.Width / 2) + n*EnemyHP.Width, SwordEnemy[i].DisplayY - 70, 0, EnemyHP.Width, EnemyHP.Height, EnemyHP.Ustart, EnemyHP.Uwidth, EnemyHP.Vstart, EnemyHP.Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), EnemyHP.Tex);

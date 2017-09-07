@@ -25,16 +25,54 @@ byte SwordEnemyNum;
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void	EnemyClass::AllInit() {
 	//	Œ•“G‚Ì‰Šú‰»
+	extern int GameLoop;
 	bool bret = DXLoadTexture(ENEMYTEX, &SwordEnemy[0].Tex);
-	SwordEnemyNum = 1;
-	SwordEnemy[0].InitialX = 1200;
-	SwordEnemy[0].InitialY=(float)(Background.height - InitialPlayerHeight - SwordEnemy[0].Height/2 - BleedSize);
-	SwordEnemy[0].X = SwordEnemy[0].InitialX;
-	SwordEnemy[0].Y = SwordEnemy[0].InitialY;
-	SwordEnemy[0].DisplayX = SwordEnemy[0].X;
-	SwordEnemy[0].DisplayY = SwordEnemy[0].Y;
-	SwordEnemy[0].Hp = SwordEnemy[0].MaxHp;
-	SwordEnemy[0].ActionMod = PatrolMod;
+	SwordEnemyNum = 3;
+	switch (GameLoop)
+	{
+	case 0:
+		SwordEnemy[0].InitialX = 1200;
+		SwordEnemy[0].InitialY = (float)(Background.height - InitialPlayerHeight - SwordEnemy[0].Height / 2 - BleedSize);
+		SwordEnemy[0].X = SwordEnemy[0].InitialX;
+		SwordEnemy[0].Y = SwordEnemy[0].InitialY;
+		SwordEnemy[0].DisplayX = SwordEnemy[0].X;
+		SwordEnemy[0].DisplayY = SwordEnemy[0].Y;
+		SwordEnemy[0].MaxHp = 3;
+		SwordEnemy[0].Hp = SwordEnemy[0].MaxHp;
+		SwordEnemy[0].StatusStyle = EnemyRunAnime;
+		SwordEnemy[0].ActionMod = PatrolMod;
+		break;
+	case 1:
+		SwordEnemy[1].Tex = SwordEnemy[0].Tex;
+		SwordEnemy[1].InitialX = 500;
+		SwordEnemy[1].InitialY = (float)(Background.height - InitialPlayerHeight - SwordEnemy[0].Height / 2 - BleedSize);
+		SwordEnemy[1].X = SwordEnemy[1].InitialX;
+		SwordEnemy[1].Y = SwordEnemy[1].InitialY;
+		SwordEnemy[1].DisplayX = SwordEnemy[1].X;
+		SwordEnemy[1].DisplayY = SwordEnemy[1].Y;
+		SwordEnemy[1].Hp = SwordEnemy[1].MaxHp;
+		SwordEnemy[1].ActionMod = PatrolMod;
+		SwordEnemy[1].StatusStyle = EnemyRunAnime;
+		break;
+	case 3:
+		SwordEnemy[2].Tex = SwordEnemy[0].Tex;
+		SwordEnemy[2].InitialX = 1000;
+		SwordEnemy[2].InitialY = (float)(Background.height - InitialPlayerHeight - SwordEnemy[0].Height / 2 - BleedSize);
+		SwordEnemy[2].X = SwordEnemy[2].InitialX;
+		SwordEnemy[2].Y = SwordEnemy[2].InitialY;
+		SwordEnemy[2].DisplayX = SwordEnemy[2].X;
+		SwordEnemy[2].DisplayY = SwordEnemy[2].Y;
+		SwordEnemy[2].MaxHp = 10;
+		SwordEnemy[2].Hp = SwordEnemy[2].MaxHp;
+		SwordEnemy[2].ActionMod = PatrolMod;
+		SwordEnemy[2].StatusStyle = EnemyRunAnime;
+		
+	default:
+		break;
+	}
+	
+
+	
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -162,7 +200,12 @@ void	EnemyClass::EvilOn() {
 	StatusStyle = EnemyHitAnime;
 	ActionMod = EvilMod;
 	InvincibleTime = 30;
-	X = Player.X + 49-18;
+	if (Player.FacedRight) {
+		X = Player.X + 49 - 16;
+	}else{
+		X = Player.X - 49 + 16;
+	}
+	
 	Y = Player.Y -16;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -193,7 +236,7 @@ void EnemyClass::Hit() {
 void EnemyClass::Evil() {
 	extern PlayerClass Player;
 	HitCnt += 1;
-	if (HitCnt > 20) {
+	if (HitCnt > 15) {
 		HitCnt = 0;
 		Hp = 0;
 		ActionMod = PatrolMod;

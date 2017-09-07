@@ -5,9 +5,9 @@
 #define PLAYERTEX TEXT("image/player.tga")
 #define ENEMYTEX TEXT("image/Enemy.tga")
 
-#define	GRASSTEX TEXT("image/Grass.png")
-#define SCRENTEX	TEXT("image/scren.png")
-#define LANDPIXELTEX	TEXT("image/LandPixel.png")
+#define	GRASSTEX TEXT("image/Grass.tga")
+#define SCRENTEX	TEXT("image/scren.tga")
+#define LANDPIXELTEX	TEXT("image/LandPixel.tga")
 #define LANDTEX	TEXT("image/Land.png")
 
 
