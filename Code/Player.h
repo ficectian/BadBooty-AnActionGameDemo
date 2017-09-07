@@ -22,7 +22,8 @@ enum {
 	DefenseStatus,
 	AttackStatus,
 	HitStatus,
-	ClimbStatus
+	ClimbStatus,
+	EvilHitStatus
 	//DoubleJumpStatus
 };
 
@@ -36,7 +37,8 @@ enum {
 	PatrolMod,
 	HitMod,
 	TrackMod,
-	ReturnMod
+	ReturnMod,
+	EvilMod
 };
 //=========================================
 //		構造体定義
@@ -65,6 +67,19 @@ public:
 	}
 	float AttBox_Wdith;
 	float AttBox_Height;
+	float EvilBox_Wdith;
+	float EvilBox_Height;
+	float EvilBox_X(){
+		if (FacedRight) {
+			return (float)X - 5;
+		}
+		else {
+			return (float)X + 5;
+		}
+	}
+	float EvilBox_Y() {
+		return (float)Y - 32;
+	}
 	float HitBox_X() {
 		if (FacedRight) {
 			return (float)X - 43;
@@ -87,6 +102,7 @@ public:
 	void Jump();
 	void Attack();
 	void Climb();
+	void EvilHit();
 	void Animetion();
 	void AllHitTest();
 	bool BoundaryHitTest();
@@ -112,6 +128,8 @@ PlayerClass() {
 		AttBox_Height = 69.0f;
 		HitBox_Wdith = 43.0f;
 		HitBox_Height = 111.0f;
+		EvilBox_Wdith = 69.0f;
+		EvilBox_Height = 42.0f;
 		StopTime = 0;
 		EnemyInPlayerRight = false;
 	}
@@ -135,7 +153,8 @@ private:
 	const byte AnimeAttack[64] = {32,32,32,32,32,32,33,33,33,33,33,33,33,33,33,33,33,33, 34,34,34,34,34,34,34,34,34,35,35,35,35,35,35,35,35,35,35,35,35,0xff };//0xff：終了コード
 	const byte AnimeHit[64] = { 18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,0xff };//0xff：終了コード
 	const byte AnimeClimb[64] = { 40,40,40,40,40,40,41,41,41,41,42,42,42,42,42,42,43,43,43,43,0xff };
-	const byte *Anime_data[7] = { AnimeStation,AnimeRun,AnimeJump,AnimeDefense,AnimeAttack,AnimeHit,AnimeClimb };
+	const byte AnimeEvilHit[64] = { 48,48,48,48,48,48,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,50,50,50,50,50,50,50,50,50,51,51,51,51,51,51,51,51,51,51,51,51,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,48,48,48,48,48,48,0xff };
+	const byte *Anime_data[8] = { AnimeStation,AnimeRun,AnimeJump,AnimeDefense,AnimeAttack,AnimeHit,AnimeClimb ,AnimeEvilHit };
 	char cnt;
 	bool FacedRight;
 	char JumpCnt;
@@ -144,6 +163,16 @@ private:
 	bool MoveHit();
 	bool AttHit(float x, float y, float w, float h) {
 		if (((AttBox_Y() + AttBox_Height >= y) && (AttBox_Y() - h <= y)) && ((AttBox_X() + AttBox_Wdith >= x) && (AttBox_X() - w <= x)))
+		{
+			return true;
+		}
+		else
+		{
+			return 	false;
+		}
+	}
+	bool EvilHit(float x, float y, float w, float h) {
+		if (((EvilBox_Y() + EvilBox_Height >= y) && (EvilBox_Y() - h <= y)) && ((EvilBox_X() + EvilBox_Wdith >= x) && (EvilBox_X() - w <= x)))
 		{
 			return true;
 		}
@@ -208,6 +237,7 @@ public:
 	float AttBox_Wdith;
 	float AttBox_Height;
 	int Hp;	//体力
+	int MaxHp;
 	void AllInit();
 	void AllUpdate();
 	void AllDraw();
@@ -216,6 +246,7 @@ public:
 	//}
 	char ActionMod;
 	void HitOn();
+	void EvilOn();
 	bool FacedLeft;
 	char InvincibleTime;
 	void Track();
@@ -238,7 +269,8 @@ public:
 		Width = 128;
 		Height = 128;
 		InvincibleTime = 0;
-		Hp = 5;
+		MaxHp = 5;
+		Hp = MaxHp;
 		Ustart = 0.0f;
 		Uwidth = (float)1 / 4;
 		Vstart = 0.0f;
@@ -275,6 +307,7 @@ private:
 	void Update();
 	void Draw();
 	void Hit();
+	void Evil();
 	char HitCnt;
 	const byte AnimeRun[64] = { 0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,0xff };//0xff：終了コード
 	const byte AnimeAttack[64] = { 4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,6,6,6,6,6,6,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0xfe };

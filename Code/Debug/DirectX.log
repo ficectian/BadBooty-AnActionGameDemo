@@ -1,15 +1,19 @@
-﻿  image.cpp
+﻿  main.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 c:\users\fice\dropbox\badbooty\code\background.h(38): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
 c:\users\fice\dropbox\badbooty\code\background.h(39): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
 c:\users\fice\dropbox\badbooty\code\background.h(40): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
 c:\users\fice\dropbox\badbooty\code\background.h(41): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
 c:\users\fice\dropbox\badbooty\code\background.h(136): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
 c:\users\fice\dropbox\badbooty\code\background.h(137): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
-c:\users\fice\dropbox\badbooty\code\image.cpp(50): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
-c:\users\fice\dropbox\badbooty\code\image.cpp(51): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
-c:\users\fice\dropbox\badbooty\code\image.cpp(52): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
-c:\users\fice\dropbox\badbooty\code\image.cpp(54): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
-c:\users\fice\dropbox\badbooty\code\image.cpp(78): warning C4244: “=”: 从“float”转换到“byte”，可能丢失数据
-c:\users\fice\dropbox\badbooty\code\image.cpp(89): warning C4244: “=”: 从“float”转换到“byte”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\main.cpp(322): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+  Enemy.cpp
+c:\users\fice\dropbox\badbooty\code\background.h(38): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\background.h(39): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\background.h(40): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\background.h(41): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\background.h(136): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
+c:\users\fice\dropbox\badbooty\code\background.h(137): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
+  正在生成代码...
   DirectX.vcxproj -> C:\Users\fice\Dropbox\BadBooty\Code\Debug\ActionDEMO.exe
   DirectX.vcxproj -> C:\Users\fice\Dropbox\BadBooty\Code\Debug\ActionDEMO.pdb (Partial PDB)

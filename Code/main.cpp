@@ -38,6 +38,9 @@ extern ImaginaryBackground Background;
 extern StairClass *Stair;
 extern EnemyClass *Enemy;
 byte Status;
+bool LoopWaiting;
+int LoopFPS = 0;
+int GameLoop = 0;
 //=========================================
 //		Global変数
 //=========================================
@@ -208,6 +211,7 @@ void	GameInit() {
 		Image->Init();
 		break;
 	case GAME_START:
+		LoopWaiting = false;
 		Background.height = 1500;
 		Background.width = 3000;
 		Display.Init(Background);
@@ -254,7 +258,17 @@ void Update(int fcnt)
 		}
 		
 		if (Player.Hp <= 0) { Status = TITLE; }
-		if(!Enemy->AllHaveHp()) { Status = TITLE; }
+		if (!Enemy->AllHaveHp()) { LoopWaiting = true; }
+		if(LoopFPS >=100){
+			Enemy->AllInit();
+			LoopWaiting = false;
+			GameLoop += 1;
+			LoopFPS = 0;
+		}
+		if (LoopWaiting) { LoopFPS += 0; }
+		if (GameLoop > 3) {
+			Status = TITLE;
+		}
 		break;
 	case GAME_OVER:
 		if (GetKeyboardPress(DIK_RETURN)) { Status = TITLE; }

@@ -22,7 +22,7 @@ void StairClass::Init() {
 	StairNum = (int)((Background.height - 760 - StairL[0].Height/2) - InitialPlayerHeight)/ StairL[0].Height;
 	for (int i = 0; i < StairNum; i++) {
 		StairL[i].X = 1400;
-		StairL[i].Y = (float)((Background.height - 760 - StairL[0].Height / 2) + i*StairL[i].Height);
+		StairL[i].Y = (float)((Background.height - 760) + i*StairL[i].Height);
 		StairL[i].DisplayX = StairL[i].X;
 		StairL[i].DisplayY = StairL[i].Y;
 	}

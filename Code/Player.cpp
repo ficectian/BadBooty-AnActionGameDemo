@@ -14,23 +14,23 @@
 ////--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ////		“–‚½‚è”»’èˆ—ŠÖ”’è‹`
 ////--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//bool			HitTest(float X1, float Y1, float W1, float H1, float X2, float Y2, float W2, float H2)
-//{
-//	float XX1 = X1 - W1 / 2;
-//	float	XX2 = X2 - W2 / 2;
-//	float YY1 = Y1 - H1 / 2;
-//	float YY2 = Y2 - H2 / 2;
-//
-//	if (((YY1 + H1 >= YY2) && (YY1 - H2 <= YY2)) && ((XX1 + W1 >= XX2) && (XX1 - W2 <= XX2)))
-//	{
-//		return true;
-//	}
-//	else
-//	{
-//		return 	false;
-//	}
-//
-//}
+bool			HitTest(float X1, float Y1, float W1, float H1, float X2, float Y2, float W2, float H2)
+{
+	float XX1 = X1 - W1 / 2;
+	float	XX2 = X2 - W2 / 2;
+	float YY1 = Y1 - H1 / 2;
+	float YY2 = Y2 - H2 / 2;
+
+	if (((YY1 + H1 >= YY2) && (YY1 - H2 <= YY2)) && ((XX1 + W1 >= XX2) && (XX1 - W2 <= XX2)))
+	{
+		return true;
+	}
+	else
+	{
+		return 	false;
+	}
+
+}
 
 //==========================================================================================================
 //		’è‹`
@@ -78,6 +78,9 @@ void PlayerClass::Update() {
 				Attack();
 
 			}
+			else if (StatusStyle == EvilHitStatus) {
+				EvilHit();
+			}
 			else if (StatusStyle == HitStatus) {
 				Hit();
 			}
@@ -117,7 +120,7 @@ void	PlayerClass::Operation() {
 		//**********************************************************************
 		//	Player –hŒä
 		//**********************************************************************
-		if (GetKeyboardPress(DIK_LSHIFT)) {
+		if (GetKeyboardPress(DIK_LSHIFT) | GetKeyboardPress(DIK_K)) {
 			if (StatusStyle != JumpStatus) {
 				if (StatusStyle != DefenseStatus) {
 					cnt = 0;
@@ -189,10 +192,19 @@ void	PlayerClass::Operation() {
 		//**********************************************************************
 		//	Player UŒ‚
 		//**********************************************************************
-		if (GetKeyboardTrigger(DIK_H)) {
+		if (GetKeyboardTrigger(DIK_H) | GetKeyboardTrigger(DIK_Z)) {
 			if (StatusStyle != JumpStatus) {
 				cnt = 0;
 				StatusStyle = AttackStatus;
+			}
+		}
+		//**********************************************************************
+		//	Player UŒ‚
+		//**********************************************************************
+		if (GetKeyboardTrigger(DIK_J) | GetKeyboardTrigger(DIK_X)) {
+			if (StatusStyle != JumpStatus) {
+				cnt = 0;
+				StatusStyle = EvilHitStatus;
 			}
 		}
 
@@ -216,7 +228,7 @@ void	PlayerClass::Operation() {
 		//**********************************************************************
 		//	’âŽ~
 		//**********************************************************************
-		if (GetKeyboardRelease(DIK_LSHIFT) || GetKeyboardRelease(DIK_A) || GetKeyboardRelease(DIK_LEFT) || GetKeyboardRelease(DIK_D) || GetKeyboardRelease(DIK_RIGHT))
+		if (GetKeyboardRelease(DIK_K) || GetKeyboardRelease(DIK_LSHIFT) || GetKeyboardRelease(DIK_A) || GetKeyboardRelease(DIK_LEFT) || GetKeyboardRelease(DIK_D) || GetKeyboardRelease(DIK_RIGHT))
 		{
 			if (StatusStyle != JumpStatus) {
 				if (StatusStyle != StationStatus) { cnt = 0; StatusStyle = StationStatus; }
@@ -294,6 +306,18 @@ void PlayerClass::Attack() {
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//	Player EvilHitˆ—ŠÖ”’è‹`
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+void PlayerClass::EvilHit() {
+	const byte *ptAnime = Anime_data[StatusStyle];
+	cnt += 1;
+	if (*(ptAnime + cnt) == 0xff) {
+		cnt = 0;
+		StatusStyle = StationStatus;
+	}
+	else { cnt -= 1; }
+}
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //	Player Animetionˆ—ŠÖ”’è‹`
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void PlayerClass::Animetion() {
@@ -355,40 +379,83 @@ void PlayerClass::Hit() {
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//	Player ˆ—ŠÖ”’è‹`
+//	Player “o‚éˆ—ŠÖ”’è‹`
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void PlayerClass::Climb() {
 	const byte *ptAnime = Anime_data[StatusStyle];
+	extern StairClass StairL[128];
+	extern byte StairNum;
+	bool ladderHit = false;
 	//**********************************************************************
 	//	Player “o‚é
 	//**********************************************************************
 	if (StatusStyle != ClimbStatus) {
-		if (GetKeyboardPress(DIK_W) | GetKeyboardPress(DIK_UP)) {
-			cnt = 0; 
-			StatusStyle = ClimbStatus; 
-			Y -= 20;
+		for (int i = 0; i < StairNum; i++) {
+				if (HitTest(X,Y,Width,Height,StairL[i].X,StairL[i].Y,StairL[i].Width,StairL[i].Height)){
+					ladderHit = true;
+				}
 		}
-		if (GetKeyboardPress(DIK_S) | GetKeyboardPress(DIK_DOWN)) {
-			cnt = 0; 
-			StatusStyle = ClimbStatus; 
-			Y += 20;
+		if (ladderHit) {
+			if (GetKeyboardPress(DIK_W) | GetKeyboardPress(DIK_UP)&& ((Y - Height / 2) > StairL[0].Y)) {
+				cnt = 0;
+				StatusStyle = ClimbStatus;
+				Y -= 20;
+				X = StairL[0].X;
+			}
+			if (GetKeyboardPress(DIK_S) | GetKeyboardPress(DIK_DOWN)&& ((Y + Height / 2) < StairL[StairNum - 1].Y)) {
+				cnt = 0;
+				StatusStyle = ClimbStatus;
+				Y += 20;
+				X = StairL[0].X;
+			}
 		}
+		
 	}else{
 		if (GetKeyboardPress(DIK_W) | GetKeyboardPress(DIK_UP)) {
 			cnt += 1;
 			if ((*(ptAnime + cnt) != *(ptAnime + cnt - 1)) && ((*(ptAnime + cnt) == 40) || (*(ptAnime + cnt) == 42) || (*(ptAnime + cnt) == 0xff))) {
-				Y -= 20;
+				if ((Y - Height / 2) > StairL[0].Y) {
+					Y -= 25;
+				}
 			}
 		}
 		if (GetKeyboardPress(DIK_S) | GetKeyboardPress(DIK_DOWN)) {
 			cnt += 1;
 			if ((*(ptAnime + cnt) != *(ptAnime + cnt - 1)) && ((*(ptAnime + cnt) == 40) || (*(ptAnime + cnt) == 42) || (*(ptAnime + cnt) == 0xff))) {
-				Y += 20;
+				if ((Y + Height / 2) < StairL[StairNum-1].Y) {
+					Y += 25;
+				}else {
+					ladderHit = false;
+					if (Y != Initial.y /*&& !HitStair()*/) {
+						InFall = true;
+						for (int i = 0; i < FootingNum; i++) {
+							if (Player.FallHitTest(Footing[i].X, Footing[i].Y, Footing[i].Width, Footing[i].Height)) {
+								InFall = false;
+								break;
+							}
+						}
+						if (InFall) {
+							JumpStartY = Initial.y;
+							JumpCnt = 16;
+							cnt = 16;
+							StatusStyle = JumpStatus;
+						}
+					}
+				}
+				
 			}
 		}
 
-		//—Ž‰º
-		if (GetKeyboardPress(DIK_A) | GetKeyboardPress(DIK_LEFT) | GetKeyboardPress(DIK_S) | GetKeyboardPress(DIK_RIGHT) | GetKeyboardPress(DIK_SPACE)) {
+		if (GetKeyboardPress(DIK_SPACE)) {
+			ladderHit = false;
+			Y += 30;
+			JumpStartY = Initial.y;
+			JumpCnt = 0;
+			cnt = 0;
+			InDoubleJumpStatus = false;
+			StatusStyle = JumpStatus;
+		}else if (GetKeyboardPress(DIK_A) | GetKeyboardPress(DIK_LEFT) | GetKeyboardPress(DIK_S) | GetKeyboardPress(DIK_RIGHT)) {
+			ladderHit = false;
 			if (Y != Initial.y /*&& !HitStair()*/) {
 				InFall = true;
 				for (int i = 0; i < FootingNum; i++) {

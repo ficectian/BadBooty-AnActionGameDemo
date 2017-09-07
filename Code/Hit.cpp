@@ -36,7 +36,25 @@ void PlayerClass::AllHitTest() {
 			}  // “G‚ª¶‚«‚Ä‚¢‚é
 		}
 	}
-
+	//**********************************************************************
+	//	“G‚ÉEvilHit‚Ì“–‚½‚è”»’è
+	//**********************************************************************
+	if (*(ptAnime + cnt) == 50 || *(ptAnime + cnt) == 51) {
+		// 	Œ•“G‚ÉUŒ‚‚Ì“–‚½‚è”»’è
+		for (int i = 0; i < SwordEnemyNum; i++)
+		{
+			if (SwordEnemy[i].Hp > 0 && SwordEnemy[i].Hp <= 2) {
+				if (EvilHit(SwordEnemy[i].HitBox_X(), SwordEnemy[i].HitBox_Y(), SwordEnemy[i].HitBox_Wdith, SwordEnemy[i].HitBox_Height)) {
+					if (SwordEnemy[i].InvincibleTime == 0) {
+						StopTime = 10;
+						SwordEnemy[i].EvilOn();
+						Hp += 5;
+						if (Hp > MaxHp) { Hp = MaxHp; }
+					}  // –³“GŠÔ“à‚Å‚Í‚È‚¢
+				}  // “G‚É“–‚½‚é
+			}  // “G‚ª¶‚«‚Ä‚¢‚é
+		}
+	}
 	//**********************************************************************
 	//	“G‚Édamageó‚¯‚Ì“–‚½‚è”»’è
 	//**********************************************************************
@@ -120,10 +138,10 @@ bool			PlayerClass::FallHitTest(float X1, float Y1, float W, float H)
 		XX1 += 5;
 	}//C³
 	float	XX2 = X1 - W / 2;
-	float YY1 = Y + Height / 2 - 10;
+	float YY1 = Y;
 	float YY2 = Y1 - H / 2;
 
-	if (((YY1 + 10 >= YY2) && (YY1 - H <= YY2)) && ((XX1 + 24 >= XX2) && (XX1 - W <= XX2)))
+	if (((YY1 + 64 >= YY2) && (YY1 - H <= YY2)) && ((XX1 + 24 >= XX2) && (XX1 - W <= XX2)))
 	{
 		return true;
 	}
