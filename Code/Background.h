@@ -82,49 +82,49 @@ public:
 		cnt += 1;
 	}
 	void Update(ImaginaryBackground Background) {
-		extern PlayerClass Player;
+		extern PlayerClass *Player;
 		if (ShockOn != 0) {
 			Shock(ShockOn);
 		}
 		else
 		{
-			if (Player.X - width / 2 > BleedSize && Player.X + width / 2 < Background.width - BleedSize) {
-				/*X = Player.X;*/
-				if (X > Player.X) {
-					if (Player.StatusStyle == DefenseStatus) {
+			if (Player->X - width / 2 > BleedSize && Player->X + width / 2 < Background.width - BleedSize) {
+				/*X = Player->X;*/
+				if (X > Player->X) {
+					if (Player->StatusStyle == DefenseStatus) {
 						X -= PLAYERSPEED/2;
 					}
-					/*else if (Player.StatusStyle == JumpStatus) {
-						X = Player.X;
+					/*else if (Player->StatusStyle == JumpStatus) {
+						X = Player->X;
 					}*/
 					else{
 						X -= PLAYERSPEED;
 					}
 				}
-				if (X < Player.X) {
-					if (Player.StatusStyle == DefenseStatus) {
+				if (X < Player->X) {
+					if (Player->StatusStyle == DefenseStatus) {
 						X += PLAYERSPEED / 2;
 					}
-					/*else if (Player.StatusStyle == JumpStatus) {
-						X = Player.X;
+					/*else if (Player->StatusStyle == JumpStatus) {
+						X = Player->X;
 					}*/
 					else {
 						X += PLAYERSPEED;
 					}
 				}
 			}
-			if (Player.Y+ InitialPlayerHeight - height > BleedSize && Player.Y + InitialPlayerHeight < Background.height - BleedSize) {
-				if (Y > Player.Y - height / 2 + InitialPlayerHeight + Player.Height / 2) {
-					if (Player.StatusStyle == JumpStatus) {
-						Y = Player.Y - height / 2 + InitialPlayerHeight + Player.Height / 2;
+			if (Player->Y+ InitialPlayerHeight - height > BleedSize && Player->Y + InitialPlayerHeight < Background.height - BleedSize) {
+				if (Y > Player->Y - height / 2 + InitialPlayerHeight + Player->Height / 2) {
+					if (Player->StatusStyle == JumpStatus) {
+						Y = Player->Y - height / 2 + InitialPlayerHeight + Player->Height / 2;
 					}else{
 						Y -= PLAYERSPEED;
 					}
 				}
 				
-				if (Y < Player.Y - height / 2 + InitialPlayerHeight + Player.Height / 2) {
-					if (Player.StatusStyle == JumpStatus) {
-						Y = Player.Y - height / 2 + InitialPlayerHeight + Player.Height / 2;
+				if (Y < Player->Y - height / 2 + InitialPlayerHeight + Player->Height / 2) {
+					if (Player->StatusStyle == JumpStatus) {
+						Y = Player->Y - height / 2 + InitialPlayerHeight + Player->Height / 2;
 					}else {
 						Y += PLAYERSPEED;
 					}
@@ -156,11 +156,11 @@ public:
 	float	Y;
 	float DisplayX;
 	float DisplayY;
-	void Init();
-	void Update();
-	void TitleDraw();
-	void BackDraw();
-	void UpDraw();
+	//void Init();
+	//void Update();
+	//void TitleDraw();
+	//void BackDraw();
+	//void UpDraw();
 	void Sync(DisplayClass Display) {
 		DisplayX = X - Display.MoveDistance.x;
 		DisplayY = Y - Display.MoveDistance.y;
@@ -175,7 +175,6 @@ public:
 		Vheight = 1.0f;
 		cnt = 0;
 	}
-private:
 	LPDIRECT3DTEXTURE9 Tex;
 	
 	float Ustart;
@@ -185,31 +184,40 @@ private:
 	byte cnt;
 };
 
-class UIClass {
+class ImageSystem{
 public:
-
-
-	void Init();
-	/*void Update();
-	void BackDraw();*/
-	void Draw(int);
-	UIClass() {
-		Ustart = 0.0f;
-		Vstart = 0.0f;
-		Uwidth = 1.0f;
-		Vheight = 1.0f;
+	//ImageSystem();
+	~ImageSystem() {
+		delete TitleBackground; //	TitleÇÃîwåi
+		delete TitleInit; //	TitleÇÃíÒé¶
+		delete Scren; //	îwåiÅiîwåiêFÅj
+		delete Grass; //	ínñ îwåi
+		delete LandPixel; //	ínñ Åiñ{ï®Åj
+		delete Footing;	//óéâ∫ì_
+		delete XYZ;
 	}
+	void Init();
+	void NumberInit();
+	void Update();
+	void TitleDraw();
+	void BackDraw();
+	void UpDraw();
+	ImageClass *Footing;	//óéâ∫ì_
+	byte FootingNum; 	// óéâ∫ì_ÇÃêî
+
 private:
-	LPDIRECT3DTEXTURE9 Tex;
-	float	X;
-	float	Y;
-	float Width;
-	float Height;
-	float Ustart;
-	float Vstart;
-	float Uwidth;
-	float Vheight;
+	ImageClass *TitleBackground; //	TitleÇÃîwåi
+	ImageClass *TitleInit; //	TitleÇÃíÒé¶
+
+	ImageClass *Scren; //	îwåiÅiîwåiêFÅj
+	ImageClass *Grass; //	ínñ îwåi
+	ImageClass *LandPixel; //	ínñ Åiñ{ï®Åj
+	
+	ImageClass *XYZ;
+	byte LandNum; 	// ínñ ÇÃêî
+	byte GrassNum; 	// ínñ îwåiÇÃêî
 };
+
 
 class StairClass {
 public:

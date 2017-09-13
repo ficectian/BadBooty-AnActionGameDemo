@@ -6,6 +6,7 @@
 #include "DXpolygon.h"
 #include "Player.h"
 #include "input.h"
+#include "UI.h"
 #include "Background.h"
 #include "Quantitative.h"
 #include <mmsystem.h>
@@ -30,9 +31,9 @@ void	Draw(int);
 void	GameInit();
 
 
-extern PlayerClass Player;
-extern ImageClass *Image;
-extern UIClass *GameUI;
+extern PlayerClass *Player;
+ImageSystem imageSystem;
+UIDrawClass GameUI;
 extern DisplayClass Display;
 extern ImaginaryBackground Background;
 extern StairClass *Stair;
@@ -185,6 +186,7 @@ LRESULT	CALLBACK	WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		nID = MessageBox(hWnd, TEXT("終了しますか？"), TEXT("終了"), MB_YESNO);
 		if (nID == IDYES)
 		{
+			delete Player;
 			DestroyWindow(hWnd);
 		}
 		else
@@ -208,17 +210,24 @@ void	GameInit() {
 	{
 	default:
 		Status = TITLE;
-		Image->Init();
+		imageSystem.Init();
 		break;
 	case GAME_START:
 		LoopWaiting = false;
 		Background.height = 1500;
 		Background.width = 3000;
 		Display.Init(Background);
-		Image->Init();
-		Player.Init(); //player初期化
+		imageSystem.Init();
+
+		if (Player != NULL)
+		{
+			delete Player;
+			Player = NULL;
+		}
+		Player = new PlayerClass;
+		Player->Init(); //player初期化
 		Enemy->AllInit();
-		GameUI->Init();
+		GameUI.Init();
 		Status = GAME_PLAY;
 
 		
@@ -241,23 +250,23 @@ void Update(int fcnt)
 	switch (Status)
 	{
 	case TITLE:
-		Image->Update();
+		imageSystem.Update();
 		if (GetKeyboardTrigger(DIK_RETURN)) {
 			Status = GAME_START;
 			GameInit();
 		}
 		break;
 	case GAME_PLAY:
-		if (Player.StopTime == 0) {
+		if (Player->StopTime == 0) {
 			Display.Update(Background);
-			Image->Update();
-			Player.Update(); //Player Move
+			imageSystem.Update();
+			Player->Update(); //Player Move
 			Enemy->AllUpdate();
 		}else{
-			Player.StopTime -= 1;
+			Player->StopTime -= 1;
 		}
 		
-		if (Player.Hp <= 0) { GameLoop = 0; Status = TITLE; }
+		if (Player->Hp <= 0) { GameLoop = 0; Status = TITLE; }
 		if (!Enemy->AllHaveHp()) { LoopWaiting = true; }
 		if(LoopFPS >=180){
 			GameLoop += 1;
@@ -311,16 +320,16 @@ void	Draw(int fcnt)
 		switch (Status)
 		{
 		case TITLE:
-			Image->TitleDraw();
-			//Player.Init(); //player初期化
+			imageSystem.TitleDraw();
+			//Player->Init(); //player初期化
 			break;
 		case GAME_PLAY:
-			Image->BackDraw();
+			imageSystem.BackDraw();
 			//Stair->Draw();
 			Enemy->AllDraw();
-			Player.Draw();
-			Image->UpDraw();
-			GameUI->Draw(Player.Hp);
+			Player->Draw();
+			imageSystem.UpDraw();
+			GameUI.Draw(Player->Hp);
 			break;
 		case GAME_OVER:
 			break;
@@ -354,3 +363,6 @@ void	Draw(int fcnt)
 
 
 
+
+
+//9.12 50MB

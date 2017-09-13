@@ -12,23 +12,11 @@
 //==========================================================================================================
 //		’è‹`
 //==========================================================================================================
-extern ImaginaryBackground Background;	// ‰¼‘z”wŒi–ÊÏ‘ã“ü
-extern DisplayClass Display;	// ‰¼‘zcamera‘ã“ü
+
 extern byte Status;	// game Mode‘ã“ü
+extern ImaginaryBackground Background;	// ‰¼‘z”wŒi–ÊÏ‘ã“ü
 extern StairClass *Stair;
-ImageClass *Image;	//	‘S‚Ä‚Ì‰æ–Êˆ—printer
 
-ImageClass TitleBackground; //	Title‚Ì”wŒi
-ImageClass TitleInit; //	Title‚Ì’ñŽ¦
-
-ImageClass Scren; //	”wŒii”wŒiFj
-ImageClass Grass[64]; //	’n–Ê”wŒi
-ImageClass LandPixel[LANDPIXELMAX]; //	’n–Êi–{•¨j
-ImageClass Footing[64];	//—Ž‰º“_
-ImageClass XYZ;
-byte LandNum; 	// ’n–Ê‚Ì”
-byte FootingNum; 	// —Ž‰º“_‚Ì”
-byte GrassNum; 	// ’n–Ê”wŒi‚Ì”
 float xyz;
 bool Bingging;
 float LOGOBigging;
@@ -37,7 +25,14 @@ float LOGOBigging;
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //	‰æ–Ê‰Šú‰»ŠÖ”’è‹`
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ImageClass::Init() {
+void ImageSystem::NumberInit() {
+
+	LandNum = Background.width / 120 + 1;
+	GrassNum = Background.width / 120 + 1;
+	FootingNum = 3;
+}
+void ImageSystem::Init() {
+	extern DisplayClass Display;	// ‰¼‘zcamera‘ã“ü
 	bool bret;	// Texture‘ã“ü”»’f•Ï”
 	switch (Status)
 	{
@@ -45,37 +40,51 @@ void ImageClass::Init() {
 		//	Title‰æ–Ê‰Šú‰»
 		//**********************************************************************
 	case TITLE:
-		bret = DXLoadTexture(TITLEBGTEX, &TitleBackground.Tex);
-		bret = DXLoadTexture(TITLEINITTEX, &TitleInit.Tex);
-		TitleBackground.Height = Display.height;
-		TitleBackground.Width = Display.width;
-		TitleBackground.Y = Display.height / 2;
-		TitleBackground.DisplayY = TitleBackground.Y;
-		TitleBackground.X = Display.width/2;
-		TitleBackground.DisplayX = TitleBackground.X;
-		TitleInit.Width = 201;
-		TitleInit.Height = 30;
-		TitleInit.X = Display.width - 100 - TitleInit.Width / 2;
-		TitleInit.Y = Display.height - 143 - TitleInit.Height / 2;
+		if (TitleBackground != NULL) { delete TitleBackground; TitleBackground = NULL; }
+		TitleBackground = new ImageClass;
+		if (TitleInit != NULL) { delete TitleInit; TitleInit = NULL; }
+		TitleInit = new ImageClass;
+
+		bret = DXLoadTexture(TITLEBGTEX, &TitleBackground->Tex);
+		bret = DXLoadTexture(TITLEINITTEX, &TitleInit->Tex);
+		TitleBackground->Height = Display.height;
+		TitleBackground->Width = Display.width;
+		TitleBackground->Y = Display.height / 2;
+		TitleBackground->DisplayY = TitleBackground->Y;
+		TitleBackground->X = Display.width / 2;
+		TitleBackground->DisplayX = TitleBackground->X;
+		TitleInit->Width = 201;
+		TitleInit->Height = 30;
+		TitleInit->X = Display.width - 100 - TitleInit->Width / 2;
+		TitleInit->Y = Display.height - 143 - TitleInit->Height / 2;
 		LOGOBigging = 1.0f;
 		Bingging = true;
 		break;
 	case GAME_START:
-		bret = DXLoadTexture(SCRENTEX, &Scren.Tex);
-		//bret = DXLoadTexture(LANDTEX, &Land.Tex);
+		NumberInit();
+		if (Scren != NULL) { delete Scren; Scren = NULL; }
+		Scren = new ImageClass;
+		if (LandPixel != NULL) { delete[] LandPixel; LandPixel = NULL; }
+		LandPixel = new ImageClass[LandNum];
+		if (Grass != NULL) { delete[] Grass; Grass = NULL; }
+		Grass = new ImageClass[GrassNum];
+		if (Footing != NULL) { delete[] Footing; Footing = NULL; }
+		Footing = new ImageClass[FootingNum];
+		if (XYZ != NULL) { delete XYZ; XYZ = NULL; }
+		XYZ = new ImageClass;
+
+		bret = DXLoadTexture(SCRENTEX, &Scren->Tex);
 		bret = DXLoadTexture(LANDPIXELTEX, &LandPixel[0].Tex);
 		bret = DXLoadTexture(GRASSTEX, &Grass[0].Tex);
 		bret = DXLoadTexture(LANDTEX, &Footing[0].Tex);
-		bret = DXLoadTexture(XYZTEX, &XYZ.Tex);
+		bret = DXLoadTexture(XYZTEX, &XYZ->Tex);
 		Stair->Init();
 		xyz = 0.0f;
-		XYZ.Height = XYZ.Width = 128;
-		XYZ.X = 512;
-		XYZ.Y = Background.height - 512 - BleedSize;
-		XYZ.DisplayX = XYZ.X;
-		XYZ.DisplayY = XYZ.Y;
-		LandPixel[0].Width = 120;
-		LandNum = Background.width / LandPixel[0].Width + 1;
+		XYZ->Height = XYZ->Width = 128;
+		XYZ->X = 512;
+		XYZ->Y = Background.height - 512 - BleedSize;
+		XYZ->DisplayX = XYZ->X;
+		XYZ->DisplayY = XYZ->Y;
 
 		for (int i = 0; i < LandNum; i++) {
 			LandPixel[i].Height = 200;
@@ -85,8 +94,7 @@ void ImageClass::Init() {
 			LandPixel[i].X = LandPixel[i].Width / 2 + i*LandPixel[i].Width;
 			LandPixel[i].DisplayX = LandPixel[i].X;
 		}
-		Grass[0].Width = 120;
-		GrassNum = Background.width / Grass[0].Width + 1;
+
 		for (int i = 0; i < GrassNum; i++) {
 			Grass[i].Height = 148;
 			Grass[i].Width = 120;
@@ -95,11 +103,11 @@ void ImageClass::Init() {
 			Grass[i].X = Grass[i].Width / 2 + i*Grass[i].Width;
 			Grass[i].DisplayX = Grass[i].X;
 		}
-		Scren.Width = SCREEN_WIDTH;
-		Scren.Height = SCREEN_HEIGHT;
-		Scren.X = Scren.Width / 2;
-		Scren.Y = Scren.Height / 2;
-		FootingNum = 3;
+		Scren->Width = SCREEN_WIDTH;
+		Scren->Height = SCREEN_HEIGHT;
+		Scren->X = Scren->Width / 2;
+		Scren->Y = Scren->Height / 2;
+		
 		Footing[0].X = 1024;
 		Footing[0].Y = Background.height - 270 - BleedSize;
 		Footing[1].X = 1224;
@@ -118,19 +126,20 @@ void ImageClass::Init() {
 	default:
 		break;
 	}
-	
-
 }
+
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //	‰æ–ÊXVˆ—ŠÖ”’è‹`
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ImageClass::Update(){
+void ImageSystem::Update(){
+	extern DisplayClass Display;	// ‰¼‘zcamera‘ã“ü
+
 	switch (Status)
 	{
 	case TITLE:
-		TitleInit.cnt += 1;
-		if (TitleInit.cnt >= 60) { TitleInit.cnt = 0; }
+		TitleInit->cnt += 1;
+		if (TitleInit->cnt >= 60) { TitleInit->cnt = 0; }
 		if (Bingging) {
 			LOGOBigging += 0.01f;
 			if (LOGOBigging >= 1.2f) { Bingging = false; }
@@ -156,7 +165,7 @@ void ImageClass::Update(){
 		for (int i = 0; i < GrassNum; i++) {
 			Grass[i].Sync(Display);
 		}
-		XYZ.Sync(Display);
+		XYZ->Sync(Display);
 		break;
 	default:
 		break;
@@ -167,21 +176,21 @@ void ImageClass::Update(){
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //	Title‰æ–Ê•`‰æŠÖ”’è‹`
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ImageClass::TitleDraw() {
-	DXDrawPolygon(TitleBackground.X, TitleBackground.Y, 0, TitleBackground.Width, TitleBackground.Height, D3DCOLOR_RGBA(255, 255, 255, 255), TitleBackground.Tex);
-	DXDrawPolygon(TitleInit.X, TitleInit.Y, 0, TitleInit.Width*LOGOBigging, TitleInit.Height*LOGOBigging, D3DCOLOR_RGBA(255, 255, 255, 255), TitleInit.Tex);
+void ImageSystem::TitleDraw() {
+	DXDrawPolygon(TitleBackground->X, TitleBackground->Y, 0, TitleBackground->Width, TitleBackground->Height, D3DCOLOR_RGBA(255, 255, 255, 255), TitleBackground->Tex);
+	DXDrawPolygon(TitleInit->X, TitleInit->Y, 0, TitleInit->Width*LOGOBigging, TitleInit->Height*LOGOBigging, D3DCOLOR_RGBA(255, 255, 255, 255), TitleInit->Tex);
 
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //	”wŒi‰æ–Ê•`‰æŠÖ”’è‹`
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ImageClass::BackDraw() {
+void ImageSystem::BackDraw() {
 	switch (Status)
 	{
 	case GAME_PLAY:
-		DXDrawPolygon(Scren.X, Scren.Y, 0, Scren.Width, Scren.Height, D3DCOLOR_RGBA(255, 255, 255, 255), Scren.Tex);
-		DXDrawAnglePolygon(XYZ.DisplayX, XYZ.DisplayY, 0, XYZ.Width, XYZ.Height, XYZ.Ustart, XYZ.Uwidth, XYZ.Vstart, XYZ.Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), XYZ.Tex, xyz);
+		DXDrawPolygon(Scren->X, Scren->Y, 0, Scren->Width, Scren->Height, D3DCOLOR_RGBA(255, 255, 255, 255), Scren->Tex);
+		DXDrawAnglePolygon(XYZ->DisplayX, XYZ->DisplayY, 0, XYZ->Width, XYZ->Height, XYZ->Ustart, XYZ->Uwidth, XYZ->Vstart, XYZ->Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), XYZ->Tex, xyz);
 		Stair->Draw();
 		for (int i = 0; i < LandNum; i++) {
 			DXDrawAnimePolygon(LandPixel[i].DisplayX, LandPixel[i].DisplayY, 0, LandPixel[i].Width, LandPixel[i].Height, LandPixel[i].Ustart, LandPixel[i].Uwidth, LandPixel[i].Vstart, LandPixel[i].Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), LandPixel[0].Tex);
@@ -201,7 +210,7 @@ void ImageClass::BackDraw() {
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //	‘OŒi‰æ–Ê•`‰æŠÖ”’è‹`
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ImageClass::UpDraw() {
+void ImageSystem::UpDraw() {
 	switch (Status)
 	{
 	case GAME_PLAY:

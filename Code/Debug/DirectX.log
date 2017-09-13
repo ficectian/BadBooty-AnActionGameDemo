@@ -9,7 +9,5 @@ c:\users\fice\onedrive\程序\badbooty\code\image.cpp(50): warning C4244: “=�
 c:\users\fice\onedrive\程序\badbooty\code\image.cpp(51): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
 c:\users\fice\onedrive\程序\badbooty\code\image.cpp(52): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
 c:\users\fice\onedrive\程序\badbooty\code\image.cpp(54): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
-c:\users\fice\onedrive\程序\badbooty\code\image.cpp(78): warning C4244: “=”: 从“float”转换到“byte”，可能丢失数据
-c:\users\fice\onedrive\程序\badbooty\code\image.cpp(89): warning C4244: “=”: 从“float”转换到“byte”，可能丢失数据
   DirectX.vcxproj -> C:\Users\fice\OneDrive\程序\BadBooty\Code\Debug\ActionDEMO.exe
   DirectX.vcxproj -> C:\Users\fice\OneDrive\程序\BadBooty\Code\Debug\ActionDEMO.pdb (Partial PDB)

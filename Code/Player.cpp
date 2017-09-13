@@ -35,17 +35,19 @@ bool			HitTest(float X1, float Y1, float W1, float H1, float X2, float Y2, float
 //==========================================================================================================
 //		íËã`
 //==========================================================================================================
-PlayerClass Player;
+PlayerClass *Player;
+
 extern DisplayClass Display;
 extern ImaginaryBackground Background;
-extern ImageClass Footing[256];
-extern byte FootingNum;
-
+//extern ImageClass Footing[256];
+//extern byte FootingNum;
+extern ImageSystem imageSystem;
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //	Playerèâä˙âªä÷êîíËã`
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void PlayerClass::Init() {
+	
 	bool bret = DXLoadTexture(PLAYERTEX, &Tex);
 	//bret = DXLoadTexture(BOOWTEX, &DeadTex);
 	//bret = DXLoadTexture(INVINCIBLETEX, &InvincibleTex);
@@ -258,9 +260,9 @@ void PlayerClass::Jump() {
 			StatusStyle = StationStatus;
 		}
 		if (*(ptAnime + cnt) == 18) {
-			for (int i = 0; i < FootingNum; i++) {
-				if (Player.FallHitTest(Footing[i].X, Footing[i].Y, Footing[i].Width, Footing[i].Height)) {
-					Y = Footing[i].Y - Footing[i].Height / 2 - Height / 2 + 10;
+			for (int i = 0; i < imageSystem.FootingNum; i++) {
+				if (Player->FallHitTest(imageSystem.Footing[i].X, imageSystem.Footing[i].Y, imageSystem.Footing[i].Width, imageSystem.Footing[i].Height)) {
+					Y = imageSystem.Footing[i].Y - imageSystem.Footing[i].Height / 2 - Height / 2 + 10;
 
 					JumpCnt = 0;
 					cnt = 0;
@@ -275,8 +277,8 @@ void PlayerClass::Jump() {
 		//óéâ∫
 		if (Y != Initial.y /*&& !HitStair()*/) {
 			InFall = true;
-			for (int i = 0; i < FootingNum; i++) {
-				if (Player.FallHitTest(Footing[i].X, Footing[i].Y, Footing[i].Width, Footing[i].Height)) {
+			for (int i = 0; i < imageSystem.FootingNum; i++) {
+				if (Player->FallHitTest(imageSystem.Footing[i].X, imageSystem.Footing[i].Y, imageSystem.Footing[i].Width, imageSystem.Footing[i].Height)) {
 					InFall = false;
 					break;
 				}
@@ -428,8 +430,8 @@ void PlayerClass::Climb() {
 					ladderHit = false;
 					if (Y != Initial.y /*&& !HitStair()*/) {
 						InFall = true;
-						for (int i = 0; i < FootingNum; i++) {
-							if (Player.FallHitTest(Footing[i].X, Footing[i].Y, Footing[i].Width, Footing[i].Height)) {
+						for (int i = 0; i < imageSystem.FootingNum; i++) {
+							if (Player->FallHitTest(imageSystem.Footing[i].X, imageSystem.Footing[i].Y, imageSystem.Footing[i].Width, imageSystem.Footing[i].Height)) {
 								InFall = false;
 								break;
 							}
@@ -458,8 +460,8 @@ void PlayerClass::Climb() {
 			ladderHit = false;
 			if (Y != Initial.y /*&& !HitStair()*/) {
 				InFall = true;
-				for (int i = 0; i < FootingNum; i++) {
-					if (Player.FallHitTest(Footing[i].X, Footing[i].Y, Footing[i].Width, Footing[i].Height)) {
+				for (int i = 0; i < imageSystem.FootingNum; i++) {
+					if (Player->FallHitTest(imageSystem.Footing[i].X, imageSystem.Footing[i].Y, imageSystem.Footing[i].Width, imageSystem.Footing[i].Height)) {
 						InFall = false;
 						break;
 					}

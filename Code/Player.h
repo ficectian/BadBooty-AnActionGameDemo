@@ -202,6 +202,9 @@ private:
 
 
 
+
+
+
 class EnemyClass {
 
 
@@ -253,8 +256,8 @@ public:
 	void Track();
 	void Return();
 	bool PlayerHit() {
-		extern PlayerClass Player;
-		if (((HitBox_Y() + HitBox_Height >= Player.HitBox_Y()) && (HitBox_Y() - Player.HitBox_Height <= Player.HitBox_Y())) && ((HitBox_X() + HitBox_Wdith >= Player.HitBox_X()) && (HitBox_X() - Player.HitBox_Wdith <= Player.HitBox_X())))
+		extern PlayerClass *Player;
+		if (((HitBox_Y() + HitBox_Height >= Player->HitBox_Y()) && (HitBox_Y() - Player->HitBox_Height <= Player->HitBox_Y())) && ((HitBox_X() + HitBox_Wdith >= Player->HitBox_X()) && (HitBox_X() - Player->HitBox_Wdith <= Player->HitBox_X())))
 		{
 			return true;
 		}

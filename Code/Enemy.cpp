@@ -194,27 +194,27 @@ void	EnemyClass::HitOn() {
 //	Œ•“Gdamageó‚¯‚éŠJnŠÖ”’è‹`
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void	EnemyClass::EvilOn() {
-	extern PlayerClass Player;
+	extern PlayerClass *Player;
 	HitCnt = 0;
 	cnt = 0;
 	StatusStyle = EnemyHitAnime;
 	ActionMod = EvilMod;
 	InvincibleTime = 30;
-	if (Player.FacedRight) {
-		X = Player.X + 49 - 16;
+	if (Player->FacedRight) {
+		X = Player->X + 49 - 16;
 	}else{
-		X = Player.X - 49 + 16;
+		X = Player->X - 49 + 16;
 	}
 	
-	Y = Player.Y -16;
+	Y = Player->Y -16;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //	Œ•“Gdamageó‚¯‚éˆ—ŠÖ”’è‹`
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EnemyClass::Hit() {
-	extern PlayerClass Player;
+	extern PlayerClass *Player;
 	HitCnt += 1;
-	if (Player.X <= X) {
+	if (Player->X <= X) {
 		X += 4;
 	}else{
 		X -= 4;
@@ -234,7 +234,7 @@ void EnemyClass::Hit() {
 //	Œ•“GEvilHitó‚¯‚éˆ—ŠÖ”’è‹`
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EnemyClass::Evil() {
-	extern PlayerClass Player;
+	extern PlayerClass *Player;
 	HitCnt += 1;
 	if (HitCnt > 15) {
 		HitCnt = 0;
@@ -246,9 +246,9 @@ void EnemyClass::Evil() {
 //	Œ•“G“G’T‚·ŠÖ”’è‹`
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EnemyClass::Track() {
-	extern PlayerClass Player;
+	extern PlayerClass *Player;
 	if (StatusStyle != EnemyAttAnime) {
-		if (Player.X >= X) {
+		if (Player->X >= X) {
 			if (FacedLeft) { 
 				FacedLeft = false; 
 				X += 32;
@@ -262,14 +262,14 @@ void EnemyClass::Track() {
 			}
 			if (!PlayerHit()) { X -= SWORDENEMYSPEED; }
 		}
-		if (X - Player.X > 600 || X - Player.X < -600) {
+		if (X - Player->X > 600 || X - Player->X < -600) {
 			ActionMod = ReturnMod;
 		}  //	Player ‚ª—£‚¹‚Î–ß‚é
 		/*
-		if (Y - Player.Y > 100 || Y - Player.Y < -100) {
+		if (Y - Player->Y > 100 || Y - Player->Y < -100) {
 			ActionMod = ReturnMod;
 		}*/
-		if ((X - Player.X > 0 && X - Player.X < 64) || (X - Player.X<0 && X - Player.X >-64)) {
+		if ((X - Player->X > 0 && X - Player->X < 64) || (X - Player->X<0 && X - Player->X >-64)) {
 			StatusStyle = EnemyAttAnime;
 			cnt = 0;
 		}  
@@ -280,7 +280,7 @@ void EnemyClass::Track() {
 //	Œ•“G„‰ñŠÖ”’è‹`
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EnemyClass::Patrol() {
-	extern PlayerClass Player;
+	extern PlayerClass *Player;
 
 	if (FacedLeft) {
 		if (!PlayerHit()) { X -= SWORDENEMYSPEED; }
@@ -299,7 +299,7 @@ void EnemyClass::Patrol() {
 		}
 	}
 
-	if ((X - Player.X>0 &&X - Player.X < 300) || (X - Player.X<0 &&X - Player.X >-300)) {
+	if ((X - Player->X>0 &&X - Player->X < 300) || (X - Player->X<0 &&X - Player->X >-300)) {
 		ActionMod = TrackMod;
 	}//	Player ‚ªÚ‹ß‚·‚é‚Æu“G’T‚·v‚ğˆ—
 
@@ -310,7 +310,7 @@ void EnemyClass::Patrol() {
 //	Œ•“G–ß‚éŠÖ”’è‹`
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EnemyClass::Return() {
-	extern PlayerClass Player;
+	extern PlayerClass *Player;
 	if (InitialX >= X) {
 		if (FacedLeft) { FacedLeft = false; }
 		if (!PlayerHit()) { X += SWORDENEMYSPEED; }
@@ -323,7 +323,7 @@ void EnemyClass::Return() {
 	if ((X - InitialX>0 && X - X < 30) || (X - InitialX<0 && X - InitialX >-30)) {
 		ActionMod = PatrolMod;
 	}
-	if ((X - Player.X>0 && X - Player.X < 300) || (X - Player.X<0 && X - Player.X >-300)) {
+	if ((X - Player->X>0 && X - Player->X < 300) || (X - Player->X<0 && X - Player->X >-300)) {
 		ActionMod = TrackMod;
 	}
 }
