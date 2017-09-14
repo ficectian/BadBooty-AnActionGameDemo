@@ -27,6 +27,11 @@ enum {
 	//DoubleJumpStatus
 };
 
+enum PlayerAttackMod
+{
+	defaultMod,
+	swordMod
+};
 enum {
 	EnemyRunAnime,
 	EnemyAttAnime,
@@ -68,6 +73,19 @@ public:
 	}
 	float AttBox_Wdith;
 	float AttBox_Height;
+	float swordBox_Wdith;
+	float swordBox_Height;
+	float swordBox_X() {
+		if (FacedRight) {
+			return (float)X - 19;
+		}else {
+			return (float)X + 19 - 100;
+
+		}
+	}
+	float swordBox_Y() {
+		return (float)Y - 20;
+	}
 	float EvilBox_Wdith;
 	float EvilBox_Height;
 	float EvilBox_X(){
@@ -131,8 +149,11 @@ PlayerClass() {
 		HitBox_Height = 111.0f;
 		EvilBox_Wdith = 69.0f;
 		EvilBox_Height = 42.0f;
+		swordBox_Wdith = 100.0f;
+		swordBox_Height = 45.0f;
 		StopTime = 0;
 		EnemyInPlayerRight = false;
+		attackMod = defaultMod;
 	}
 private:
 	LPDIRECT3DTEXTURE9 Tex;
@@ -140,8 +161,8 @@ private:
 	//LPDIRECT3DTEXTURE9	InvincibleTex;
 	POINT Initial;
 	int MaxHp;
+	PlayerAttackMod attackMod;
 	float JumpStartY;
-	
 	float Ustart;
 	float Vstart;
 	float Uwidth;
@@ -155,7 +176,8 @@ private:
 	const byte AnimeHit[64] = { 18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,0xff };//0xff：終了コード
 	const byte AnimeClimb[64] = { 40,40,40,40,40,40,41,41,41,41,42,42,42,42,42,42,43,43,43,43,0xff };
 	const byte AnimeEvilHit[64] = { 48,48,48,48,48,48,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,50,50,50,50,50,50,50,50,50,51,51,51,51,51,51,51,51,51,51,51,51,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,48,48,48,48,48,48,0xff };
-	const byte *Anime_data[8] = { AnimeStation,AnimeRun,AnimeJump,AnimeDefense,AnimeAttack,AnimeHit,AnimeClimb ,AnimeEvilHit };
+	const byte AnimeSwordHit[64] = { 56,56,56,56,56,56,57,57,57,57,57,57,57,57,57,57,57,57, 59,59,59,59,59,59,59,59,59,61,61,61,61,61,61,61,61,61,61,61,61,0xff };//0xff：終了コード
+	const byte *Anime_data[9] = { AnimeStation,AnimeRun,AnimeJump,AnimeDefense,AnimeAttack,AnimeHit,AnimeClimb ,AnimeEvilHit,AnimeSwordHit };
 	char cnt;
 	
 	char JumpCnt;
@@ -163,7 +185,25 @@ private:
 	int OnStairNum;
 	bool MoveHit();
 	bool AttHit(float x, float y, float w, float h) {
-		if (((AttBox_Y() + AttBox_Height >= y) && (AttBox_Y() - h <= y)) && ((AttBox_X() + AttBox_Wdith >= x) && (AttBox_X() - w <= x)))
+		int X, Y, width, height;
+		switch (attackMod)
+		{
+		case defaultMod:
+			X = AttBox_X();
+			Y = AttBox_Y();
+			width = AttBox_Wdith;
+			height = AttBox_Height;
+			break;
+		case swordMod:
+			X = swordBox_X();
+			Y = swordBox_Y();
+			width = swordBox_Wdith;
+			height = swordBox_Height;
+			break;
+		default:
+			break;
+		}
+		if (((Y + height >= y) && (Y - h <= y)) && ((X + width >= x) && (X - w <= x)))
 		{
 			return true;
 		}
@@ -197,6 +237,24 @@ private:
 	char HitCnt;
 	char InvincibleTime;
 	bool EnemyInPlayerRight;
+	byte AnimeCnt() {
+		const byte *ptAnime;
+		if (StatusStyle != AttackStatus) {
+			ptAnime = Anime_data[StatusStyle];
+		}else{
+			switch (attackMod)
+			{
+			case swordMod:
+				ptAnime = Anime_data[8];
+				break;
+			default:
+				ptAnime = Anime_data[StatusStyle];
+				break;
+			}
+			
+		}
+		return *(ptAnime + cnt);
+	}
 };
 
 

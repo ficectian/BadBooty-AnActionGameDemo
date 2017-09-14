@@ -37,6 +37,23 @@ void PlayerClass::AllHitTest() {
 		}
 	}
 	//**********************************************************************
+	//	“G‚ÉUŒ‚‚Ì“–‚½‚è”»’è
+	//**********************************************************************
+	if (*(ptAnime + cnt) == 57 || *(ptAnime + cnt) == 59) {
+		// 	Œ•“G‚ÉUŒ‚‚Ì“–‚½‚è”»’è
+		for (int i = 0; i < SwordEnemyNum; i++)
+		{
+			if (SwordEnemy[i].Hp > 0) {
+				if (AttHit(SwordEnemy[i].HitBox_X(), SwordEnemy[i].HitBox_Y(), SwordEnemy[i].HitBox_Wdith, SwordEnemy[i].HitBox_Height)) {
+					if (SwordEnemy[i].InvincibleTime == 0) {
+						StopTime = 5;
+						SwordEnemy[i].HitOn();
+					}  // –³“GŠÔ“à‚Å‚Í‚È‚¢
+				}  // “G‚É“–‚½‚é
+			}  // “G‚ª¶‚«‚Ä‚¢‚é
+		}
+	}
+	//**********************************************************************
 	//	“G‚ÉEvilHit‚Ì“–‚½‚è”»’è
 	//**********************************************************************
 	if (*(ptAnime + cnt) == 50 || *(ptAnime + cnt) == 51) {
@@ -48,7 +65,8 @@ void PlayerClass::AllHitTest() {
 					if (SwordEnemy[i].InvincibleTime == 0) {
 						StopTime = 10;
 						SwordEnemy[i].EvilOn();
-						Hp += SwordEnemy[i].Hp * 4;
+						attackMod = swordMod;
+						Hp += SwordEnemy[i].Hp * 2;
 						if (Hp > MaxHp) { Hp = MaxHp; }
 					}  // –³“GŠÔ“à‚Å‚Í‚È‚¢
 				}  // “G‚É“–‚½‚é

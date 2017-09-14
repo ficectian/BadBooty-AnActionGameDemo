@@ -59,7 +59,7 @@ void PlayerClass::Init() {
 	DisplayY = Y;
 	MaxHp = 28;
 	Hp = MaxHp;
-	
+	attackMod = defaultMod;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -106,6 +106,15 @@ void PlayerClass::Draw() {
 		DXDrawAnimePolygon(DisplayX, DisplayY, 0, Width, Height, Ustart, Uwidth, Vstart, Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), Tex);//player
 	}else {
 		DXDrawPlayerRevPolygon(DisplayX, DisplayY, 0, Width, Height, Ustart, Uwidth, Vstart, Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), Tex);//player
+	}
+	if (AnimeCnt() == 57|| AnimeCnt() == 59)
+	{
+		if (FacedRight) {
+			DXDrawAnimePolygon(DisplayX+ Width, DisplayY, 0, Width, Height, Ustart+ Uwidth, Uwidth, Vstart, Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), Tex);//player
+		}
+		else {
+			DXDrawPlayerRevPolygon(DisplayX- Width, DisplayY, 0, Width, Height, Ustart + Uwidth, Uwidth, Vstart, Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), Tex);//player
+		}
 	}
 	
 }
@@ -298,13 +307,13 @@ void PlayerClass::Jump() {
 //	Player çUåÇèàóùä÷êîíËã`
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void PlayerClass::Attack() {
-	const byte *ptAnime = Anime_data[StatusStyle];
-	cnt += 1;
-	if (*(ptAnime + cnt) == 0xff) {
-		cnt = 0;
-		StatusStyle = StationStatus;
-	}
-	else { cnt -= 1; }
+	//const byte *ptAnime = Anime_data[StatusStyle];
+	//cnt += 1;
+	//if (*(ptAnime + cnt) == 0xff) {
+	//	cnt = 0;
+	//	StatusStyle = StationStatus;
+	//}
+	//else { cnt -= 1; }
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -323,9 +332,16 @@ void PlayerClass::EvilHit() {
 //	Player Animetionèàóùä÷êîíËã`
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void PlayerClass::Animetion() {
-	const byte *ptAnime = Anime_data[StatusStyle];
-	if (*(ptAnime + cnt) == 0xff) {
-		//cnt = 0;
+
+	if (StatusStyle != ClimbStatus) { cnt += 1; }
+
+	if (AnimeCnt() == 0xff) {
+		//c
+		if (StatusStyle == AttackStatus)
+		{
+			StatusStyle = StationStatus;
+			cnt = 0;
+		}
 		if (StatusStyle != JumpStatus) {
 			cnt = 0;
 		}
@@ -333,9 +349,8 @@ void PlayerClass::Animetion() {
 			cnt = 16;
 		}
 	}
-	Ustart = ((*(ptAnime + cnt)) % (int)(1 / Uwidth))*Uwidth;
-	Vstart = ((*(ptAnime + cnt)) / (int)(1 / Vheight))*Vheight;
-	if (StatusStyle != ClimbStatus) { cnt += 1; }
+	Ustart = ((AnimeCnt()) % (int)(1 / Uwidth))*Uwidth;
+	Vstart = ((AnimeCnt()) / (int)(1 / Vheight))*Vheight;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
