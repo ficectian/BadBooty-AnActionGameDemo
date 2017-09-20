@@ -191,9 +191,9 @@ public:
 		delete TitleBackground; //	Titleの背景
 		delete TitleInit; //	Titleの提示
 		delete Scren; //	背景（背景色）
-		delete Grass; //	地面背景
-		delete LandPixel; //	地面（本物）
-		delete Footing;	//落下点
+		delete[] Grass; //	地面背景
+		delete[] LandPixel; //	地面（本物）
+		delete[] Footing;	//落下点
 		delete XYZ;
 	}
 	void Init();
@@ -212,7 +212,7 @@ private:
 	ImageClass *Scren; //	背景（背景色）
 	ImageClass *Grass; //	地面背景
 	ImageClass *LandPixel; //	地面（本物）
-	
+	ImageClass *thankPlay; 
 	ImageClass *XYZ;
 	byte LandNum; 	// 地面の数
 	byte GrassNum; 	// 地面背景の数

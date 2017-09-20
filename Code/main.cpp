@@ -9,6 +9,8 @@
 #include "UI.h"
 #include "Background.h"
 #include "Quantitative.h"
+//#include "Stage.h"
+
 #include <mmsystem.h>
 
 #pragma comment(lib,"winmm.lib")//multimedia library
@@ -34,6 +36,7 @@ void	GameInit();
 extern PlayerClass *Player;
 ImageSystem imageSystem;
 UIDrawClass GameUI;
+//StageHandle stageHandle;
 extern DisplayClass Display;
 extern ImaginaryBackground Background;
 extern StairClass *Stair;
@@ -217,6 +220,7 @@ void	GameInit() {
 		Background.height = 1500;
 		Background.width = 3000;
 		Display.Init(Background);
+		//stageHandle.init(stageHandle.stageNumber);
 		imageSystem.Init();
 
 		if (Player != NULL)
@@ -225,12 +229,13 @@ void	GameInit() {
 			Player = NULL;
 		}
 		Player = new PlayerClass;
-		Player->Init(); //player初期化
+		Player->Init(); 
 		Enemy->AllInit();
 		GameUI.Init();
 		Status = GAME_PLAY;
-
-		
+		break;
+	case GAME_WIN:
+		imageSystem.Init();
 		break;
 	}
 	
@@ -268,7 +273,7 @@ void Update(int fcnt)
 		
 		if (Player->Hp <= 0) { GameLoop = 0; Status = TITLE; }
 		if (!Enemy->AllHaveHp()) { LoopWaiting = true; }
-		if(LoopFPS >=180){
+		if(LoopFPS >=90){
 			GameLoop += 1;
 			Enemy->AllInit();
 			LoopWaiting = false;
@@ -277,13 +282,18 @@ void Update(int fcnt)
 		if (LoopWaiting) { LoopFPS += 1; }
 		if (GameLoop > 3) {
 			GameLoop = 0;
-			Status = TITLE;
+			Status = GAME_WIN; 
+			GameInit();
 		}
+
+		//stageHandle.update();
 		break;
 	case GAME_OVER:
 		if (GetKeyboardPress(DIK_RETURN)) { Status = TITLE; }
 		break;
 	case GAME_WIN:
+		imageSystem.Update();
+		Player->Update(); //Player Move
 		if (GetKeyboardPress(DIK_RETURN)) { Status = TITLE; }
 		break;
 	default:
@@ -334,6 +344,8 @@ void	Draw(int fcnt)
 		case GAME_OVER:
 			break;
 		case GAME_WIN:
+			imageSystem.BackDraw();
+			Player->Draw();
 			break;
 		default:
 			break;

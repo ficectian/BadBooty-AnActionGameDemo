@@ -127,7 +127,7 @@ public:
 	bool BoundaryHitTest();
 	byte StopTime;
 	char StatusStyle;
-
+	POINT Initial;
 PlayerClass() {
 		Tex = NULL;
 		InvincibleTime = 0;
@@ -153,13 +153,13 @@ PlayerClass() {
 		swordBox_Height = 45.0f;
 		StopTime = 0;
 		EnemyInPlayerRight = false;
-		attackMod = defaultMod;
+		attackMod = (PlayerAttackMod)defaultMod;
 	}
 private:
 	LPDIRECT3DTEXTURE9 Tex;
 	//LPDIRECT3DTEXTURE9	DeadTex;
 	//LPDIRECT3DTEXTURE9	InvincibleTex;
-	POINT Initial;
+	
 	int MaxHp;
 	PlayerAttackMod attackMod;
 	float JumpStartY;
@@ -170,10 +170,10 @@ private:
 	bool InDoubleJumpStatus;
 	const byte AnimeStation[64] = { 0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0xff };//0xff：終了コード
 	const byte AnimeRun[64] = {8,8,8,8,8,8,8,8,8,9,9,9,9,9,9,9,9,9,10,10,10,10,10,10,10,10,10,11,11,11,11,11,11,11,11,11,0xff };
-	const byte AnimeJump[64] = { 16,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,0xff };
+	const byte AnimeJump[64] = { 16,16,16,17,17,17,16,16,16,18,18,18,18,18,18,18,19,19,19,20,20,20,19,19,19,20,20,20,19,19,19,20,20,20,19,19,19,20,20,20,19,19,19,20,20,20,19,19,19,20,20,20,19,19,19,20,0xff };
 	const byte AnimeDefense[64] = { 24,24,24,24,24,24,24,24,24,24,24,24,25,25,25,25,25,25,25,25,25,25,25,25,0xff };//0xff：終了コード
 	const byte AnimeAttack[64] = {32,32,32,32,32,32,33,33,33,33,33,33,33,33,33,33,33,33, 34,34,34,34,34,34,34,34,34,35,35,35,35,35,35,35,35,35,35,35,35,0xff };//0xff：終了コード
-	const byte AnimeHit[64] = { 18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,0xff };//0xff：終了コード
+	const byte AnimeHit[64] = { 19,19,19,20,20,20,19,19,19,20,20,20,19,19,19,20,20,20,19,19,19,20,20,20,19,19,19,20,20,20,19,19,19,20,20,20,19,19,19,20,20,20,0xff };//0xff：終了コード
 	const byte AnimeClimb[64] = { 40,40,40,40,40,40,41,41,41,41,42,42,42,42,42,42,43,43,43,43,0xff };
 	const byte AnimeEvilHit[64] = { 48,48,48,48,48,48,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,50,50,50,50,50,50,50,50,50,51,51,51,51,51,51,51,51,51,51,51,51,49,49,49,49,49,49,49,49,49,49,49,49,49,49,49,48,48,48,48,48,48,0xff };
 	const byte AnimeSwordHit[64] = { 56,56,56,56,56,56,57,57,57,57,57,57,57,57,57,57,57,57, 59,59,59,59,59,59,59,59,59,61,61,61,61,61,61,61,61,61,61,61,61,0xff };//0xff：終了コード
@@ -344,7 +344,9 @@ public:
 		HitBox_Wdith = 38.0f;
 		HitBox_Height = 103.0f;
 		AttBox_Wdith = 57.0f;
-		AttBox_Height = 60.0f;
+		AttBox_Height = 60.0f;	
+		broned = 0;
+		deaded = 0;
 	}
 	byte AnimeCnt() {
 		const byte *ptEnemyAnime = Anime_data[StatusStyle];
@@ -352,7 +354,10 @@ public:
 	}
 private:
 	LPDIRECT3DTEXTURE9 Tex;
-	LPDIRECT3DTEXTURE9	DeadTex;
+	LPDIRECT3DTEXTURE9 ptTex;
+	LPDIRECT3DTEXTURE9	ballTex;
+	int broned;
+	int deaded;
 	float InitialX;
 	float InitialY;
 	
@@ -375,6 +380,11 @@ private:
 	const byte AnimeAttack[64] = { 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,6,6,6,6,6,6,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0xfe };
 	const byte AnimeHit[64] = { 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,0xff };
 	const byte *Anime_data[3] = { AnimeRun,AnimeAttack,AnimeHit };
+
+	const byte bornBall[64] = { 0,0,0, 0,0,0,1,1,1,2,2,2,1,1,1,2,2,2,1,1,1,2,2,2,3,3,3,4,4,4,3,3,3,4,4,4,3,3,3,4,4,4,3,3,3,4,4,4,0xff };//0xff：終了コード
+	const byte deathBall[64] = { 9,9,9,8,8,8, 9,9,9,8,8,8,9,9,9,8,8,8,9,9,9,8,8,8,7,7,7,6,6,6,7,7,7,6,6,6,7,7,7,6,6,6,5,5,5,5,5,5,0xff };
+	const byte loseBall[128] = { 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,0xff };
+	const byte *ballAnime_data[3] = { bornBall,deathBall,loseBall };
 	char StatusStyle;
 	char cnt;
 };

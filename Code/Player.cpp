@@ -268,7 +268,7 @@ void PlayerClass::Jump() {
 			InDoubleJumpStatus = false;
 			StatusStyle = StationStatus;
 		}
-		if (*(ptAnime + cnt) == 18) {
+		if (*(ptAnime + cnt) == 19 || *(ptAnime + cnt) == 20) {
 			for (int i = 0; i < imageSystem.FootingNum; i++) {
 				if (Player->FallHitTest(imageSystem.Footing[i].X, imageSystem.Footing[i].Y, imageSystem.Footing[i].Width, imageSystem.Footing[i].Height)) {
 					Y = imageSystem.Footing[i].Y - imageSystem.Footing[i].Height / 2 - Height / 2 + 10;
@@ -471,9 +471,9 @@ void PlayerClass::Climb() {
 			cnt = 0;
 			InDoubleJumpStatus = false;
 			StatusStyle = JumpStatus;
-		}else if (GetKeyboardPress(DIK_A) | GetKeyboardPress(DIK_LEFT) | GetKeyboardPress(DIK_S) | GetKeyboardPress(DIK_RIGHT)) {
+		}/*else if (GetKeyboardPress(DIK_A) | GetKeyboardPress(DIK_LEFT) | GetKeyboardPress(DIK_S) | GetKeyboardPress(DIK_RIGHT)) {
 			ladderHit = false;
-			if (Y != Initial.y /*&& !HitStair()*/) {
+			if (Y != Initial.y ) {
 				InFall = true;
 				for (int i = 0; i < imageSystem.FootingNum; i++) {
 					if (Player->FallHitTest(imageSystem.Footing[i].X, imageSystem.Footing[i].Y, imageSystem.Footing[i].Width, imageSystem.Footing[i].Height)) {
@@ -488,7 +488,7 @@ void PlayerClass::Climb() {
 					StatusStyle = JumpStatus;
 				}
 			}
-		}
+		}*/
 	}
 	
 }

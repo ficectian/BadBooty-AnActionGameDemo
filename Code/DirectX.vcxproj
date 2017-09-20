@@ -94,6 +94,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Quantitative.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Stage.h" />
     <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>

@@ -26,7 +26,6 @@ float LOGOBigging;
 //	‰æ–Ê‰Šú‰»ŠÖ”’è‹`
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ImageSystem::NumberInit() {
-
 	LandNum = Background.width / 120 + 1;
 	GrassNum = Background.width / 120 + 1;
 	FootingNum = 3;
@@ -40,11 +39,9 @@ void ImageSystem::Init() {
 		//	Title‰æ–Ê‰Šú‰»
 		//**********************************************************************
 	case TITLE:
-		if (TitleBackground != NULL) { delete TitleBackground; TitleBackground = NULL; }
-		TitleBackground = new ImageClass;
-		if (TitleInit != NULL) { delete TitleInit; TitleInit = NULL; }
-		TitleInit = new ImageClass;
-
+		if (TitleBackground == NULL) { TitleBackground = new ImageClass; }
+		if (TitleInit == NULL) { TitleInit = new ImageClass; }
+		
 		bret = DXLoadTexture(TITLEBGTEX, &TitleBackground->Tex);
 		bret = DXLoadTexture(TITLEINITTEX, &TitleInit->Tex);
 		TitleBackground->Height = Display.height;
@@ -62,16 +59,16 @@ void ImageSystem::Init() {
 		break;
 	case GAME_START:
 		NumberInit();
-		if (Scren != NULL) { delete Scren; Scren = NULL; }
-		Scren = new ImageClass;
-		if (LandPixel != NULL) { delete[] LandPixel; LandPixel = NULL; }
-		LandPixel = new ImageClass[LandNum];
-		if (Grass != NULL) { delete[] Grass; Grass = NULL; }
-		Grass = new ImageClass[GrassNum];
-		if (Footing != NULL) { delete[] Footing; Footing = NULL; }
-		Footing = new ImageClass[FootingNum];
-		if (XYZ != NULL) { delete XYZ; XYZ = NULL; }
-		XYZ = new ImageClass;
+		if (Scren == NULL) { Scren = new ImageClass; }
+		
+		if (LandPixel == NULL) { LandPixel = new ImageClass[LandNum]; }
+		
+		if (Grass == NULL) { Grass = new ImageClass[GrassNum]; }
+		
+		if (Footing == NULL) { Footing = new ImageClass[FootingNum]; }
+		
+		if (XYZ == NULL) { XYZ = new ImageClass; }
+		
 
 		bret = DXLoadTexture(SCRENTEX, &Scren->Tex);
 		bret = DXLoadTexture(LANDPIXELTEX, &LandPixel[0].Tex);
@@ -123,6 +120,16 @@ void ImageSystem::Init() {
 		}
 		Footing[2].Width = 400;
 		break;
+	case GAME_WIN:
+		if (thankPlay == NULL) { thankPlay = new ImageClass; }
+		bret = DXLoadTexture(THANKPLAYTEX, &thankPlay->Tex);
+		thankPlay->Width = 339.0f;
+		thankPlay->Height = 110.0f;
+		thankPlay->X = Display.width / 2;
+		thankPlay->Y = Display.height / 2;
+		thankPlay->DisplayX = thankPlay->X;
+		thankPlay->DisplayY = thankPlay->Y;
+		break;
 	default:
 		break;
 	}
@@ -167,6 +174,17 @@ void ImageSystem::Update(){
 		}
 		XYZ->Sync(Display);
 		break;
+
+	case GAME_WIN:
+		if (Bingging) {
+			LOGOBigging += 0.01f;
+			if (LOGOBigging >= 1.2f) { Bingging = false; }
+		}
+		else {
+			LOGOBigging -= 0.01f;
+			if (LOGOBigging <= 0.8f) { Bingging = true; }
+		}
+		break;
 	default:
 		break;
 	}
@@ -194,12 +212,22 @@ void ImageSystem::BackDraw() {
 		Stair->Draw();
 		for (int i = 0; i < LandNum; i++) {
 			DXDrawAnimePolygon(LandPixel[i].DisplayX, LandPixel[i].DisplayY, 0, LandPixel[i].Width, LandPixel[i].Height, LandPixel[i].Ustart, LandPixel[i].Uwidth, LandPixel[i].Vstart, LandPixel[i].Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), LandPixel[0].Tex);
-
 		}
 
 		for (int i = 0; i < FootingNum; i++) {
 			DXDrawAnimePolygon(Footing[i].DisplayX, Footing[i].DisplayY, 0, Footing[i].Width, Footing[i].Height, Footing[i].Ustart, Footing[i].Uwidth, Footing[i].Vstart, Footing[i].Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), Footing[0].Tex);
 		}
+		break;
+	case GAME_WIN:
+		DXDrawPolygon(Scren->X, Scren->Y, 0, Scren->Width, Scren->Height, D3DCOLOR_RGBA(255, 255, 255, 255), Scren->Tex);
+		for (int i = 0; i < LandNum; i++) {
+			DXDrawAnimePolygon(LandPixel[i].DisplayX, LandPixel[i].DisplayY, 0, LandPixel[i].Width, LandPixel[i].Height, LandPixel[i].Ustart, LandPixel[i].Uwidth, LandPixel[i].Vstart, LandPixel[i].Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), LandPixel[0].Tex);
+		}
+		for (int i = 0; i < GrassNum; i++) {
+			DXDrawAnimePolygon(Grass[i].DisplayX, Grass[i].DisplayY, 0, Grass[i].Width, Grass[i].Height, Grass[i].Ustart, Grass[i].Uwidth, Grass[i].Vstart, Grass[i].Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), Grass[0].Tex);
+		}
+		DXDrawPolygon(TitleInit->X, TitleInit->Y, 0, TitleInit->Width*LOGOBigging, TitleInit->Height*LOGOBigging, D3DCOLOR_RGBA(255, 255, 255, 255), TitleInit->Tex);
+		DXDrawPolygon(thankPlay->X, thankPlay->Y, 0, thankPlay->Width, thankPlay->Height, D3DCOLOR_RGBA(255, 255, 255, 255), thankPlay->Tex);
 		break;
 	default:
 		break;
