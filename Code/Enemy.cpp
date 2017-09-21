@@ -3,6 +3,8 @@
 //		—j•X
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #include	"main.h"
+#include <stdlib.h> 
+#include <time.h>  
 #include "DXpolygon.h"
 #include "Player.h"
 #include "Background.h"
@@ -26,62 +28,23 @@ byte SwordEnemyNum;
 void	EnemyClass::AllInit() {
 	//	Œ•“G‚Ì‰Šú‰»
 	extern int GameLoop;
+	bool bret;
+	/*
 	bool bret = DXLoadTexture(ENEMYTEX, &SwordEnemy[0].Tex);
 	bret = DXLoadTexture(ENEMYPTTEX, &SwordEnemy[0].ptTex);
-	bret = DXLoadTexture(LIGHTBALLTEX, &SwordEnemy[0].ballTex);
-
-	SwordEnemyNum = 3;
-	switch (GameLoop)
-	{
-	case 0:
+	//bret = DXLoadTexture(LIGHTBALLTEX, &SwordEnemy[0].ballTex);
+	*/
+	SwordEnemyNum = 5;
+	if (GameLoop == 0) {
+		bret = DXLoadTexture(ENEMYTEX, &SwordEnemy[0].Tex);
+		SwordEnemy[0].Init();
+		SwordEnemy[0].MaxHp = 5;
 		SwordEnemy[0].InitialX = 1200;
-		SwordEnemy[0].InitialY = (float)(Background.height - InitialPlayerHeight - SwordEnemy[0].Height / 2 - BleedSize);
 		SwordEnemy[0].X = SwordEnemy[0].InitialX;
-		SwordEnemy[0].Y = SwordEnemy[0].InitialY;
-		SwordEnemy[0].DisplayX = SwordEnemy[0].X;
-		SwordEnemy[0].DisplayY = SwordEnemy[0].Y;
-		SwordEnemy[0].MaxHp = 3;
-		SwordEnemy[0].broned = 1;
-		SwordEnemy[0].deaded = 0;
-		//SwordEnemy[0].Hp = SwordEnemy[0].MaxHp;
-		SwordEnemy[0].StatusStyle = EnemyRunAnime;
-		SwordEnemy[0].ActionMod = PatrolMod;
-		break;
-	case 1:
-		SwordEnemy[1].Tex = SwordEnemy[0].Tex;
-		SwordEnemy[1].ptTex = SwordEnemy[0].ptTex;
-		SwordEnemy[1].ballTex = SwordEnemy[0].ballTex;
-		SwordEnemy[1].InitialX = 500;
-		SwordEnemy[1].InitialY = (float)(Background.height - InitialPlayerHeight - SwordEnemy[0].Height / 2 - BleedSize);
-		SwordEnemy[1].X = SwordEnemy[1].InitialX;
-		SwordEnemy[1].Y = SwordEnemy[1].InitialY;
-		SwordEnemy[1].DisplayX = SwordEnemy[1].X;
-		SwordEnemy[1].DisplayY = SwordEnemy[1].Y;
-		SwordEnemy[1].broned = 1;
-		SwordEnemy[1].deaded = 0;
-		//SwordEnemy[1].Hp = SwordEnemy[1].MaxHp;
-		SwordEnemy[1].ActionMod = PatrolMod;
-		SwordEnemy[1].StatusStyle = EnemyRunAnime;
-		break;
-	case 3:
-		bret = DXLoadTexture(ENEMYSPTEX, &SwordEnemy[2].Tex);
-		SwordEnemy[2].ptTex = SwordEnemy[0].ptTex;
-		SwordEnemy[2].ballTex = SwordEnemy[0].ballTex;
-		SwordEnemy[2].InitialX = 1000;
-		SwordEnemy[2].InitialY = (float)(Background.height - InitialPlayerHeight - SwordEnemy[0].Height / 2 - BleedSize);
-		SwordEnemy[2].X = SwordEnemy[2].InitialX;
-		SwordEnemy[2].Y = SwordEnemy[2].InitialY;
-		SwordEnemy[2].DisplayX = SwordEnemy[2].X;
-		SwordEnemy[2].DisplayY = SwordEnemy[2].Y;
-		SwordEnemy[2].MaxHp = 10;
-		SwordEnemy[2].broned = 1;
-		SwordEnemy[2].deaded = 0;
-		//SwordEnemy[2].Hp = SwordEnemy[2].MaxHp;
-		SwordEnemy[2].ActionMod = PatrolMod;
-		SwordEnemy[2].StatusStyle = EnemyRunAnime;
-		
-	default:
-		break;
+	}
+	else
+	{
+		SwordEnemy[GameLoop].Init();
 	}
 	
 
@@ -122,6 +85,36 @@ void	EnemyClass::AllDraw() {
 //==========================================================================================================
 //		ŒÂ‘Ì“Gsˆ×ˆ—’è‹`iŒ•“Gj
 //==========================================================================================================
+void EnemyClass::Init() {
+	bool bret = DXLoadTexture(LIGHTBALLTEX, &ball->Tex);
+	bret = DXLoadTexture(ENEMYPTTEX, &ptTex);
+	int x;
+	//x
+	srand((unsigned)time(NULL));
+	x = (int)(rand() % 3);
+	InitialX = (float)(rand() % Background.width);
+	InitialY = (float)(Background.height - InitialPlayerHeight - Height / 2 - BleedSize);
+	X = InitialX;
+	Y = InitialY;
+	DisplayX = X;
+	DisplayY = Y;
+	if (x == 1) {
+		bret = DXLoadTexture(ENEMYSPTEX, &Tex);
+		MaxHp = 10;
+	}else{
+		bret = DXLoadTexture(ENEMYTEX, &Tex);
+		MaxHp = 5;
+	}
+	
+	broned = 1;
+	deaded = 0;
+	losed = 0;
+	//SwordEnemy[0].Hp = SwordEnemy[0].MaxHp;
+	StatusStyle = EnemyRunAnime;
+	ActionMod = PatrolMod;
+}
+
+
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //	Œ•“GXVŠÖ”’è‹`
@@ -171,16 +164,19 @@ void EnemyClass::Draw() {
 		else {
 			DXDrawPlayerRevPolygon(DisplayX, DisplayY, 0, Width, Height, Ustart, Uwidth, Vstart, Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), Tex);
 		}
+	}
+
+	//Ball
+	if (broned == 1 || deaded == 1) {
+		Animetion();
+		ball->Draw(DisplayX, DisplayY);
+	}
+	if (losed == 1) {
+		Animetion();
+		ball->Draw2(DisplayX, DisplayY);
+	}
 	
-	}
-	if (broned == 1) {
-		Animetion();
-		DXDrawAnimePolygon(DisplayX, DisplayY, 0, 64, 64, Ustart, Uwidth, Vstart, Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), ballTex);
-	}
-	if (deaded == 1) {
-		Animetion();
-		DXDrawAnimePolygon(DisplayX, DisplayY, 0, 64, 64, Ustart, Uwidth, Vstart, Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), ballTex);
-	}
+	//HP
 	if (broned != 0 && deaded != 2) {
 		if (DisplayX>Display.width)
 		{
@@ -214,28 +210,22 @@ void EnemyClass::Animetion() {
 	
 
 	if (broned == 1) {
-		const byte *ptBallAnime = ballAnime_data[0];
-		cnt += 1;
-		if (*(ptBallAnime + cnt) == 0xff) {
-			cnt = 0;
+		if (ball->runBronAnime()) {
 			broned = 2;
 			Hp = MaxHp;
+		}	
+	}
+	if (losed == 1) {
+		if (ball->runLoseAnime()) {
+			losed = 2;
+		//	deaded=1;
 		}
-		Ustart = ((*(ptBallAnime + cnt)) % (int)(1 / Uwidth))*Uwidth;
-		Vstart = ((*(ptBallAnime + cnt)) / (int)(1 / Vheight))*Vheight;
-		
 	}
 
 	if (deaded == 1) {
-		const byte *ptBallAnime = ballAnime_data[1];
-		cnt += 1;
-		if (*(ptBallAnime + cnt) == 0xff) {
-			cnt = 0;
+		if (ball->runDeadAnime()) {
 			deaded = 2;
 		}
-		Ustart = ((*(ptBallAnime + cnt)) % (int)(1 / Uwidth))*Uwidth;
-		Vstart = ((*(ptBallAnime + cnt)) / (int)(1 / Vheight))*Vheight;
-
 	}
 }
 
@@ -267,7 +257,7 @@ void	EnemyClass::EvilOn() {
 	}else{
 		X = Player->X - 49 + 16;
 	}
-	
+	losed = 1;
 	Y = Player->Y -16;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -393,4 +383,20 @@ void EnemyClass::Return() {
 	if ((X - Player->X>0 && X - Player->X < 300) || (X - Player->X<0 && X - Player->X >-300)) {
 		ActionMod = TrackMod;
 	}
+}
+
+
+void EnemyClass::Ball::Draw(float x, float y) {
+	DXDrawAnimePolygon(x, y, 0, Width, Height, Ustart, Uwidth, Vstart, Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), Tex);
+}
+
+void EnemyClass::Ball::Draw2(float x, float y) {
+	extern PlayerClass *Player;
+	float X;
+	if (Player->FacedRight) {
+		X = x - cnt2;
+	}else {
+		X = x + cnt2;
+	}
+	DXDrawAnimePolygon(X, y, 0, Width, Height, Ustart2, Uwidth, Vstart2, Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), Tex);
 }

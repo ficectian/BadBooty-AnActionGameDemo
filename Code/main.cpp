@@ -218,7 +218,7 @@ void	GameInit() {
 	case GAME_START:
 		LoopWaiting = false;
 		Background.height = 1500;
-		Background.width = 3000;
+		Background.width = 2000;
 		Display.Init(Background);
 		//stageHandle.init(stageHandle.stageNumber);
 		imageSystem.Init();
@@ -280,7 +280,7 @@ void Update(int fcnt)
 			LoopFPS = 0;
 		}
 		if (LoopWaiting) { LoopFPS += 1; }
-		if (GameLoop > 3) {
+		if (GameLoop > 5) {
 			GameLoop = 0;
 			Status = GAME_WIN; 
 			GameInit();

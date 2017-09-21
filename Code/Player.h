@@ -4,6 +4,7 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #include <windows.h>
 #include <d3dx9.h>			//	描画処理に必要
+#include "Quantitative.h"
 
 
 enum {
@@ -300,12 +301,15 @@ public:
 	float AttBox_Height;
 	int Hp;	//体力
 	int MaxHp;
+
+
 	void AllInit();
 	void AllUpdate();
 	void AllDraw();
 	//void Sync(DisplayClass Display) {
 	//	DisplayX = X - Display.MoveDistance.x;
 	//}
+	void Init();
 	char ActionMod;
 	void HitOn();
 	void EvilOn();
@@ -347,6 +351,11 @@ public:
 		AttBox_Height = 60.0f;	
 		broned = 0;
 		deaded = 0;
+		losed = 0;
+		ball = new Ball;
+	}
+	~EnemyClass() {
+		delete ball;
 	}
 	byte AnimeCnt() {
 		const byte *ptEnemyAnime = Anime_data[StatusStyle];
@@ -355,9 +364,10 @@ public:
 private:
 	LPDIRECT3DTEXTURE9 Tex;
 	LPDIRECT3DTEXTURE9 ptTex;
-	LPDIRECT3DTEXTURE9	ballTex;
+	//LPDIRECT3DTEXTURE9	ballTex;
 	int broned;
 	int deaded;
+	int losed;
 	float InitialX;
 	float InitialY;
 	
@@ -367,6 +377,79 @@ private:
 	float Vstart;
 	float Uwidth;
 	float Vheight;
+	class Ball
+	{
+	public:
+		LPDIRECT3DTEXTURE9 Tex;
+
+		Ball() {
+			Height = 64.0f;
+			Width = 64.0f;
+			Ustart = 0.0f;
+			Vstart = 0.0f;
+			Ustart2 = 0.0f;
+			Vstart2 = 0.0f;
+			Uwidth = (float)1 / 4;
+			Vheight = (float)1 / 4;
+			cnt = 0;
+			cnt2 = 0;
+		}
+		//~Ball();
+		float Width;
+		float Height;
+		float Ustart;
+		float Vstart;
+		float Ustart2;
+		float Vstart2;
+		float Uwidth;
+		float Vheight;
+		const byte bornBall[64] = { 0,0,0, 0,0,0,1,1,1,2,2,2,1,1,1,2,2,2,1,1,1,2,2,2,3,3,3,4,4,4,3,3,3,4,4,4,3,3,3,4,4,4,3,3,3,4,4,4,0xff };//0xff：終了コード
+		const byte deathBall[64] = { 9,9,9,8,8,8, 9,9,9,8,8,8,9,9,9,8,8,8,9,9,9,8,8,8,7,7,7,6,6,6,7,7,7,6,6,6,7,7,7,6,6,6,5,5,5,5,5,5,0xff };
+		const byte loseBall[128] = { 14,14,14,13,13,13, 14,14,14,13,13,13, 14,14,14,13,13,13, 14,14,14,13,13,13,14,14,14,13,13,13,14,14,14,13,13,13,12,12,12,11,11,11,12,12,12,11,11,11,12,12,12,11,11,11,12,12,12,11,11,11,12,12,12,11,11,11,10,10,10,10,10,10,0xff };
+		//const byte loseBall[64] = { 14,14,14,13,13,13, 14,14,14,13,13,13,12,12,12,11,11,11,10,10,10,0xff };
+
+		const byte *ballAnime_data[3] = { bornBall,deathBall,loseBall };
+		char cnt;
+		char cnt2;
+		bool runBronAnime() {
+			const byte *ptBallAnime = ballAnime_data[0];
+			cnt += 1;
+			if (*(ptBallAnime + cnt) == 0xff) {
+				cnt = 0;
+				return true;
+			}
+			Ustart = ((*(ptBallAnime + cnt)) % (int)(1 / Uwidth))*Uwidth;
+			Vstart = ((*(ptBallAnime + cnt)) / (int)(1 / Vheight))*Vheight;
+			return false;
+		}
+
+		bool runDeadAnime() {
+			const byte *ptBallAnime = ballAnime_data[1];
+			cnt += 1;
+			if (*(ptBallAnime + cnt) == 0xff) {
+				cnt = 0;
+				return true;
+			}
+			Ustart = ((*(ptBallAnime + cnt)) % (int)(1 / Uwidth))*Uwidth;
+			Vstart = ((*(ptBallAnime + cnt)) / (int)(1 / Vheight))*Vheight;
+			return false;
+		}
+
+		bool runLoseAnime() {
+			const byte *ptBallAnime = ballAnime_data[2];
+			cnt2 += 1;
+			if (*(ptBallAnime + cnt2) == 0xff) {
+				cnt2 = 0;
+				return true;
+			}
+			Ustart2 = ((*(ptBallAnime + cnt2)) % (int)(1 / Uwidth))*Uwidth;
+			Vstart2 = ((*(ptBallAnime + cnt2)) / (int)(1 / Vheight))*Vheight;
+			return false;
+		}
+		void Draw(float x, float y);
+		void Draw2(float x, float y);
+	};
+	Ball *ball;
 
 	
 	void Animetion();
@@ -381,10 +464,7 @@ private:
 	const byte AnimeHit[64] = { 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,0xff };
 	const byte *Anime_data[3] = { AnimeRun,AnimeAttack,AnimeHit };
 
-	const byte bornBall[64] = { 0,0,0, 0,0,0,1,1,1,2,2,2,1,1,1,2,2,2,1,1,1,2,2,2,3,3,3,4,4,4,3,3,3,4,4,4,3,3,3,4,4,4,3,3,3,4,4,4,0xff };//0xff：終了コード
-	const byte deathBall[64] = { 9,9,9,8,8,8, 9,9,9,8,8,8,9,9,9,8,8,8,9,9,9,8,8,8,7,7,7,6,6,6,7,7,7,6,6,6,7,7,7,6,6,6,5,5,5,5,5,5,0xff };
-	const byte loseBall[128] = { 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,0xff };
-	const byte *ballAnime_data[3] = { bornBall,deathBall,loseBall };
+	
 	char StatusStyle;
 	char cnt;
 };
