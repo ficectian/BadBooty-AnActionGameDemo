@@ -271,7 +271,7 @@ void Update(int fcnt)
 			Player->StopTime -= 1;
 		}
 		
-		if (Player->Hp <= 0) { GameLoop = 0; Status = TITLE; }
+		if (Player->Hp <= 0) { GameLoop = 0; Enemy->deleteAll(); Status = TITLE; }
 		if (!Enemy->AllHaveHp()) { LoopWaiting = true; }
 		if(LoopFPS >=90){
 			GameLoop += 1;

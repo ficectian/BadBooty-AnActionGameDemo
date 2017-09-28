@@ -306,6 +306,7 @@ public:
 	void AllInit();
 	void AllUpdate();
 	void AllDraw();
+	void deleteAll();
 	//void Sync(DisplayClass Display) {
 	//	DisplayX = X - Display.MoveDistance.x;
 	//}

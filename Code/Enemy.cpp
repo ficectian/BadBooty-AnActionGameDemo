@@ -400,3 +400,14 @@ void EnemyClass::Ball::Draw2(float x, float y) {
 	}
 	DXDrawAnimePolygon(X, y, 0, Width, Height, Ustart2, Uwidth, Vstart2, Vheight, D3DCOLOR_RGBA(255, 255, 255, 255), Tex);
 }
+
+void EnemyClass::deleteAll() {
+	for (int i = 0; i < SwordEnemyNum; i++) {
+		SwordEnemy[i].Hp = 0;
+		SwordEnemy[i].broned = 0;
+		SwordEnemy[i].deaded = 0;
+		SwordEnemy[i].losed = 0;
+		SwordEnemy[i].StatusStyle = EnemyRunAnime;
+		SwordEnemy[i].ActionMod = PatrolMod;
+	}
+}

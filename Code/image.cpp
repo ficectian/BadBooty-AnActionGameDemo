@@ -86,7 +86,7 @@ void ImageSystem::Init() {
 		for (int i = 0; i < LandNum; i++) {
 			LandPixel[i].Height = 200;
 			LandPixel[i].Width = 120;
-			LandPixel[i].Y = Background.height - LandPixel[i].Height / 2 - BleedSize;
+			LandPixel[i].Y = Background.height - LandPixel[i].Height / 2;
 			LandPixel[i].DisplayY = LandPixel[i].Y;
 			LandPixel[i].X = LandPixel[i].Width / 2 + i*LandPixel[i].Width;
 			LandPixel[i].DisplayX = LandPixel[i].X;

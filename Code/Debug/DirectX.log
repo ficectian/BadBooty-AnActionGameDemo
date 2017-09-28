@@ -1,21 +1,4 @@
-﻿  main.cpp
-c:\users\fice\onedrive\程序\badbooty\code\player.h(193): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
-c:\users\fice\onedrive\程序\badbooty\code\player.h(194): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
-c:\users\fice\onedrive\程序\badbooty\code\player.h(195): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
-c:\users\fice\onedrive\程序\badbooty\code\player.h(196): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
-c:\users\fice\onedrive\程序\badbooty\code\player.h(199): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
-c:\users\fice\onedrive\程序\badbooty\code\player.h(200): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
-c:\users\fice\onedrive\程序\badbooty\code\player.h(201): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
-c:\users\fice\onedrive\程序\badbooty\code\player.h(202): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
-  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-c:\users\fice\onedrive\程序\badbooty\code\background.h(38): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
-c:\users\fice\onedrive\程序\badbooty\code\background.h(39): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
-c:\users\fice\onedrive\程序\badbooty\code\background.h(40): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
-c:\users\fice\onedrive\程序\badbooty\code\background.h(41): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
-c:\users\fice\onedrive\程序\badbooty\code\background.h(136): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
-c:\users\fice\onedrive\程序\badbooty\code\background.h(137): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
-c:\users\fice\onedrive\程序\badbooty\code\main.cpp(342): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-  Enemy.cpp
+﻿  Enemy.cpp
 c:\users\fice\onedrive\程序\badbooty\code\player.h(193): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
 c:\users\fice\onedrive\程序\badbooty\code\player.h(194): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
 c:\users\fice\onedrive\程序\badbooty\code\player.h(195): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
@@ -30,6 +13,5 @@ c:\users\fice\onedrive\程序\badbooty\code\background.h(40): warning C4244: “
 c:\users\fice\onedrive\程序\badbooty\code\background.h(41): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
 c:\users\fice\onedrive\程序\badbooty\code\background.h(136): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
 c:\users\fice\onedrive\程序\badbooty\code\background.h(137): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
-  正在生成代码...
   DirectX.vcxproj -> C:\Users\fice\OneDrive\程序\BadBooty\Code\Debug\ActionDEMO.exe
   DirectX.vcxproj -> C:\Users\fice\OneDrive\程序\BadBooty\Code\Debug\ActionDEMO.pdb (Partial PDB)
